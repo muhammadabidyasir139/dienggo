@@ -18,10 +18,10 @@ export interface VillaProps {
 
 // Icon mapping helper
 const facilityIcons: Record<string, React.ReactNode> = {
-    "WiFi": <Wifi size={14} className="text-primary dark:text-accent" />,
-    "TV": <Tv size={14} className="text-primary dark:text-accent" />,
-    "Air Hangat": <Droplet size={14} className="text-primary dark:text-accent" />,
-    "AC": <Wind size={14} className="text-primary dark:text-accent" />
+    "WiFi": <Wifi size={14} className="text-primary " />,
+    "TV": <Tv size={14} className="text-primary " />,
+    "Air Hangat": <Droplet size={14} className="text-primary " />,
+    "AC": <Wind size={14} className="text-primary " />
 };
 
 export function VillaCard({ slug, nama, harga, rating, ulasan, lokasi, foto_utama, fasilitas_utama }: VillaProps) {
@@ -47,19 +47,19 @@ export function VillaCard({ slug, nama, harga, rating, ulasan, lokasi, foto_utam
 
                 <div className="mb-4 flex flex-wrap gap-2">
                     {fasilitas_utama.slice(0, 3).map((fas, i) => (
-                        <div key={i} className="flex items-center gap-1.5 rounded-full bg-neutral-100 px-2.5 py-1 text-xs font-medium text-neutral-600 dark:bg-slate-800 dark:text-neutral-300">
+                        <div key={i} className="flex items-center gap-1.5 rounded-full bg-neutral-100 px-2.5 py-1 text-xs font-medium text-neutral-600  ">
                             {facilityIcons[fas] || <span className="h-2 w-2 rounded-full bg-primary" />}
                             {fas}
                         </div>
                     ))}
                     {fasilitas_utama.length > 3 && (
-                        <div className="flex items-center gap-1.5 rounded-full bg-neutral-100 px-2.5 py-1 text-xs font-medium text-neutral-600 dark:bg-slate-800 dark:text-neutral-300">
+                        <div className="flex items-center gap-1.5 rounded-full bg-neutral-100 px-2.5 py-1 text-xs font-medium text-neutral-600  ">
                             +{fasilitas_utama.length - 3}
                         </div>
                     )}
                 </div>
 
-                <div className="mt-auto pt-4 border-t border-neutral-100 dark:border-slate-800 flex items-end justify-between">
+                <div className="mt-auto pt-4 border-t border-neutral-100  flex items-end justify-between">
                     <div>
                         <p className="text-xs text-neutral-500 mb-0.5">Mulai dari</p>
                         <p className="text-lg font-bold text-foreground">

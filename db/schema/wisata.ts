@@ -27,6 +27,8 @@ export const wisata = pgTable("wisata", {
     galeri: jsonb("galeri").default([]),
     videoReels: jsonb("video_reels").default([]),
     rundown: jsonb("rundown").default([]),
+    authorName: text("author_name"),
+    authorImage: text("author_image"),
     isActive: boolean("is_active").default(true),
     createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow(),

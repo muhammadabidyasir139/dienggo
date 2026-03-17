@@ -25,7 +25,7 @@ export default async function PesananPage() {
                 <div className="mb-8">
                     <Link
                         href="/"
-                        className="inline-flex items-center gap-2 text-sm text-neutral-500 hover:text-primary dark:hover:text-accent font-medium mb-4 transition-colors"
+                        className="inline-flex items-center gap-2 text-sm text-neutral-500 hover:text-primary :text-accent font-medium mb-4 transition-colors"
                     >
                         <ArrowLeft size={16} /> Kembali ke Beranda
                     </Link>
@@ -45,8 +45,8 @@ export default async function PesananPage() {
                 ) : (
                     /* Empty State */
                     <div className="flex flex-col items-center justify-center py-20 text-center">
-                        <div className="w-20 h-20 rounded-full bg-neutral-100 dark:bg-slate-800 flex items-center justify-center mb-6">
-                            <ShoppingBag size={36} className="text-neutral-300 dark:text-slate-600" />
+                        <div className="w-20 h-20 rounded-full bg-neutral-100  flex items-center justify-center mb-6">
+                            <ShoppingBag size={36} className="text-neutral-300 " />
                         </div>
                         <h2 className="text-xl font-bold text-foreground mb-2">Belum Ada Pesanan</h2>
                         <p className="text-neutral-500 text-sm max-w-sm mb-6">
@@ -56,13 +56,13 @@ export default async function PesananPage() {
                         <div className="flex gap-3">
                             <Link
                                 href="/villa"
-                                className="px-6 py-3 rounded-xl bg-primary text-white dark:bg-accent dark:text-neutral-900 font-bold hover:scale-[1.02] transition-transform"
+                                className="px-6 py-3 rounded-xl bg-primary text-white   font-bold hover:scale-[1.02] transition-transform"
                             >
                                 Lihat Villa
                             </Link>
                             <Link
                                 href="/wisata"
-                                className="px-6 py-3 rounded-xl bg-white dark:bg-slate-800 text-foreground font-bold border border-neutral-200 dark:border-slate-700 hover:bg-neutral-50 dark:hover:bg-slate-700 transition-colors"
+                                className="px-6 py-3 rounded-xl bg-white  text-foreground font-bold border border-neutral-200  hover:bg-neutral-50 :bg-slate-700 transition-colors"
                             >
                                 Lihat Wisata
                             </Link>

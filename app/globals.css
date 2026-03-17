@@ -8,14 +8,6 @@
   --accent: #f59e0b;
 }
 
-.dark {
-  --background: #0f172a;
-  --foreground: #f8fafc;
-  --primary: #2c5282;  /* Slightly lighter for dark mode */
-  --primary-light: #1e293b; /* darker for dark mode */
-  --accent: #f6ad55;
-}
-
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

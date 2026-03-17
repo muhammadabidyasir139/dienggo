@@ -5,48 +5,48 @@ import { wisata } from "@/db/schema";
 import { eq, desc } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
-export async function getWisatas() {
+export async function getAktivitas() {
     return await db.select().from(wisata).orderBy(desc(wisata.createdAt));
 }
 
-export async function getWisataById(id: string) {
+export async function getAktivitasById(id: string) {
     const result = await db.select().from(wisata).where(eq(wisata.id, id));
     return result[0];
 }
 
-export async function createWisata(data: any) {
+export async function createAktivitas(data: any) {
     try {
-        const [newWisata] = await db.insert(wisata).values(data).returning();
-        revalidatePath("/admin/wisata");
-        return { success: true, data: newWisata };
+        const [newAktivitas] = await db.insert(wisata).values(data).returning();
+        revalidatePath("/admin/aktivitas");
+        return { success: true, data: newAktivitas };
     } catch (error: any) {
-        console.error("Create wisata error:", error);
+        console.error("Create aktivitas error:", error);
         return { success: false, error: error.message };
     }
 }
 
-export async function updateWisata(id: string, data: any) {
+export async function updateAktivitas(id: string, data: any) {
     try {
-        const [updatedWisata] = await db
+        const [updatedAktivitas] = await db
             .update(wisata)
             .set({ ...data, updatedAt: new Date() })
             .where(eq(wisata.id, id))
             .returning();
-        revalidatePath("/admin/wisata");
-        return { success: true, data: updatedWisata };
+        revalidatePath("/admin/aktivitas");
+        return { success: true, data: updatedAktivitas };
     } catch (error: any) {
-        console.error("Update wisata error:", error);
+        console.error("Update aktivitas error:", error);
         return { success: false, error: error.message };
     }
 }
 
-export async function deleteWisata(id: string) {
+export async function deleteAktivitas(id: string) {
     try {
         await db.delete(wisata).where(eq(wisata.id, id));
-        revalidatePath("/admin/wisata");
+        revalidatePath("/admin/aktivitas");
         return { success: true };
     } catch (error: any) {
-        console.error("Delete wisata error:", error);
+        console.error("Delete aktivitas error:", error);
         return { success: false, error: error.message };
     }
 }

@@ -46,11 +46,11 @@ export function Navbar() {
 
     const isTransparentBase = pathname === "/villa" || pathname === "/hotel-cabin" || pathname === "/jeep" || pathname === "/aktivitas";
     const navBgClass = isScrolled || !isTransparentBase
-        ? "bg-primary-light/80 dark:bg-slate-900/80 backdrop-blur-md shadow-sm border-b border-neutral-200 dark:border-neutral-800"
+        ? "bg-primary-light/80 backdrop-blur-md shadow-sm border-b border-neutral-200"
         : "bg-transparent";
 
     const textColorClass = isScrolled || !isTransparentBase
-        ? "text-neutral-800 dark:text-neutral-100"
+        ? "text-neutral-800"
         : "text-white";
 
     const userInitial = session?.user?.name?.[0]?.toUpperCase() || "U";
@@ -80,7 +80,7 @@ export function Navbar() {
                                 key={link.href}
                                 href={link.href}
                                 className={`text-sm font-medium transition-colors hover:opacity-70 ${isActive
-                                        ? (isScrolled || !isTransparentBase ? "text-primary dark:text-accent font-bold" : "text-white font-bold")
+                                        ? (isScrolled || !isTransparentBase ? "text-primary font-bold" : "text-white font-bold")
                                         : textColorClass
                                     }`}
                             >
@@ -99,9 +99,9 @@ export function Navbar() {
                         <div className="relative" ref={userMenuRef}>
                             <button
                                 onClick={() => setUserMenuOpen(!userMenuOpen)}
-                                className="flex items-center gap-2 rounded-full bg-primary/10 dark:bg-accent/10 pl-1 pr-3 py-1 text-sm font-semibold transition-all hover:bg-primary/20 dark:hover:bg-accent/20 cursor-pointer"
+                                className="flex items-center gap-2 rounded-full bg-primary/10 pl-1 pr-3 py-1 text-sm font-semibold transition-all hover:bg-primary/20 cursor-pointer"
                             >
-                                <span className="w-8 h-8 rounded-full bg-primary dark:bg-accent text-white dark:text-neutral-900 flex items-center justify-center font-bold text-sm">
+                                <span className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm">
                                     {userInitial}
                                 </span>
                                 <span className={`max-w-[100px] truncate ${isScrolled || !isTransparentBase ? "text-foreground" : "text-white"}`}>
@@ -111,22 +111,22 @@ export function Navbar() {
                             </button>
 
                             {userMenuOpen && (
-                                <div className="absolute right-0 top-full mt-2 w-56 bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-neutral-100 dark:border-slate-800 py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
-                                    <div className="px-4 py-3 border-b border-neutral-100 dark:border-slate-800">
+                                <div className="absolute right-0 top-full mt-2 w-56 bg-white rounded-2xl shadow-xl border border-neutral-100 py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+                                    <div className="px-4 py-3 border-b border-neutral-100">
                                         <p className="text-sm font-bold text-foreground truncate">{session.user.name}</p>
                                         <p className="text-xs text-neutral-400 truncate">{session.user.email}</p>
                                     </div>
                                     <Link
                                         href="/pesanan"
                                         onClick={() => setUserMenuOpen(false)}
-                                        className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:bg-neutral-50 dark:hover:bg-slate-800 transition-colors"
+                                        className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-neutral-700 hover:bg-neutral-50 transition-colors"
                                     >
                                         <ShoppingBag size={16} className="text-neutral-400" />
                                         Pesanan Saya
                                     </Link>
                                     <button
                                         onClick={() => { setUserMenuOpen(false); signOut({ callbackUrl: "/" }); }}
-                                        className="w-full flex items-center gap-3 px-4 py-3 text-sm font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors cursor-pointer"
+                                        className="w-full flex items-center gap-3 px-4 py-3 text-sm font-medium text-red-600 hover:bg-red-50 transition-colors cursor-pointer"
                                     >
                                         <LogOut size={16} />
                                         Keluar
@@ -137,7 +137,7 @@ export function Navbar() {
                     ) : (
                         <Link
                             href="/login"
-                            className="rounded-full bg-primary px-5 py-2 text-sm font-semibold text-white transition-transform hover:scale-105 dark:bg-accent dark:text-neutral-900"
+                            className="rounded-full bg-primary px-5 py-2 text-sm font-semibold text-white transition-transform hover:scale-105"
                         >
                             {t("login")}
                         </Link>
@@ -155,13 +155,13 @@ export function Navbar() {
 
             {/* Mobile Menu */}
             {mobileMenuOpen && (
-                <div className="absolute top-16 left-0 w-full bg-primary-light dark:bg-slate-900 shadow-xl border-t border-neutral-100 dark:border-neutral-800 p-4 md:hidden flex flex-col gap-4">
+                <div className="absolute top-16 left-0 w-full bg-primary-light shadow-xl border-t border-neutral-100 p-4 md:hidden flex flex-col gap-4">
                     {navLinks.map((link) => (
                         <Link
                             key={link.href}
                             href={link.href}
                             onClick={() => setMobileMenuOpen(false)}
-                            className="px-4 py-3 text-base font-medium text-neutral-800 dark:text-neutral-100 hover:bg-neutral-50 dark:hover:bg-slate-800 rounded-lg"
+                            className="px-4 py-3 text-base font-medium text-neutral-800 hover:bg-neutral-50 rounded-lg"
                         >
                             {link.label}
                         </Link>
@@ -171,21 +171,21 @@ export function Navbar() {
                         <Link
                             href="/pesanan"
                             onClick={() => setMobileMenuOpen(false)}
-                            className="px-4 py-3 text-base font-medium text-neutral-800 dark:text-neutral-100 hover:bg-neutral-50 dark:hover:bg-slate-800 rounded-lg flex items-center gap-3"
+                            className="px-4 py-3 text-base font-medium text-neutral-800 hover:bg-neutral-50 rounded-lg flex items-center gap-3"
                         >
-                            <ShoppingBag size={18} className="text-primary dark:text-accent" />
+                            <ShoppingBag size={18} className="text-primary" />
                             Pesanan Saya
                         </Link>
                     )}
 
-                    <div className="flex items-center justify-end px-4 py-2 mt-4 border-t border-neutral-100 dark:border-neutral-800">
+                    <div className="flex items-center justify-end px-4 py-2 mt-4 border-t border-neutral-100">
                         <LangToggle />
                     </div>
 
                     {session?.user ? (
                         <div className="mx-4 flex flex-col gap-2">
-                            <div className="flex items-center gap-3 px-4 py-3 bg-neutral-50 dark:bg-slate-800 rounded-lg">
-                                <span className="w-8 h-8 rounded-full bg-primary dark:bg-accent text-white dark:text-neutral-900 flex items-center justify-center font-bold text-sm shrink-0">
+                            <div className="flex items-center gap-3 px-4 py-3 bg-neutral-50 rounded-lg">
+                                <span className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm shrink-0">
                                     {userInitial}
                                 </span>
                                 <div className="min-w-0">
@@ -195,7 +195,7 @@ export function Navbar() {
                             </div>
                             <button
                                 onClick={() => { setMobileMenuOpen(false); signOut({ callbackUrl: "/" }); }}
-                                className="text-center rounded-lg bg-red-50 dark:bg-red-900/20 py-3 font-semibold text-red-600 dark:text-red-400 cursor-pointer"
+                                className="text-center rounded-lg bg-red-50 py-3 font-semibold text-red-600 cursor-pointer"
                             >
                                 Keluar
                             </button>
@@ -204,7 +204,7 @@ export function Navbar() {
                         <Link
                             href="/login"
                             onClick={() => setMobileMenuOpen(false)}
-                            className="mx-4 mt-2 text-center rounded-lg bg-primary py-3 font-semibold text-white dark:bg-accent dark:text-neutral-900"
+                            className="mx-4 mt-2 text-center rounded-lg bg-primary py-3 font-semibold text-white"
                         >
                             {t("login")}
                         </Link>

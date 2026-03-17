@@ -46,7 +46,7 @@ export function SearchBarJeep() {
                 <div
                     ref={dateRef}
                     onClick={() => setShowDate(!showDate)}
-                    className={`relative flex flex-col justify-center rounded-xl border border-transparent p-3 transition-all duration-300 cursor-pointer hover:bg-sky-50 dark:hover:bg-sky-900/20 ${showDate ? "bg-sky-50 dark:bg-sky-900/20" : ""}`}
+                    className={`relative flex flex-col justify-center rounded-xl border border-transparent p-3 transition-all duration-300 cursor-pointer hover:bg-sky-50 :bg-sky-900/20 ${showDate ? "bg-sky-50 " : ""}`}
                 >
                     <span className="text-xs font-bold text-neutral-500 text-left">Pilih Tanggal</span>
                     <div className="flex items-center gap-2 text-sm font-semibold truncate mt-1">

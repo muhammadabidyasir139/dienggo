@@ -6,9 +6,9 @@ import Image from "next/image";
 import { Pencil, Trash2 } from "lucide-react";
 import DataTable from "@/components/admin/DataTable";
 import DeleteDialog from "@/components/admin/DeleteDialog";
-import { deleteWisata } from "@/app/admin/actions/wisata";
+import { deleteAktivitas } from "@/app/admin/actions/aktivitas";
 
-export default function WisataTableClient({ data }: { data: any[] }) {
+export default function AktivitasTableClient({ data }: { data: any[] }) {
     const [deleteId, setDeleteId] = useState<string | null>(null);
     const [isDeleting, setIsDeleting] = useState(false);
 
@@ -16,11 +16,11 @@ export default function WisataTableClient({ data }: { data: any[] }) {
         if (!deleteId) return;
         setIsDeleting(true);
         try {
-            await deleteWisata(deleteId);
+            await deleteAktivitas(deleteId);
             setDeleteId(null);
         } catch (error) {
             console.error(error);
-            alert("Gagal menghapus wisata");
+            alert("Gagal menghapus aktivitas");
         } finally {
             setIsDeleting(false);
         }
@@ -28,7 +28,7 @@ export default function WisataTableClient({ data }: { data: any[] }) {
 
     const columns = [
         {
-            header: "Wisata",
+            header: "Aktivitas",
             accessorKey: "nama",
             cell: (item: any) => (
                 <div className="flex items-center gap-3">
@@ -50,7 +50,7 @@ export default function WisataTableClient({ data }: { data: any[] }) {
             header: "Harga Tiket",
             accessorKey: "harga",
             cell: (item: any) => (
-                <span>{item.harga === 0 ? "Gratis" : `Rp ${item.harga.toLocaleString("id-ID")}`}</span>
+                <span>{item.harga === 0 ? "Gratis" : `Rp ${(item.harga || 0).toLocaleString("id-ID")}`}</span>
             ),
         },
         {
@@ -72,7 +72,7 @@ export default function WisataTableClient({ data }: { data: any[] }) {
     const actions = (item: any) => (
         <>
             <Link
-                href={`/admin/wisata/${item.id}/edit`}
+                href={`/admin/aktivitas/${item.id}/edit`}
                 className="inline-flex p-2 text-slate-500 hover:text-amber-600 hover:bg-amber-50 rounded-lg transition-colors"
                 title="Edit"
             >
@@ -94,8 +94,8 @@ export default function WisataTableClient({ data }: { data: any[] }) {
 
             <DeleteDialog
                 isOpen={!!deleteId}
-                title="Hapus Wisata"
-                description="Apakah Anda yakin ingin menghapus wisata ini? Tindakan ini tidak dapat dibatalkan."
+                title="Hapus Aktivitas"
+                description="Apakah Anda yakin ingin menghapus aktivitas ini? Tindakan ini tidak dapat dibatalkan."
                 isDeleting={isDeleting}
                 onConfirm={handleDelete}
                 onCancel={() => setDeleteId(null)}

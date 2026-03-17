@@ -18,7 +18,11 @@ export default function ImageUploader({ label, value, onChange, error }: ImageUp
         const file = e.target.files?.[0];
         if (!file) return;
 
-        // TODO: Connect this to actual action when ready
+        if (file.size > 2 * 1024 * 1024) { // 2MB limit
+            alert("Ukuran file terlalu besar. Maksimal 2MB.");
+            return;
+        }
+
         setIsUploading(true);
         try {
             const formData = new FormData();

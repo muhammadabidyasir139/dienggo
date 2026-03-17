@@ -52,7 +52,7 @@ export default function VillaTableClient({ data }: { data: any[] }) {
             header: "Harga",
             accessorKey: "harga",
             cell: (item: any) => (
-                <span>Rp {item.harga.toLocaleString("id-ID")}</span>
+                <span>Rp {(item.harga || 0).toLocaleString("id-ID")}</span>
             ),
         },
         {

@@ -76,11 +76,15 @@ export async function POST(req: NextRequest) {
         const dbItemId = await getDbItemId(slug, type);
 
         // Build item ID references using the real DB UUID (not the JSON string id)
+        // Ensure dbItemId is a valid UUID to avoid Postgres errors
+        const isUUID = (id: string | null) => id && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+        const validDbItemId = isUUID(dbItemId) ? dbItemId : null;
+
         const itemRefs: Record<string, string | null> = {
-            villaId: type === "villa" ? dbItemId : null,
-            cabinId: type === "hotel-cabin" ? dbItemId : null,
-            jeepId: type === "jeep" ? dbItemId : null,
-            wisataId: type === "wisata" ? dbItemId : null,
+            villaId: type === "villa" ? validDbItemId : null,
+            cabinId: type === "hotel-cabin" ? validDbItemId : null,
+            jeepId: type === "jeep" ? validDbItemId : null,
+            wisataId: type === "wisata" ? validDbItemId : null,
         };
 
         // Insert booking into database

@@ -6,14 +6,14 @@ import { Loader2, ArrowLeft, Save } from "lucide-react";
 import FormField from "@/components/admin/FormField";
 import ImageUploader from "@/components/admin/ImageUploader";
 import Link from "next/link";
-import { createWisata, updateWisata } from "@/app/admin/actions/wisata";
+import { createAktivitas, updateAktivitas } from "@/app/admin/actions/aktivitas";
 
-interface WisataFormProps {
+interface AktivitasFormProps {
     initialData?: any;
     isEdit?: boolean;
 }
 
-export default function WisataForm({ initialData, isEdit }: WisataFormProps) {
+export default function AktivitasForm({ initialData, isEdit }: AktivitasFormProps) {
     const router = useRouter();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -28,6 +28,8 @@ export default function WisataForm({ initialData, isEdit }: WisataFormProps) {
         bahasa: initialData?.bahasa || "Bahasa Indonesia",
         ulasan: initialData?.ulasan || "",
         fotoUtama: initialData?.fotoUtama || "",
+        authorName: initialData?.authorName || "",
+        authorImage: initialData?.authorImage || "",
         isActive: initialData?.isActive ?? true,
     });
 
@@ -58,13 +60,13 @@ export default function WisataForm({ initialData, isEdit }: WisataFormProps) {
         try {
             let res;
             if (isEdit) {
-                res = await updateWisata(initialData.id, formData);
+                res = await updateAktivitas(initialData.id, formData);
             } else {
-                res = await createWisata(formData);
+                res = await createAktivitas(formData);
             }
 
             if (res.success) {
-                router.push("/admin/wisata");
+                router.push("/admin/aktivitas");
             } else {
                 alert("Gagal menyimpan data: " + res.error);
             }
@@ -79,17 +81,17 @@ export default function WisataForm({ initialData, isEdit }: WisataFormProps) {
         <div className="max-w-4xl">
             <div className="flex items-center gap-4 mb-6">
                 <Link
-                    href="/admin/wisata"
+                    href="/admin/aktivitas"
                     className="p-2 hover:bg-slate-100 rounded-full transition-colors text-slate-500"
                 >
                     <ArrowLeft className="w-5 h-5" />
                 </Link>
                 <div>
                     <h2 className="text-2xl font-bold tracking-tight text-slate-900">
-                        {isEdit ? "Edit Wisata" : "Tambah Wisata"}
+                        {isEdit ? "Edit Aktivitas" : "Tambah Aktivitas"}
                     </h2>
                     <p className="text-slate-500">
-                        {isEdit ? "Ubah informasi destinasi wisata yang ada" : "Tambahkan destinasi wisata baru"}
+                        {isEdit ? "Ubah informasi aktivitas yang ada" : "Tambahkan aktivitas baru"}
                     </p>
                 </div>
             </div>
@@ -100,7 +102,7 @@ export default function WisataForm({ initialData, isEdit }: WisataFormProps) {
                         <h3 className="text-lg font-semibold border-b pb-2">Informasi Dasar</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <FormField
-                                label="Nama Tempat Wisata"
+                                label="Nama Aktivitas"
                                 name="nama"
                                 type="text"
                                 required
@@ -135,7 +137,7 @@ export default function WisataForm({ initialData, isEdit }: WisataFormProps) {
                                     className="w-4 h-4 text-amber-500 rounded border-slate-300 focus:ring-amber-500"
                                 />
                                 <label htmlFor="isActive" className="text-sm font-medium text-slate-700">
-                                    Tempat Wisata Aktif (Ditampilkan)
+                                    Aktivitas Aktif (Ditampilkan)
                                 </label>
                             </div>
                         </div>
@@ -168,7 +170,7 @@ export default function WisataForm({ initialData, isEdit }: WisataFormProps) {
                                 onChange={handleChange}
                             />
                             <FormField
-                                label="Estimasi Durasi Wisata"
+                                label="Estimasi Durasi"
                                 name="durasiWisata"
                                 type="text"
                                 value={formData.durasiWisata}
@@ -186,18 +188,34 @@ export default function WisataForm({ initialData, isEdit }: WisataFormProps) {
                     </div>
 
                     <div className="space-y-6 md:col-span-2">
-                        <h3 className="text-lg font-semibold border-b pb-2">Media</h3>
-                        <ImageUploader
-                            label="Foto Utama"
-                            value={formData.fotoUtama}
-                            onChange={(url) => setFormData((prev) => ({ ...prev, fotoUtama: url }))}
-                        />
+                        <h3 className="text-lg font-semibold border-b pb-2">Media & Author</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <ImageUploader
+                                label="Foto Utama"
+                                value={formData.fotoUtama}
+                                onChange={(url) => setFormData((prev) => ({ ...prev, fotoUtama: url }))}
+                            />
+                            <div className="space-y-4">
+                                <FormField
+                                    label="Nama Author"
+                                    name="authorName"
+                                    type="text"
+                                    value={formData.authorName}
+                                    onChange={handleChange}
+                                />
+                                <ImageUploader
+                                    label="Foto Author"
+                                    value={formData.authorImage}
+                                    onChange={(url) => setFormData((prev) => ({ ...prev, authorImage: url }))}
+                                />
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <div className="flex justify-end gap-3 pt-6 border-t">
                     <Link
-                        href="/admin/wisata"
+                        href="/admin/aktivitas"
                         className="px-6 py-2 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 font-medium transition-colors"
                     >
                         Batal
@@ -212,7 +230,7 @@ export default function WisataForm({ initialData, isEdit }: WisataFormProps) {
                         ) : (
                             <Save className="w-5 h-5" />
                         )}
-                        Simpan Wisata
+                        Simpan
                     </button>
                 </div>
             </form>

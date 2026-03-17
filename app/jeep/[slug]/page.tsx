@@ -5,15 +5,7 @@ import { MapPin, Clock, Users, CheckCircle2, ShieldAlert } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import { BentoGrid, BentoCard } from "@/components/BentoGrid";
 import { formatCurrency } from "@/lib/utils";
-import fs from "fs/promises";
-import path from "path";
-
-async function getJeepBySlug(slug: string) {
-    const filePath = path.join(process.cwd(), "data", "jeeps.json");
-    const jsonData = await fs.readFile(filePath, "utf-8");
-    const jeeps = JSON.parse(jsonData);
-    return jeeps.find((j: { slug: string;[key: string]: unknown }) => j.slug === slug) || null;
-}
+import { getJeepBySlug } from "@/app/admin/actions/jeep";
 
 export default async function JeepDetailPage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
@@ -82,10 +74,10 @@ export default async function JeepDetailPage({ params }: { params: Promise<{ slu
                             Destinasi Wisata
                         </h3>
                         <ul className="flex flex-col gap-3">
-                            {jeep.destinasi.map((dest: string, i: number) => (
-                                <li key={i} className="flex items-start gap-2 text-sm font-medium text-neutral-700 dark:text-neutral-300">
+                            {jeep.includes.map((item: any) => (
+                                <li key={item.facility.id} className="flex items-start gap-2 text-sm font-medium text-neutral-700 dark:text-neutral-300">
                                     <div className="mt-1 h-1.5 w-1.5 rounded-full bg-accent shrink-0" />
-                                    {dest}
+                                    {item.facility.name}
                                 </li>
                             ))}
                         </ul>

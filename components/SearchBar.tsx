@@ -61,11 +61,11 @@ export function SearchBar() {
                 <div
                     ref={checkInRef}
                     onClick={() => { setShowCheckIn(!showCheckIn); setShowCheckOut(false); }}
-                    className={`relative flex flex-col justify-center rounded-xl border border-transparent p-3 transition-all duration-300 cursor-pointer hover:bg-sky-50 dark:hover:bg-sky-900/20 ${showCheckIn ? "bg-sky-50 dark:bg-sky-900/20" : ""}`}
+                    className={`relative flex flex-col justify-center rounded-xl border border-transparent p-3 transition-all duration-300 cursor-pointer hover:bg-sky-50 :bg-sky-900/20 ${showCheckIn ? "bg-sky-50 " : ""}`}
                 >
                     <span className="text-xs font-bold text-neutral-500">Check-in</span>
                     <div className="flex items-center gap-2 text-sm font-semibold truncate mt-1">
-                        <CalendarIcon size={16} className="text-primary dark:text-accent" />
+                        <CalendarIcon size={16} className="text-primary " />
                         {checkIn ? format(checkIn, "d MMM yyyy") : "Pilih Tanggal"}
                     </div>
                     {showCheckIn && (
@@ -87,11 +87,11 @@ export function SearchBar() {
                 <div
                     ref={checkOutRef}
                     onClick={() => { setShowCheckOut(!showCheckOut); setShowCheckIn(false); }}
-                    className={`relative flex flex-col justify-center rounded-xl border border-transparent p-3 transition-all duration-300 cursor-pointer hover:bg-sky-50 dark:hover:bg-sky-900/20 ${showCheckOut ? "bg-sky-50 dark:bg-sky-900/20" : ""}`}
+                    className={`relative flex flex-col justify-center rounded-xl border border-transparent p-3 transition-all duration-300 cursor-pointer hover:bg-sky-50 :bg-sky-900/20 ${showCheckOut ? "bg-sky-50 " : ""}`}
                 >
                     <span className="text-xs font-bold text-neutral-500">Check-out</span>
                     <div className="flex items-center gap-2 text-sm font-semibold truncate mt-1">
-                        <CalendarIcon size={16} className="text-primary dark:text-accent" />
+                        <CalendarIcon size={16} className="text-primary " />
                         {checkOut ? format(checkOut, "d MMM yyyy") : "Pilih Tanggal"}
                     </div>
                     {showCheckOut && (

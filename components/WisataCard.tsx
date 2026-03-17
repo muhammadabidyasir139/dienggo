@@ -39,10 +39,10 @@ export function WisataCard({ slug, nama, harga, rating, ulasan, lokasi, foto_uta
                     <span className="truncate">{lokasi}</span>
                 </div>
 
-                <div className="mt-auto pt-3 flex items-center justify-between border-t border-neutral-100 dark:border-slate-800">
+                <div className="mt-auto pt-3 flex items-center justify-between border-t border-neutral-100 ">
                     <div className="flex flex-col">
                         <span className="text-[10px] text-neutral-500 uppercase tracking-wider font-semibold">Harga tiket mulai</span>
-                        <span className="text-sm font-black text-primary dark:text-accent">
+                        <span className="text-sm font-black text-primary ">
                             {harga === 0 ? "Gratis" : formatCurrency(harga)}
                         </span>
                     </div>

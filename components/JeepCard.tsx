@@ -36,17 +36,17 @@ export function JeepCard({ slug, nama, harga, maks_orang, durasi, destinasi_coun
                 <h3 className="text-lg font-bold text-foreground line-clamp-2 md:line-clamp-1 mb-3">{nama}</h3>
 
                 <div className="mb-4 flex flex-col gap-2">
-                    <div className="flex items-center gap-2 text-sm text-neutral-600 dark:text-neutral-400">
-                        <Clock size={16} className="text-primary dark:text-accent" />
+                    <div className="flex items-center gap-2 text-sm text-neutral-600 ">
+                        <Clock size={16} className="text-primary " />
                         <span>Durasi: {durasi}</span>
                     </div>
-                    <div className="flex items-center gap-2 text-sm text-neutral-600 dark:text-neutral-400">
-                        <Map size={16} className="text-primary dark:text-accent" />
+                    <div className="flex items-center gap-2 text-sm text-neutral-600 ">
+                        <Map size={16} className="text-primary " />
                         <span>{destinasi_count} Destinasi Wisata</span>
                     </div>
                 </div>
 
-                <div className="mt-auto pt-4 border-t border-neutral-100 dark:border-slate-800 flex items-end justify-between">
+                <div className="mt-auto pt-4 border-t border-neutral-100  flex items-end justify-between">
                     <div>
                         <p className="text-xs text-neutral-500 mb-0.5">Mulai dari</p>
                         <p className="text-lg font-bold text-foreground">

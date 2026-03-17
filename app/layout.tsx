@@ -24,8 +24,8 @@ export default async function RootLayout({
   const messages = await getMessages();
 
   return (
-    <html lang={locale} suppressHydrationWarning>
-      <body className={`${jakarta.variable} font-sans antialiased`} suppressHydrationWarning>
+    <html lang={locale} className="light" style={{ colorScheme: 'light' }}>
+      <body className={`${jakarta.variable} font-sans antialiased bg-white text-slate-900`}>
         <NextIntlClientProvider messages={messages}>
           <Providers>
             {children}

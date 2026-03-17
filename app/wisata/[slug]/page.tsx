@@ -66,8 +66,8 @@ export default async function WisataDetailPage({ params }: { params: Promise<{ s
                     <BentoCard colSpan={3} className="flex flex-col md:flex-row gap-8 items-start justify-between">
                         <div className="flex-1">
                             <h1 className="text-3xl md:text-4xl font-black tracking-tight text-foreground mb-3">{wisata.nama}</h1>
-                            <div className="flex flex-wrap items-center gap-4 text-sm font-medium text-neutral-600 dark:text-neutral-400">
-                                <span className="flex items-center gap-1.5 text-primary dark:text-accent font-bold">
+                            <div className="flex flex-wrap items-center gap-4 text-sm font-medium text-neutral-600">
+                                <span className="flex items-center gap-1.5 text-primary font-bold">
                                     ⭐ {wisata.rating} ({wisata.ulasan})
                                 </span>
                                 <span className="flex items-center gap-1.5"><Clock size={16} /> Durasi: {wisata.durasi_wisata || wisata.durasi}</span>
@@ -77,16 +77,16 @@ export default async function WisataDetailPage({ params }: { params: Promise<{ s
                         </div>
 
                         {/* Lokasi Action */}
-                        <div className="flex flex-col gap-2 w-full md:w-auto mt-4 md:mt-0 bg-neutral-50 dark:bg-slate-800/50 p-4 rounded-2xl border border-neutral-100 dark:border-slate-800 shrink-0 min-w-[280px]">
+                        <div className="flex flex-col gap-2 w-full md:w-auto mt-4 md:mt-0 bg-neutral-50 p-4 rounded-2xl border border-neutral-100 shrink-0 min-w-[280px]">
                             <div className="flex items-start gap-3 mb-2">
-                                <MapPin className="text-primary dark:text-accent shrink-0 mt-0.5" size={20} />
-                                <p className="text-sm text-neutral-600 dark:text-neutral-400 font-medium leading-snug">{wisata.lokasi}</p>
+                                <MapPin className="text-primary shrink-0 mt-0.5" size={20} />
+                                <p className="text-sm text-neutral-600 font-medium leading-snug">{wisata.lokasi}</p>
                             </div>
                             <a
                                 href={wisata.koordinat}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="w-full px-4 py-2 bg-white dark:bg-slate-800 text-primary dark:text-white font-bold rounded-xl border border-neutral-200 dark:border-slate-700 hover:bg-neutral-50 dark:hover:bg-slate-700 text-center text-sm"
+                                className="w-full px-4 py-2 bg-white text-primary font-bold rounded-xl border border-neutral-200 hover:bg-neutral-50 text-center text-sm"
                             >
                                 Buka di Peta
                             </a>

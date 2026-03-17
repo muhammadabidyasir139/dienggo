@@ -18,7 +18,7 @@ export function LangToggle() {
     return (
         <button
             onClick={toggleLocale}
-            className="flex h-9 items-center gap-2 rounded-full bg-neutral-100 px-3 text-sm font-medium text-neutral-600 transition-colors hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-400 dark:hover:bg-neutral-700"
+            className="flex h-9 items-center gap-2 rounded-full bg-neutral-100 px-3 text-sm font-medium text-neutral-600 transition-colors hover:bg-neutral-200   :bg-neutral-700"
             aria-label="Toggle language"
         >
             <Globe size={16} />

@@ -31,7 +31,7 @@ export function BentoCard({
     }[rowSpan];
 
     return (
-        <div className={`rounded-3xl bg-white p-6 shadow-sm border border-neutral-100 dark:bg-slate-900 dark:border-slate-800 ${colSpanClass} ${rowSpanClass} ${className}`}>
+        <div className={`rounded-3xl bg-white p-6 shadow-sm border border-neutral-100 ${colSpanClass} ${rowSpanClass} ${className}`}>
             {children}
         </div>
     );
