@@ -1,0 +1,28 @@
+{
+  "Navigation": {
+    "villa": "Villa",
+    "hotel-cabin": "Hotel Cabin",
+    "jeep": "Wisata Jeep",
+    "wisata": "Paket Wisata",
+    "login": "Masuk"
+  },
+  "Hero": {
+    "villa_title": "Temukan Villa Terbaik di Dieng",
+    "cabin_title": "Nikmati Malam di Cabin Hangat Dieng",
+    "jeep_title": "Jelajahi Dieng dengan Jeep Petualang",
+    "search_button": "Cari"
+  },
+  "Common": {
+    "check_in": "Check-in",
+    "check_out": "Check-out",
+    "destination": "Destinasi",
+    "date": "Tanggal",
+    "price_per_night": "/ malam",
+    "price_per_pax": "/ orang",
+    "choose_button": "Pilih",
+    "book_now": "Pesan Sekarang",
+    "view_details": "Lihat Detail",
+    "view_map": "Lihat Peta",
+    "no_results": "Oops! Tidak ada data yang cocok. Coba kata kunci lain."
+  }
+}

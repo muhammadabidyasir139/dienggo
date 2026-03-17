@@ -1,0 +1,70 @@
+[
+    {
+        "id": "j-1",
+        "slug": "paket-sunrise-prau",
+        "kategori": "jeep",
+        "nama": "Paket Sunrise Gunung Prau",
+        "harga": 350000,
+        "rating": 4.9,
+        "ulasan": 412,
+        "maks_orang": 4,
+        "durasi": "6 Jam",
+        "destinasi_count": 3,
+        "foto_utama": "https://images.unsplash.com/photo-1533557554904-71be8ebf94f9?auto=format&fit=crop&q=80&w=1200",
+        "galeri": [
+            "https://images.unsplash.com/photo-1519965042846-9571f3cf7ac6?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1606566088820-2edcb9f54625?auto=format&fit=crop&q=80&w=800"
+        ],
+        "destinasi": [
+            "Basecamp Prau via Patakbanteng",
+            "Sunrise Point Puncak Prau",
+            "Kawah Sikidang"
+        ],
+        "isi_paket": [
+            "Driver Berpengalaman",
+            "BBM",
+            "Tiket Masuk Wisata",
+            "Air Mineral",
+            "Kopi/Teh Hangat"
+        ],
+        "kebijakan": [
+            "Tiba di meeting point maksimal jam 02.00 dini hari",
+            "Membawa jaket tebal dan sepatu gunung",
+            "Pembatalan H-1 dikenakan potongan 50%"
+        ]
+    },
+    {
+        "id": "j-2",
+        "slug": "paket-jeep-telaga-warna",
+        "kategori": "jeep",
+        "nama": "Paket Keliling Telaga Warna & Candi",
+        "harga": 250000,
+        "rating": 4.7,
+        "ulasan": 340,
+        "maks_orang": 4,
+        "durasi": "4 Jam",
+        "destinasi_count": 4,
+        "foto_utama": "https://images.unsplash.com/photo-1549405615-566ca22f0c72?auto=format&fit=crop&q=80&w=1200",
+        "galeri": [
+            "https://images.unsplash.com/photo-1634629478330-843c08cd5e01?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1601235316315-dcfaaf532130?auto=format&fit=crop&q=80&w=800"
+        ],
+        "destinasi": [
+            "Komplek Candi Arjuna",
+            "Telaga Warna",
+            "Telaga Pengilon",
+            "Batu Pandang Ratapan Angin"
+        ],
+        "isi_paket": [
+            "Driver / Guide",
+            "BBM",
+            "Tiket Masuk Semua Tujuan",
+            "Parkir"
+        ],
+        "kebijakan": [
+            "Durasi trip 4 jam",
+            "Start jam berapapun dari jam 07.00 - 14.00",
+            "Cuaca tidak menentu, disarankan bawa payung/jas hujan"
+        ]
+    }
+]

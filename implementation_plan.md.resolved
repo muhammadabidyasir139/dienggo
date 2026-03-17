@@ -1,0 +1,498 @@
+# 🏡 Villa Booking Website — Implementation Plan
+
+Membangun website pemesanan villa berbasis **Next.js 14 (App Router)** dengan tampilan **profesional, clean, dan premium** — mengutamakan keterbacaan, whitespace yang lega, tipografi elegan, dan UI yang terstruktur rapi. Lengkap dengan halaman browsing villa, detail bento grid, dan alur pembayaran.
+
+---
+
+## 🗂️ Struktur Halaman (Routes)
+
+| Route | Halaman |
+|---|---|
+| `/` → redirect ke `/villa` | Default landing |
+| `/villa` | Daftar Villa |
+| `/hotel-cabin` | Hotel & Cabin (Listing) |
+| `/jeep` | Sewa Jeep (Listing) |
+| `/jeep/[slug]` | Detail Paket Jeep |
+| `/wisata` | Paket Wisata (Listing) |
+| `/wisata/[slug]` | Detail Wisata |
+| `/villa/[slug]` | Detail Villa |
+| `/booking/[slug]` | Halaman Pembayaran |
+
+---
+
+## 🧩 Komponen Global
+
+### Navbar
+- Logo kiri: **wordmark teks "Dienggo"** (font bold, warna putih / biru tua)
+- Menu: **Villa | Hotel Cabin | Jeep | Wisata**
+- Sticky, glassmorphism background saat scroll
+
+---
+
+## 📄 Halaman 1 — Daftar Villa (`/villa`)
+
+### 1. Jumbotron / Hero Section
+- **Tinggi: 50vh**
+- Background **video autoplay looping** suasana villa Dieng (cinematic, muted, no controls)
+- **Overlay warna biru** semi-transparan (`rgba(0, 60, 120, 0.55)`)
+- Teks headline "Temukan Villa Terbaik di Dieng" — putih, bold
+
+### 2. Search Bar (floating di batas 50vh)
+- Posisi: **border antara hero dan konten** (translateY -50%)
+- Kolom:
+  - 📅 Tanggal Check-in (date picker)
+  - 📅 Tanggal Check-out (date picker)
+  - 🔍 Tombol **"Cari Villa"** — biru/orange
+- Tampilan: card putih dengan shadow, rounded corners
+
+### 3. Banner Promo
+- Full-width poster promosi
+- Contoh: "Diskon 20% untuk booking weekday!"
+- Centered, gradient background
+
+### 4. Daftar Villa — Grid 3 Kolom
+- Layout: **3 card per baris**, centered
+- Setiap card berisi:
+  - 📸 Foto villa (rounded top)
+  - 🏠 Nama villa
+  - 💰 Harga per malam
+  - ✅ Fasilitas: ikon WiFi, TV, Air Hangat, AC, dll.
+  - 🔘 Tombol **"Pilih Villa"** → link ke `/villa/[slug]`
+
+---
+
+## 📄 Halaman 1B — Daftar Hotel Cabin (`/hotel-cabin`)
+
+> **Layout identik dengan halaman Villa**, hanya konten & label yang berbeda.
+
+### 1. Jumbotron / Hero Section
+- **Tinggi: 50vh**
+- Background foto cabin/kayu khas pegunungan Dieng
+- **Overlay warna biru** semi-transparan (`rgba(0, 60, 120, 0.55)`)
+- Headline: *"Nikmati Malam di Cabin Hangat Dieng"*
+
+### 2. Search Bar (floating di batas 50vh)
+- Sama persis dengan halaman Villa:
+  - 📅 Check-in | 📅 Check-out | 🔍 **"Cari Cabin"**
+
+### 3. Banner Promo
+- Poster khusus cabin — contoh: *"EarlyBird: Menginap 2 malam gratis 1 malam!"*
+- Centered, gradient background
+
+### 4. Daftar Cabin — Grid 3 Kolom
+- Layout & card identik dengan Villa:
+  - 📸 Foto cabin
+  - 🏠 Nama cabin
+  - 💰 Harga per malam
+  - ✅ Fasilitas: ikon Perapian, WiFi, Air Hangat, Dapur, dll.
+  - 🔘 Tombol **"Pilih Cabin"** → `/hotel-cabin/[slug]`
+
+---
+
+## 📄 Halaman 2B — Detail Hotel Cabin (`/hotel-cabin/[slug]`)
+
+> **Bento Grid Layout identik dengan Detail Villa**, konten disesuaikan untuk cabin.
+
+```
+┌─────────────────────────┬──────────────┐
+│   Foto Utama Cabin      │  Foto 2      │
+│                         ├──────────────┤
+│                         │  Foto 3      │
+├──────────────┬──────────┴──────────────┤
+│  Nama Cabin  │   Fasilitas Utama       │
+│  + Harga     │  Perapian | Dapur Mini  │
+├──────────────┤  Air Hangat | WiFi | dll│
+│  Akomodasi   ├─────────────────────────┤
+│  (Alamat +   │   Deskripsi Cabin       │
+│  Lihat Peta) │                         │
+├──────────────┴─────────────────────────┤
+│  Wisata Terdekat (horizontal scroll)   │
+├─────────────────────────────────────────┤
+│  [Pilih Cabin] → pilih tanggal → /booking │
+└─────────────────────────────────────────┘
+```
+
+**Fasilitas Utama Cabin (icon grid):**
+- 🔥 Perapian, 🍳 Dapur Mini, 🚿 Air Hangat, ☕ Ruang Santai, 📶 WiFi, 🅿️ Parkir
+
+**Card Akomodasi:** Alamat + Tombol Lihat Peta
+
+**CTA Booking:** Tombol **"Pilih Cabin"** + date picker → `/booking/hotel-cabin/[slug]`
+
+---
+
+## 📄 Halaman 1C — Daftar Sewa Jeep (`/jeep`)
+
+> **Layout identik dengan halaman Villa**, dengan penyesuaian konten untuk wisata jeep.
+
+### 1. Jumbotron / Hero Section
+- **Tinggi: 50vh**
+- Background foto **seru & adventurous** — orang naik jeep di medan Dieng, debu, tawa, landskap dramatis
+- **Overlay warna biru** semi-transparan (`rgba(0, 60, 120, 0.55)`)
+- Headline: *"Jelajahi Dieng dengan Jeep Petualang"*
+
+### 2. Search Bar (floating di batas 50vh)
+- Berbeda dari Villa — search fokus pada **destinasi & tanggal**:
+  - 📍 **Cari Destinasi** (dropdown/input: Kawah Sikidang, Sikunir, Prau, dll.)
+  - 📅 **Pilih Tanggal** (single date picker)
+  - 🔍 Tombol **"Cari Jeep"**
+
+### 3. Banner Promo
+- Poster khusus jeep — contoh: *"Paket Sunrise Prau – Mulai 350K/orang!"*
+- Centered, gradient background
+
+### 4. Daftar Paket Jeep — Grid 3 Kolom
+- Layout: **3 card per baris**, centered
+- Setiap card berisi:
+  - 📸 Foto jeep / destinasi
+  - 🚙 **Nama Sewa Jeep** (misal: "Paket Sunrise Sikunir")
+  - 👥 **Maks. Orang** (contoh: "Maks. 4 orang")
+  - ⏱️ **Durasi & Destinasi** (contoh: "6 jam | 3 Destinasi")
+  - 💰 **Harga** (per orang / per jeep)
+  - 🔘 Tombol **"Pilih Paket"** → `/jeep/[slug]`
+
+---
+
+## 📄 Halaman 2C — Detail Paket Jeep (`/jeep/[slug]`)
+
+> **Bento Grid Layout** dengan sticky price & booking CTA di bawah.
+
+```
+┌─────────────────────────┬──────────────┐
+│   Foto Utama Jeep       │  Foto 2      │
+│   (aksi / landscape)    ├──────────────┤
+│                         │  Foto 3      │
+├──────────────┬──────────┴──────────────┤
+│  Nama Paket  │   List Destinasi        │
+│  Durasi      │   • Kawah Sikidang      │
+│  Maks. Orang │   • Telaga Warna        │
+│              │   • Sikunir, dll.       │
+├──────────────┼─────────────────────────┤
+│  Isi Paket   │   Kebijakan / T&S       │
+│  • Driver    │   • Wajib SIM           │
+│  • BBM incl  │   • Tidak boleh ...     │
+│  • Tiket     │   • Refund policy       │
+│  • dst       │   • dll                 │
+├──────────────┴─────────────────────────┤
+│  [STICKY BOTTOM BAR]                   │
+│  Harga: Rp 350.000/orang  [Pilih Tanggal] [PESAN SEKARANG] │
+└─────────────────────────────────────────┘
+```
+
+**Card Galeri Foto:**
+- Foto utama besar + 2-3 foto kecil di samping (bento grid)
+- Klik → lightbox / modal galeri
+
+**Card Nama & Info Utama:**
+- 🚙 Nama Paket
+- ⏱️ Durasi (misal: 6 jam)
+- 👥 Maks. Orang
+
+**Card List Destinasi:**
+- List lokasi yang dikunjungi dengan ikon pin/marker
+- Contoh: Kawah Sikidang, Telaga Warna, Bukit Sikunir, Candi Arjuna
+
+**Card Isi Paket:**
+- Apa saja yang termasuk dalam harga:
+  - ✅ Driver berpengalaman
+  - ✅ BBM sudah termasuk
+  - ✅ Tiket masuk wisata
+  - ✅ Air mineral
+  - ❌ Makan siang (tidak termasuk)
+
+**Card Kebijakan / Terms & Service:**
+- 📋 Aturan penggunaan jeep
+- ⚠️ Syarat pembatalan & refund
+- 🆔 Dokumen yang diperlukan
+- ⏰ Ketentuan waktu meeting point
+
+**Sticky Bottom Bar (fixed bottom):**
+- 💰 Harga per orang / per jeep
+- 📅 Date picker **Pilih Tanggal**
+- 🔘 Tombol **"Pesan Sekarang"** → `/booking/jeep/[slug]`
+
+---
+
+## 📄 Halaman 1D — Daftar Tempat Wisata (`/wisata`)
+
+### 1. Jumbotron / Hero Section
+- **Tinggi: 40vh** (lebih kompak dari villa)
+- Background foto cinematic destinasi Dieng (Kawah Sikidang, Sikunir, Telaga Warna)
+- **Overlay biru** semi-transparan
+- Konten teks di dalam hero (bukan di bawah):
+  ```
+  Xperience
+  /dieng
+  Tempat wisata di dieng
+
+  ⭐ 9.2  (1,142.5K ulasan) · oleh pengguna dieng
+  ```
+- **Search Bar di dalam hero** (bukan floating di batas):
+  - 🔍 Input teks cari nama wisata
+  - 🔵 Tombol **"Cari"** (biru solid)
+
+### 2. Filter Tabs (di batas bawah hero)
+- Posisi: **tepat di batas antara hero dan konten**
+- 3 tab pill/chip dengan ikon berwarna biru:
+  | Tab | Ikon |
+  |---|---|
+  | 🌄 **Explore** | Kompas / globe |
+  | 🎭 **Atraksi** | Bintang / teater |
+  | 🏃 **Aktivitas** | Orang berlari / petir |
+- Active state: background biru, teks putih
+- Inactive: border biru, teks biru, background putih
+
+### 3. Banner Promo
+- Poster promosi centered
+- Contoh: *"Paket Hemat Dieng 3 Destinasi — Mulai 99K!"*
+
+### 4. Daftar Tempat Wisata — Grid 4 Kolom
+- Layout: **4 card per baris**, centered
+- Setiap card berisi:
+  - 📸 Foto tempat wisata
+  - 🏔️ Nama tempat wisata
+  - 💰 Harga tour
+  - 📍 Lokasi
+  - 🔘 Tombol **"Lihat Detail"** → `/wisata/[slug]`
+
+---
+
+## 📄 Halaman 2D — Detail Wisata (`/wisata/[slug]`)
+
+> **Bento Grid Layout** dengan narasi, slider video, timeline rundown, dan sticky price CTA.
+
+```
+┌─────────────────────────┬──────────────┐
+│   Foto Utama Wisata     │  Foto 2      │
+│   (cinematic, full)     ├──────────────┤
+│                         │  Foto 3      │
+├──────────────┬──────────┴──────────────┤
+│  Nama Wisata │   Fasilitas & Info      │
+│  📍 Lokasi   │   Durasi | Bahasa       │
+│  [Lihat Peta]│   Layanan | Kontak      │
+├──────────────┴─────────────────────────┤
+│  Narasi: "Pengalaman yang Menunggumu"  │
+│  • Saksikan keindahan kawah aktif...   │
+│  • Rasakan udara pegunungan 2.000 mdpl │
+│  • Jelajahi candi bersejarah ...       │
+├─────────────────────────────────────────┤
+│  🎬 Video Slider (horizontal scroll)   │
+│  [▶ vid 1] [▶ vid 2] [▶ vid 3]        │
+├──────────────────────────┬─────────────┤
+│  Rundown Tour (Timeline) │ Harga Paket │
+│  ● 05.00 - Kumpul        │ Rp 99.000   │
+│  ● 06.00 - Sunrise Prau  │ /orang      │
+│  ● 08.00 - Kawah Sikidang│             │
+│  ● 10.00 - Telaga Warna  │ [Pilih      │
+│  ● 12.00 - Selesai       │  Tanggal]   │
+│                          │ [PESAN →]   │
+└──────────────────────────┴─────────────┘
+```
+
+**Card Info Utama (kiri atas):**
+- 📍 Nama Wisata + Lokasi + Tombol **"Lihat Peta"** (Google Maps)
+- ⏱️ Durasi wisata
+- 📞 Kontak pemandu
+
+**Card Fasilitas & Layanan (kanan atas):**
+- 🏕️ Fasilitas tersedia (toilet, parkir, pemandu, dll.)
+- 🗣️ Bahasa layanan (Indonesia, Inggris)
+
+**Card Narasi Pengalaman:**
+- Judul: *"Pengalaman yang Menunggumu"*
+- List poin-poin naratif & emotif yang menjual experience wisata
+
+**Video Slider:**
+- Horizontal scroll, berisi thumbnail video reels/shorts terkait wisata
+- Klik → buka video modal / embed YouTube
+
+**Rundown Tour — Timeline/Stepper UI:**
+- Desain: **vertical timeline** dengan bullet step bernomor/waktu
+- Setiap step berisi: waktu + nama aktivitas + deskripsi singkat
+
+**Harga & CTA (kolom kanan, sticky):**
+- 💰 Harga per orang
+- 📅 Date picker Pilih Tanggal
+- 🔘 Tombol **"Pesan Sekarang"** → `/booking/wisata/[slug]`
+
+---
+
+## 📄 Halaman 2 — Detail Villa (`/villa/[slug]`)
+
+### Layout: **Bento Grid**
+Grid asimetris premium dengan card-card konten:
+
+```
+┌─────────────────────────┬──────────────┐
+│   Foto Utama (besar)    │  Foto 2      │
+│                         ├──────────────┤
+│                         │  Foto 3      │
+├──────────────┬──────────┴──────────────┤
+│  Nama Villa  │   Fasilitas Utama       │
+│  + Harga     │  AC | Resto | Kolam     │
+├──────────────┤   Renang | WiFi | dll   │
+│  Akomodasi   ├─────────────────────────┤
+│  (Alamat +   │   Deskripsi Villa       │
+│  Lihat Peta) │                         │
+├──────────────┴─────────────────────────┤
+│  Wisata Terdekat (horizontal scroll)   │
+├─────────────────────────────────────────┤
+│  [Pilih Villa] → pilih tanggal → /booking │
+└─────────────────────────────────────────┘
+```
+
+**Card Akomodasi:**
+- 📍 Alamat lengkap
+- 🗺️ Tombol "Lihat Peta" (buka Google Maps)
+
+**Fasilitas Utama (icon grid):**
+- AC, Restoran, Kolam Renang, Resepsionis 24 Jam, WiFi, Parkir
+
+**Wisata Terdekat:** horizontal scroll card mini
+
+**CTA Booking:**
+- Tombol **"Pilih Villa"**
+- Date picker Check-in / Check-out
+- Tombol → arahkan ke `/booking/[slug]`
+
+---
+
+## 📄 Halaman 3 — Pembayaran (`/booking/[slug]`)
+
+- Ringkasan villa (foto kecil, nama, tanggal, harga total)
+- Form data tamu: Nama, No. HP, Email
+- Pilihan metode pembayaran (Transfer Bank / Midtrans)
+- Tombol **"Konfirmasi Booking"**
+
+---
+
+## 🎨 Design System
+
+| Token | Value |
+|---|---|
+| Primary Color | `#1E3A5F` (Biru Tua) |
+| Accent | `#F59E0B` (Amber/Gold) |
+| Background | `#F8FAFC` |
+| Font | `Plus Jakarta Sans` (Google Fonts) |
+| Border Radius | `16px` (card), `12px` (button) |
+| Shadow | `0 4px 24px rgba(0,0,0,0.08)` |
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Teknologi |
+|---|---|
+| Framework | **Next.js 14** (App Router) |
+| Styling | **Tailwind CSS** |
+| Icons | **Lucide React** |
+| Date Picker | **react-day-picker** |
+| Animasi | **Framer Motion** |
+| Gambar | `next/image` (optimized) |
+| Data | JSON lokal / Supabase (opsional) |
+
+---
+
+## 📦 Struktur Folder
+
+```
+/app
+  /villa
+    page.tsx              ← Daftar Villa
+    /[slug]/page.tsx      ← Detail Villa
+  /hotel-cabin
+    page.tsx              ← Daftar Cabin
+    /[slug]/page.tsx      ← Detail Cabin
+  /jeep
+    page.tsx              ← Daftar Paket Jeep
+    /[slug]/page.tsx      ← Detail Paket Jeep
+  /wisata
+    page.tsx              ← Daftar Tempat Wisata
+    /[slug]/page.tsx      ← Detail Wisata
+  /booking/[slug]/page.tsx
+/components
+  Navbar.tsx
+  VillaCard.tsx
+  JeepCard.tsx           ← Card khusus jeep
+  SearchBar.tsx
+  SearchBarJeep.tsx      ← Search destinasi + tanggal
+  BentoGrid.tsx
+  FacilityBadge.tsx
+  PromoBanner.tsx
+  WisataCard.tsx         ← Card 4-col wisata
+  SearchBarWisata.tsx    ← Search di dalam hero
+  FilterTabs.tsx         ← Explore | Atraksi | Aktivitas
+  VideoSlider.tsx        ← Slider video reels wisata
+  TourTimeline.tsx       ← Stepper rundown tour
+/data
+  villas.json
+  cabins.json
+  jeeps.json
+  wisata.json            ← Data tempat wisata
+/public/images/
+```
+
+---
+
+## ⚙️ Fitur & Standar Teknis Tambahan
+
+### 🦴 Skeleton Loading
+- Setiap komponen grid (Villa, Cabin, Jeep, Wisata) memiliki **skeleton loading state** saat data sedang dimuat
+- Tampilan: kotak abu-abu dengan animasi shimmer/pulse menggantikan card asli
+- Komponen: `VillaCardSkeleton`, `JeepCardSkeleton`, `WisataCardSkeleton` (reusable)
+
+### 🔍 Empty State (Data Tidak Ditemukan)
+- Ditampilkan ketika hasil pencarian Search Bar kosong / tidak ada data
+- Desain: ilustrasi/ikon tematis + pesan ramah + tombol reset pencarian
+- Contoh pesan: *"Oops! Tidak ada villa yang cocok. Coba kata kunci lain."*
+
+### ⏱️ Expandable Timeline (TourTimeline)
+- Setiap poin rundown di `TourTimeline.tsx` bisa di-**expand/collapse**
+- Default: semua collapsed, tampil hanya waktu + judul aktivitas
+- Klik → expand menampilkan deskripsi detail aktivitas
+- Animasi: smooth accordion dengan Framer Motion
+
+### 🛡️ Error Boundary
+- File `app/error.tsx` untuk menangani runtime error secara elegan
+- Tampilkan pesan ramah + tombol **"Coba Lagi"** tanpa crash seluruh website
+- File `app/not-found.tsx` untuk halaman 404 custom
+
+### 🖼️ Image Optimization
+- Seluruh gambar menggunakan `next/image` dengan:
+  - `placeholder="blur"` + `blurDataURL` (base64) untuk mencegah Layout Shift
+  - `sizes` prop disesuaikan per breakpoint grid
+  - `priority` pada gambar above-the-fold (hero, foto utama bento)
+
+### ♿ Aksesibilitas (A11y)
+- Overlay biru hero `rgba(0, 60, 120, 0.55)` + teks putih memenuhi **WCAG AA** (contrast ratio ≥ 4.5:1)
+- Semua tombol & link memiliki `aria-label` yang deskriptif
+- Navigasi keyboard-friendly pada filter tabs, card, dan date picker
+
+### 🌙 Dark Mode
+- Diimplementasikan sejak awal menggunakan **`next-themes`**
+- CSS variable-based theming agar mudah toggle antara light & dark
+- Toggle tombol dark/light di Navbar
+
+### 🌐 Bilingual (ID / EN)
+- Website mendukung **2 bahasa: Indonesia & English**
+- Implementasi menggunakan **`next-intl`** (i18n untuk Next.js App Router)
+- Struktur route: `/id/villa`, `/en/villa` atau via `Accept-Language` header
+- File terjemahan: `messages/id.json` & `messages/en.json`
+- Tombol toggle bahasa di Navbar (🇮🇩 / 🇬🇧)
+
+---
+
+## ✅ Urutan Pengerjaan
+
+1. [ ] Setup project Next.js + Tailwind + dependencies
+2. [ ] Buat `Navbar` global
+3. [ ] Buat halaman `/villa` (Hero + Search + Promo + Grid)
+4. [ ] Buat halaman `/villa/[slug]` (Bento Grid detail)
+5. [ ] Buat halaman `/hotel-cabin` (Hero + Search + Promo + Grid)
+6. [ ] Buat halaman `/hotel-cabin/[slug]` (Bento Grid detail)
+7. [ ] Buat halaman `/jeep` (Hero + Search Destinasi + Promo + Grid)
+8. [ ] Buat halaman `/jeep/[slug]` (Bento Grid + Sticky Bar)
+9. [ ] Buat halaman `/wisata` (Hero 40vh + Xperience + Filter + Grid 4 col)
+10. [ ] Buat halaman `/wisata/[slug]` (Bento Grid + Narasi + Video + Timeline)
+11. [ ] Buat halaman `/booking/[slug]` (Form pembayaran)
+12. [ ] Polish animasi & responsif mobile

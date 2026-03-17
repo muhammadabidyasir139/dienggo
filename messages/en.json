@@ -1,0 +1,28 @@
+{
+  "Navigation": {
+    "villa": "Villas",
+    "hotel-cabin": "Hotel & Cabin",
+    "jeep": "Jeep Tours",
+    "wisata": "Tour Packages",
+    "login": "Login"
+  },
+  "Hero": {
+    "villa_title": "Find the Best Villas in Dieng",
+    "cabin_title": "Enjoy the Night in Cozy Dieng Cabins",
+    "jeep_title": "Explore Dieng with Adventurous Jeeps",
+    "search_button": "Search"
+  },
+  "Common": {
+    "check_in": "Check-in",
+    "check_out": "Check-out",
+    "destination": "Destination",
+    "date": "Date",
+    "price_per_night": "/ night",
+    "price_per_pax": "/ pax",
+    "choose_button": "Choose",
+    "book_now": "Book Now",
+    "view_details": "View Details",
+    "view_map": "View Map",
+    "no_results": "Oops! No matching data found. Try another keyword."
+  }
+}

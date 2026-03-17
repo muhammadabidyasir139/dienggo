@@ -1,0 +1,115 @@
+[
+    {
+        "id": "w-1",
+        "slug": "kawah-sikidang",
+        "kategori": "wisata",
+        "nama": "Kawah Sikidang",
+        "harga": 45000,
+        "rating": 4.6,
+        "ulasan": "24.5K",
+        "lokasi": "Batur, Dieng Kulon",
+        "koordinat": "https://maps.google.com/?q=kawah+sikidang",
+        "durasi_wisata": "1-2 Jam",
+        "kontak": "+62 812-3456-7890",
+        "bahasa": "Indonesia, English",
+        "fasilitas": [
+            "Toilet",
+            "Pemandu Lokal",
+            "Area Parkir Luas",
+            "Warung Makan"
+        ],
+        "narasi": [
+            "Saksikan keindahan kawah vulkanik aktif dari jarak dekat.",
+            "Rasakan kepulan asap belerang yang menghangatkan.",
+            "Cobalah telur rebus langsung dari sumber air panas alami."
+        ],
+        "foto_utama": "https://images.unsplash.com/photo-1601235316315-dcfaaf532130?auto=format&fit=crop&q=80&w=1200",
+        "galeri": [
+            "https://images.unsplash.com/photo-1632822435474-06cba6e0e561?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1598502305345-0d41e7cb76ea?auto=format&fit=crop&q=80&w=800"
+        ],
+        "video_reels": [
+            {
+                "id": "v1",
+                "thumbnail": "https://images.unsplash.com/photo-1601235316315-dcfaaf532130?auto=format&fit=crop&q=80&w=400",
+                "url": "https://youtube.com/shorts/..."
+            },
+            {
+                "id": "v2",
+                "thumbnail": "https://images.unsplash.com/photo-1632822435474-06cba6e0e561?auto=format&fit=crop&q=80&w=400",
+                "url": "https://youtube.com/shorts/..."
+            }
+        ],
+        "rundown": [
+            {
+                "waktu": "Fleksibel",
+                "judul": "Tiba di Lokasi",
+                "deskripsi": "Parkir kendaraan dan registrasi di loket pintu masuk utama."
+            },
+            {
+                "waktu": "+15 Menit",
+                "judul": "Eksplorasi Bibir Kawah",
+                "deskripsi": "Berjalan menyusuri jembatan kayu dan menikmati pemandangan kawah utama."
+            },
+            {
+                "waktu": "+45 Menit",
+                "judul": "Aktivitas Tambahan",
+                "deskripsi": "Mencoba merebus telur di air panas vulkanik atau berfoto dengan burung hantu."
+            }
+        ]
+    },
+    {
+        "id": "w-2",
+        "slug": "telaga-warna",
+        "kategori": "wisata",
+        "nama": "Telaga Warna",
+        "harga": 50000,
+        "rating": 4.8,
+        "ulasan": "32.1K",
+        "lokasi": "Dieng Wetan, Kejajar",
+        "koordinat": "https://maps.google.com/?q=telaga+warna+dieng",
+        "durasi_wisata": "2-3 Jam",
+        "kontak": "+62 821-9876-5432",
+        "bahasa": "Indonesia",
+        "fasilitas": [
+            "Toilet Bersih",
+            "Tempat Duduk",
+            "Spot Foto",
+            "Toko Souvenir"
+        ],
+        "narasi": [
+            "Kagumi perubahan warna air telaga yang magis alami.",
+            "Hirup udara segar khas pegunungan tanpa polusi.",
+            "Suasana tenang yang sempurna untuk melepas penat."
+        ],
+        "foto_utama": "https://images.unsplash.com/photo-1588668214407-6ea9a6d8c272?auto=format&fit=crop&q=80&w=1200",
+        "galeri": [
+            "https://images.unsplash.com/photo-1634560410651-de2dc15fd9ce?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1533827432537-70133748f5c8?auto=format&fit=crop&q=80&w=800"
+        ],
+        "video_reels": [
+            {
+                "id": "v3",
+                "thumbnail": "https://images.unsplash.com/photo-1588668214407-6ea9a6d8c272?auto=format&fit=crop&q=80&w=400",
+                "url": "https://youtube.com/shorts/..."
+            }
+        ],
+        "rundown": [
+            {
+                "waktu": "08.00",
+                "judul": "Masuk Kawasan",
+                "deskripsi": "Waktu terbaik menikmati telaga saat pagi dengan pantulan cahaya matahari optimal."
+            },
+            {
+                "waktu": "09.00",
+                "judul": "Jelajah Bukit",
+                "deskripsi": "Naik sedikit ke Batu Ratapan Angin untuk melihat pemandangan dua telaga sekaligus."
+            },
+            {
+                "waktu": "10.30",
+                "judul": "Selesai",
+                "deskripsi": "Bisa melanjutkan perjalanan ke Kawah Sikidang atau Candi Arjuna."
+            }
+        ]
+    }
+]

@@ -1,0 +1,33 @@
+import {
+    pgTable,
+    uuid,
+    text,
+    integer,
+    real,
+    boolean,
+    jsonb,
+    timestamp,
+} from "drizzle-orm/pg-core";
+
+export const wisata = pgTable("wisata", {
+    id: uuid("id").primaryKey().defaultRandom(),
+    slug: text("slug").unique().notNull(),
+    nama: text("nama").notNull(),
+    harga: integer("harga").notNull(),
+    rating: real("rating").default(0),
+    ulasan: text("ulasan").default("0"),
+    lokasi: text("lokasi"),
+    koordinat: text("koordinat"),
+    durasiWisata: text("durasi_wisata"),
+    kontak: text("kontak"),
+    bahasa: text("bahasa"),
+    fasilitas: jsonb("fasilitas").default([]),
+    narasi: jsonb("narasi").default([]),
+    fotoUtama: text("foto_utama"),
+    galeri: jsonb("galeri").default([]),
+    videoReels: jsonb("video_reels").default([]),
+    rundown: jsonb("rundown").default([]),
+    isActive: boolean("is_active").default(true),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow(),
+});

@@ -1,0 +1,115 @@
+[
+    {
+        "id": "v-1",
+        "slug": "villa-puncak-pas",
+        "kategori": "villa",
+        "nama": "Villa Puncak Pas Dieng",
+        "harga": 1500000,
+        "rating": 4.8,
+        "ulasan": 124,
+        "lokasi": "Kejajar, Wonosobo",
+        "koordinat": "https://maps.google.com/?q=villa+puncak+pas+dieng",
+        "kapasitas": {
+            "kamar_tidur": 3,
+            "maks_tamu": 8,
+            "kamar_mandi": 2
+        },
+        "fasilitas_utama": [
+            "WiFi",
+            "TV",
+            "Air Hangat",
+            "Dapur",
+            "Parkir"
+        ],
+        "deskripsi": "Villa Puncak Pas menawarkan pemandangan langsung ke perbukitan hijau Dieng. Dilengkapi dengan fasilitas modern, cocok untuk liburan keluarga atau rombongan. Udara yang sejuk dan asri akan membuat pengalaman menginap Anda tak terlupakan.",
+        "foto_utama": "https://images.unsplash.com/photo-1542314831-c6a4d14faaf2?auto=format&fit=crop&q=80&w=1200",
+        "galeri": [
+            "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=800"
+        ],
+        "wisata_terdekat": [
+            {
+                "nama": "Candi Arjuna",
+                "jarak": "1.2 km",
+                "foto": "https://images.unsplash.com/photo-1598502305345-0d41e7cb76ea?auto=format&fit=crop&q=80&w=400"
+            },
+            {
+                "nama": "Kawah Sikidang",
+                "jarak": "2.5 km",
+                "foto": "https://images.unsplash.com/photo-1601235316315-dcfaaf532130?auto=format&fit=crop&q=80&w=400"
+            }
+        ]
+    },
+    {
+        "id": "v-2",
+        "slug": "villa-cahaya-alam",
+        "kategori": "villa",
+        "nama": "Villa Cahaya Alam",
+        "harga": 1200000,
+        "rating": 4.7,
+        "ulasan": 98,
+        "lokasi": "Batur, Banjarnegara",
+        "koordinat": "https://maps.google.com/?q=batur+banjarnegara",
+        "kapasitas": {
+            "kamar_tidur": 2,
+            "maks_tamu": 5,
+            "kamar_mandi": 1
+        },
+        "fasilitas_utama": [
+            "WiFi",
+            "Air Hangat",
+            "Balkon",
+            "Parkir Luas"
+        ],
+        "deskripsi": "Villa dengan konsep modern tropis di tengah pegunungan. Cahaya pagi akan menyambut Anda langsung dari jendela kamar. Lokasi strategis dekat dengan berbagai objek wisata.",
+        "foto_utama": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=1200",
+        "galeri": [
+            "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1502672260266-1c1de2d9d150?auto=format&fit=crop&q=80&w=800"
+        ],
+        "wisata_terdekat": [
+            {
+                "nama": "Telaga Warna",
+                "jarak": "3.0 km",
+                "foto": "https://images.unsplash.com/photo-1588668214407-6ea9a6d8c272?auto=format&fit=crop&q=80&w=400"
+            }
+        ]
+    },
+    {
+        "id": "v-3",
+        "slug": "villa-sikunir-view",
+        "kategori": "villa",
+        "nama": "Villa Sikunir View",
+        "harga": 2100000,
+        "rating": 4.9,
+        "ulasan": 215,
+        "lokasi": "Sembungan, Wonosobo",
+        "koordinat": "https://maps.google.com/?q=sembungan+wonosobo",
+        "kapasitas": {
+            "kamar_tidur": 4,
+            "maks_tamu": 12,
+            "kamar_mandi": 3
+        },
+        "fasilitas_utama": [
+            "WiFi",
+            "TV Cabel",
+            "Air Hangat",
+            "Api Unggun",
+            "BBQ"
+        ],
+        "deskripsi": "Berlokasi persis di bawah bukit Sikunir, villa ini adalah basecamp sempurna bagi pemburu sunrise. Dilengkapi area BBQ dan tempat api unggun untuk menghangatkan malam di Dieng.",
+        "foto_utama": "https://images.unsplash.com/photo-1510798831971-661eb04b3739?auto=format&fit=crop&q=80&w=1200",
+        "galeri": [
+            "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&q=80&w=800"
+        ],
+        "wisata_terdekat": [
+            {
+                "nama": "Bukit Sikunir",
+                "jarak": "0.5 km",
+                "foto": "https://images.unsplash.com/photo-1596484552994-3ee1df42f0ba?auto=format&fit=crop&q=80&w=400"
+            }
+        ]
+    }
+]

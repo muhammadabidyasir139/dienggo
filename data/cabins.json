@@ -1,0 +1,74 @@
+[
+    {
+        "id": "c-1",
+        "slug": "cabin-kayu-dieng",
+        "kategori": "hotel-cabin",
+        "nama": "Cabin Kayu Dieng",
+        "harga": 800000,
+        "rating": 4.9,
+        "ulasan": 210,
+        "lokasi": "Kejajar, Wonosobo",
+        "koordinat": "https://maps.google.com/?q=kejajar+wonosobo",
+        "kapasitas": {
+            "kamar_tidur": 1,
+            "maks_tamu": 2,
+            "kamar_mandi": 1
+        },
+        "fasilitas_utama": [
+            "Perapian",
+            "Air Hangat",
+            "WiFi",
+            "Dapur Mini",
+            "Balkon"
+        ],
+        "deskripsi": "Nikmati malam yang hangat dan romantis di Cabin Kayu kami. Dinding kayu solid memberikan isolasi sempurna dari dinginnya udara pegunungan. Lengkap dengan perapian di dalam kamar.",
+        "foto_utama": "https://images.unsplash.com/photo-1587061949409-02df41d5e562?auto=format&fit=crop&q=80&w=1200",
+        "galeri": [
+            "https://images.unsplash.com/photo-1542314831-c6a4d14faaf2?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1623861877983-0498b6883ba5?auto=format&fit=crop&q=80&w=800"
+        ],
+        "wisata_terdekat": [
+            {
+                "nama": "Bukit Skoter",
+                "jarak": "1.0 km",
+                "foto": "https://images.unsplash.com/photo-1598502305345-0d41e7cb76ea?auto=format&fit=crop&q=80&w=400"
+            }
+        ]
+    },
+    {
+        "id": "c-2",
+        "slug": "glamping-telaga",
+        "kategori": "hotel-cabin",
+        "nama": "Glamping Telaga View",
+        "harga": 650000,
+        "rating": 4.6,
+        "ulasan": 145,
+        "lokasi": "Batur, Banjarnegara",
+        "koordinat": "https://maps.google.com/?q=batur+banjarnegara",
+        "kapasitas": {
+            "kamar_tidur": 1,
+            "maks_tamu": 4,
+            "kamar_mandi": 1
+        },
+        "fasilitas_utama": [
+            "Pemanas Ruangan",
+            "Air Hangat",
+            "BBQ Area",
+            "WiFi",
+            "Teras"
+        ],
+        "deskripsi": "Rasakan sensasi berkemah dengan fasilitas VIP. Posisi glamping menghadap langsung ke hamparan perkebunan teh yang hijau menyejukkan mata.",
+        "foto_utama": "https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?auto=format&fit=crop&q=80&w=1200",
+        "galeri": [
+            "https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1533827432537-70133748f5c8?auto=format&fit=crop&q=80&w=800"
+        ],
+        "wisata_terdekat": [
+            {
+                "nama": "Telaga Warna",
+                "jarak": "2.1 km",
+                "foto": "https://images.unsplash.com/photo-1588668214407-6ea9a6d8c272?auto=format&fit=crop&q=80&w=400"
+            }
+        ]
+    }
+]

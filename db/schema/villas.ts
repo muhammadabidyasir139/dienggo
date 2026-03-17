@@ -1,0 +1,32 @@
+import {
+    pgTable,
+    uuid,
+    text,
+    integer,
+    real,
+    boolean,
+    jsonb,
+    timestamp,
+} from "drizzle-orm/pg-core";
+
+export const villas = pgTable("villas", {
+    id: uuid("id").primaryKey().defaultRandom(),
+    slug: text("slug").unique().notNull(),
+    nama: text("nama").notNull(),
+    harga: integer("harga").notNull(),
+    rating: real("rating").default(0),
+    ulasan: integer("ulasan").default(0),
+    lokasi: text("lokasi"),
+    koordinat: text("koordinat"),
+    kamarTidur: integer("kamar_tidur"),
+    maksTamu: integer("maks_tamu"),
+    kamarMandi: integer("kamar_mandi"),
+    fasilitasUtama: jsonb("fasilitas_utama").default([]),
+    deskripsi: text("deskripsi"),
+    fotoUtama: text("foto_utama"),
+    galeri: jsonb("galeri").default([]),
+    wisataTerdekat: jsonb("wisata_terdekat").default([]),
+    isActive: boolean("is_active").default(true),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow(),
+});
