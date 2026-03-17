@@ -16,7 +16,7 @@ export interface JeepProps {
 
 export function JeepCard({ slug, nama, harga, maks_orang, durasi, destinasi_count, foto_utama }: JeepProps) {
     return (
-        <div className="group flex flex-col overflow-hidden rounded-2xl bg-white shadow-md border border-neutral-100 transition-all hover:shadow-xl">
+        <Link href={`/jeep/${slug}`} className="group flex flex-col overflow-hidden rounded-2xl bg-white shadow-md border border-neutral-100 transition-all hover:shadow-xl cursor-pointer">
             <div className="relative h-56 w-full overflow-hidden bg-neutral-100">
                 <Image
                     src={foto_utama}
@@ -56,13 +56,10 @@ export function JeepCard({ slug, nama, harga, maks_orang, durasi, destinasi_coun
                     </div>
                 </div>
 
-                <Link
-                    href={`/jeep/${slug}`}
-                    className="mt-4 flex w-full items-center justify-center rounded-xl bg-[#1a90ec] py-2.5 font-bold text-white transition-colors hover:bg-[#1a90ec]/90"
-                >
+                <div className="mt-4 flex w-full items-center justify-center rounded-xl bg-primary py-2.5 font-bold text-white transition-colors hover:bg-primary/90">
                     Lihat Paket
-                </Link>
+                </div>
             </div>
-        </div>
+        </Link>
     );
 }

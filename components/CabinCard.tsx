@@ -24,7 +24,7 @@ const facilityIcons: Record<string, React.ReactNode> = {
 
 export function CabinCard({ slug, nama, harga, rating, ulasan, lokasi, foto_utama, fasilitas_utama }: CabinProps) {
     return (
-        <div className="group flex flex-col overflow-hidden rounded-2xl bg-white shadow-md border border-neutral-100 transition-all hover:shadow-xl">
+        <Link href={`/hotel-cabin/${slug}`} className="group flex flex-col overflow-hidden rounded-2xl bg-white shadow-md border border-neutral-100 transition-all hover:shadow-xl cursor-pointer">
             <div className="relative h-56 w-full overflow-hidden bg-neutral-100">
                 <Image
                     src={foto_utama}
@@ -67,13 +67,10 @@ export function CabinCard({ slug, nama, harga, rating, ulasan, lokasi, foto_utam
                     </div>
                 </div>
 
-                <Link
-                    href={`/hotel-cabin/${slug}`}
-                    className="mt-4 flex w-full items-center justify-center rounded-xl bg-[#1a90ec] py-2.5 font-bold text-white transition-colors hover:bg-[#1a90ec]/90"
-                >
+                <div className="mt-4 flex w-full items-center justify-center rounded-xl bg-primary py-2.5 font-bold text-white transition-colors hover:bg-primary/90">
                     Pilih Cabin
-                </Link>
+                </div>
             </div>
-        </div>
+        </Link>
     );
 }

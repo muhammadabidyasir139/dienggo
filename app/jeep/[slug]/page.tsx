@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { MapPin, Clock, Users, CheckCircle2, ShieldAlert } from "lucide-react";
+import { Navbar } from "@/components/Navbar";
 import { BentoGrid, BentoCard } from "@/components/BentoGrid";
 import { formatCurrency } from "@/lib/utils";
 import fs from "fs/promises";
@@ -24,6 +25,7 @@ export default async function JeepDetailPage({ params }: { params: Promise<{ slu
 
     return (
         <main className="min-h-screen bg-background pt-24 pb-32 md:pb-24">
+            <Navbar />
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <BentoGrid>
 
@@ -119,22 +121,22 @@ export default async function JeepDetailPage({ params }: { params: Promise<{ slu
                     </BentoCard>
 
                     {/* STICKY BOTTOM SECTION FOR DESKTOP IN BentoGrid */}
-                    <BentoCard colSpan={1} className="flex flex-col justify-center bg-gradient-to-br from-primary to-slate-800 text-white border-0 hidden md:flex">
-                        <h3 className="text-lg font-medium text-white/80 mb-1">Total Biaya Jeep</h3>
-                        <p className="text-3xl font-black text-accent mb-6">
+                    <BentoCard colSpan={1} className="flex flex-col justify-center bg-primary-light dark:bg-slate-800 border border-primary/10 hidden md:flex">
+                        <h3 className="text-lg font-medium text-neutral-500 mb-1">Total Biaya Jeep</h3>
+                        <p className="text-3xl font-black text-primary mb-6">
                             {formatCurrency(jeep.harga)}
-                            <span className="text-sm font-normal text-white/70"> /jeep</span>
+                            <span className="text-sm font-normal text-neutral-400"> /jeep</span>
                         </p>
 
-                        <p className="text-sm text-white/90 mb-4">Tentukan tanggal mainmu dan pesan sekarang!</p>
-                        <div className="flex bg-white/10 rounded-xl p-3 mb-4 items-center justify-between cursor-pointer hover:bg-white/20 transition-colors">
-                            <span className="text-sm font-medium">Pilih Tanggal</span>
-                            <span className="text-xs bg-white text-primary px-2 py-1 rounded-md font-bold">Ubah</span>
+                        <p className="text-sm text-neutral-600 mb-4">Tentukan tanggal mainmu dan pesan sekarang!</p>
+                        <div className="flex bg-white dark:bg-slate-900 rounded-xl p-3 mb-4 items-center justify-between cursor-pointer hover:bg-neutral-50 transition-colors border border-neutral-100 dark:border-slate-800">
+                            <span className="text-sm font-medium text-foreground">Pilih Tanggal</span>
+                            <span className="text-xs bg-primary text-white px-2 py-1 rounded-md font-bold">Ubah</span>
                         </div>
 
                         <Link
                             href={`/booking/${jeep.slug}?type=jeep`}
-                            className="w-full bg-accent text-neutral-900 font-black py-4 rounded-xl text-center hover:scale-[1.02] transition-transform shadow-xl"
+                            className="w-full bg-primary text-white font-black py-4 rounded-xl text-center hover:scale-[1.02] transition-transform shadow-lg shadow-primary/20"
                         >
                             Pesan Sekarang
                         </Link>
@@ -152,7 +154,7 @@ export default async function JeepDetailPage({ params }: { params: Promise<{ slu
                     </div>
                     <Link
                         href={`/booking/${jeep.slug}?type=jeep`}
-                        className="bg-[#1a90ec] text-white font-bold px-8 py-3 rounded-xl transition-all hover:bg-[#1a90ec]/90"
+                        className="bg-primary text-white font-bold px-8 py-3 rounded-xl transition-all hover:bg-primary/90"
                     >
                         Pesan
                     </Link>

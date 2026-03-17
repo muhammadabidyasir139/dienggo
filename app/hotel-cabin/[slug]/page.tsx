@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { MapPin, Wifi, Flame, Droplet, Coffee, Car } from "lucide-react";
+import { Navbar } from "@/components/Navbar";
 import { BentoGrid, BentoCard } from "@/components/BentoGrid";
 import { formatCurrency } from "@/lib/utils";
 import fs from "fs/promises";
@@ -32,6 +33,7 @@ export default async function CabinDetailPage({ params }: { params: Promise<{ sl
 
     return (
         <main className="min-h-screen bg-background pt-24 pb-32 md:pb-24">
+            <Navbar />
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <BentoGrid>
 
@@ -131,13 +133,13 @@ export default async function CabinDetailPage({ params }: { params: Promise<{ sl
                     </BentoCard>
 
                     {/* BOOKING CTA */}
-                    <BentoCard colSpan={1} className="flex flex-col justify-center bg-gradient-to-br from-primary to-slate-800 text-white border-0">
-                        <h3 className="text-xl font-bold mb-2">Ingin menginap di sini?</h3>
-                        <p className="text-white/80 text-sm mb-6">Pesan sekarang untuk mendapatkan pengalaman menginap terbaik.</p>
+                    <BentoCard colSpan={1} className="flex flex-col justify-center bg-primary-light dark:bg-slate-800 border border-primary/10">
+                        <h3 className="text-xl font-bold mb-2 text-foreground">Ingin menginap di sini?</h3>
+                        <p className="text-neutral-500 text-sm mb-6">Pesan sekarang untuk mendapatkan pengalaman menginap terbaik.</p>
 
                         <Link
                             href={`/booking/${cabin.slug}?type=cabin`}
-                            className="w-full bg-accent text-neutral-900 font-black py-4 rounded-xl text-center hover:scale-[1.02] transition-transform shadow-xl"
+                            className="w-full bg-primary text-white font-black py-4 rounded-xl text-center hover:scale-[1.02] transition-transform shadow-lg shadow-primary/20"
                         >
                             Pesan Cabin Ini
                         </Link>
@@ -153,7 +155,7 @@ export default async function CabinDetailPage({ params }: { params: Promise<{ sl
                 </div>
                 <Link
                     href={`/booking/${cabin.slug}?type=cabin`}
-                    className="bg-[#1a90ec] text-white font-bold px-8 py-3 rounded-xl transition-all hover:bg-[#1a90ec]/90"
+                    className="bg-primary text-white font-bold px-8 py-3 rounded-xl transition-all hover:bg-primary/90"
                 >
                     Pesan
                 </Link>

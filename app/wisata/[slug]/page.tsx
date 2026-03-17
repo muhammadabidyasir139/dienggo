@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { MapPin, Clock, Headset, Globe2, Sparkles, CheckCircle } from "lucide-react";
+import { Navbar } from "@/components/Navbar";
 import { BentoGrid, BentoCard } from "@/components/BentoGrid";
 import { TourTimeline } from "@/components/TourTimeline";
 import { VideoSlider } from "@/components/VideoSlider";
@@ -26,6 +27,7 @@ export default async function WisataDetailPage({ params }: { params: Promise<{ s
 
     return (
         <main className="min-h-screen bg-background pt-24 pb-32 md:pb-24">
+            <Navbar />
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <BentoGrid>
 

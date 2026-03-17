@@ -28,7 +28,6 @@ export default async function WisataListingPage() {
                     priority
                     className="object-cover"
                 />
-                <div className="absolute inset-0 bg-primary/60 mix-blend-multiply" />
 
                 <div className="relative z-10 flex flex-col items-center justify-center text-center px-4 pb-12 w-full h-full pt-16">
                     <p className="text-accent font-bold tracking-widest uppercase text-xs mb-2">Xperience / Dieng</p>

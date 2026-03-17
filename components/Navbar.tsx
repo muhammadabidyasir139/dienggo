@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
@@ -30,7 +31,7 @@ export function Navbar() {
 
     const isTransparentBase = pathname === "/villa" || pathname === "/hotel-cabin" || pathname === "/jeep" || pathname === "/wisata";
     const navBgClass = isScrolled || !isTransparentBase
-        ? "bg-white/80 dark:bg-slate-900/80 backdrop-blur-md shadow-sm border-b border-neutral-200 dark:border-neutral-800"
+        ? "bg-primary-light/80 dark:bg-slate-900/80 backdrop-blur-md shadow-sm border-b border-neutral-200 dark:border-neutral-800"
         : "bg-transparent";
 
     const textColorClass = isScrolled || !isTransparentBase
@@ -42,8 +43,15 @@ export function Navbar() {
             <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
 
                 {/* Logo */}
-                <Link href="/" className={`text-2xl font-black tracking-tight ${textColorClass}`}>
-                    Dienggo
+                <Link href="/" className="flex items-center">
+                    <Image
+                        src="/asset/Logo-removebg-preview.png"
+                        alt="Dienggo Logo"
+                        width={120}
+                        height={40}
+                        className="h-10 w-auto object-contain"
+                        priority
+                    />
                 </Link>
 
                 {/* Desktop Nav */}
@@ -88,7 +96,7 @@ export function Navbar() {
 
             {/* Mobile Menu */}
             {mobileMenuOpen && (
-                <div className="absolute top-16 left-0 w-full bg-white dark:bg-slate-900 shadow-xl border-t border-neutral-100 dark:border-neutral-800 p-4 md:hidden flex flex-col gap-4">
+                <div className="absolute top-16 left-0 w-full bg-primary-light dark:bg-slate-900 shadow-xl border-t border-neutral-100 dark:border-neutral-800 p-4 md:hidden flex flex-col gap-4">
                     {navLinks.map((link) => (
                         <Link
                             key={link.href}

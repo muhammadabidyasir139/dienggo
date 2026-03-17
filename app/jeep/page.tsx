@@ -24,13 +24,12 @@ export default async function JeepListingPage() {
             {/* Hero Section */}
             <section className="relative h-[50vh] w-full bg-slate-900">
                 <Image
-                    src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&q=80&w=1920"
+                    src="/asset/Merapi Jeep Tour.jpg"
                     alt="Jeep Hero"
                     fill
                     priority
                     className="object-cover"
                 />
-                <div className="absolute inset-0 bg-primary/55 mix-blend-multiply" />
 
                 <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
                     <h1 className="text-3xl font-black tracking-tight text-white md:text-5xl lg:text-6xl drop-shadow-lg">

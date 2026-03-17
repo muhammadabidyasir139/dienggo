@@ -24,13 +24,12 @@ export default async function CabinListingPage() {
             {/* Hero Section */}
             <section className="relative h-[50vh] w-full bg-slate-900">
                 <Image
-                    src="https://images.unsplash.com/photo-1542314831-c6a4d14faaf2?auto=format&fit=crop&q=80&w=1920"
+                    src="/asset/cabin-hotel.jpg"
                     alt="Cabin Hero"
                     fill
                     priority
                     className="object-cover"
                 />
-                <div className="absolute inset-0 bg-primary/55 mix-blend-multiply" />
 
                 <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
                     <h1 className="text-3xl font-black tracking-tight text-white md:text-5xl lg:text-6xl drop-shadow-lg">
