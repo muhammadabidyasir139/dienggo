@@ -6,6 +6,7 @@ import {
     date,
     timestamp,
 } from "drizzle-orm/pg-core";
+import { users } from "./users";
 import { villas } from "./villas";
 import { cabins } from "./cabins";
 import { jeeps } from "./jeeps";
@@ -13,6 +14,7 @@ import { wisata } from "./wisata";
 
 export const bookings = pgTable("bookings", {
     id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id").references(() => users.id),
     kodeBooking: text("kode_booking").unique().notNull(),
     namaLengkap: text("nama_lengkap").notNull(),
     email: text("email").notNull(),
@@ -26,8 +28,10 @@ export const bookings = pgTable("bookings", {
     subtotal: integer("subtotal").notNull(),
     pajak: integer("pajak").notNull(),
     total: integer("total").notNull(),
-    metodeBayar: text("metode_bayar").notNull(),
+    metodeBayar: text("metode_bayar").notNull().default("pending"),
     status: text("status").default("unpaid"), // unpaid | paid | cancelled | refunded
+    snapToken: text("snap_token"),
+    midtransOrderId: text("midtrans_order_id"),
     villaId: uuid("villa_id").references(() => villas.id),
     cabinId: uuid("cabin_id").references(() => cabins.id),
     jeepId: uuid("jeep_id").references(() => jeeps.id),

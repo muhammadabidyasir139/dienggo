@@ -111,5 +111,70 @@
                 "deskripsi": "Bisa melanjutkan perjalanan ke Kawah Sikidang atau Candi Arjuna."
             }
         ]
+    },
+    {
+        "id": "w-3",
+        "slug": "candi-arjuna",
+        "kategori": "wisata",
+        "nama": "Kompleks Candi Arjuna",
+        "harga": 30000,
+        "rating": 4.7,
+        "ulasan": "18.3K",
+        "lokasi": "Dieng Kulon, Batur, Banjarnegara",
+        "koordinat": "https://maps.google.com/?q=candi+arjuna+dieng",
+        "durasi_wisata": "1-2 Jam",
+        "kontak": "+62 856-4321-0987",
+        "bahasa": "Indonesia, English",
+        "fasilitas": [
+            "Museum Kailasa",
+            "Pemandu Wisata",
+            "Area Parkir",
+            "Toilet Umum",
+            "Toko Oleh-oleh"
+        ],
+        "narasi": [
+            "Jelajahi warisan arsitektur Hindu abad ke-7 tertua di Pulau Jawa.",
+            "Kagumi relief dan ornamen batu yang masih utuh setelah 14 abad.",
+            "Pelajari sejarah peradaban kuno Dieng di Museum Kailasa yang berdampingan."
+        ],
+        "foto_utama": "https://images.unsplash.com/photo-1596402184320-417e7178b2cd?auto=format&fit=crop&q=80&w=1200",
+        "galeri": [
+            "https://images.unsplash.com/photo-1588668214407-6ea9a6d8c272?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1634560410651-de2dc15fd9ce?auto=format&fit=crop&q=80&w=800"
+        ],
+        "video_reels": [
+            {
+                "id": "v4",
+                "thumbnail": "https://images.unsplash.com/photo-1596402184320-417e7178b2cd?auto=format&fit=crop&q=80&w=400",
+                "url": "https://youtube.com/shorts/..."
+            },
+            {
+                "id": "v5",
+                "thumbnail": "https://images.unsplash.com/photo-1588668214407-6ea9a6d8c272?auto=format&fit=crop&q=80&w=400",
+                "url": "https://youtube.com/shorts/..."
+            }
+        ],
+        "rundown": [
+            {
+                "waktu": "Fleksibel",
+                "judul": "Tiba di Kompleks Candi",
+                "deskripsi": "Parkir kendaraan dan beli tiket di loket. Tersedia pemandu wisata lokal."
+            },
+            {
+                "waktu": "+20 Menit",
+                "judul": "Eksplorasi Candi Utama",
+                "deskripsi": "Menjelajahi Candi Arjuna, Candi Semar, Candi Srikandi, dan Candi Puntadewa berurutan."
+            },
+            {
+                "waktu": "+40 Menit",
+                "judul": "Museum Kailasa",
+                "deskripsi": "Kunjungi museum untuk melihat artefak, arca, dan informasi sejarah peradaban Dieng."
+            },
+            {
+                "waktu": "+60 Menit",
+                "judul": "Belanja Oleh-oleh",
+                "deskripsi": "Beli carica, purwaceng, dan kerajinan khas Dieng di area sekitar."
+            }
+        ]
     }
 ]

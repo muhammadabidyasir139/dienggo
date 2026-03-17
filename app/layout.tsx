@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
-import { ThemeProvider } from "./providers";
+import { Providers } from "./providers";
 import "./globals.css";
 
 const jakarta = Plus_Jakarta_Sans({
@@ -27,9 +27,9 @@ export default async function RootLayout({
     <html lang={locale} suppressHydrationWarning>
       <body className={`${jakarta.variable} font-sans antialiased`} suppressHydrationWarning>
         <NextIntlClientProvider messages={messages}>
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+          <Providers>
             {children}
-          </ThemeProvider>
+          </Providers>
         </NextIntlClientProvider>
       </body>
     </html>

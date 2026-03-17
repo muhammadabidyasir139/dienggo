@@ -24,7 +24,7 @@ export default async function CabinListingPage() {
             {/* Hero Section */}
             <section className="relative h-[50vh] w-full bg-slate-900">
                 <Image
-                    src="/asset/cabin-hotel.jpg"
+                    src="/asset/cabin-hotel-new.jpg"
                     alt="Cabin Hero"
                     fill
                     priority

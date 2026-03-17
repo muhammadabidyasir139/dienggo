@@ -143,6 +143,14 @@ export default async function CabinDetailPage({ params }: { params: Promise<{ sl
                         >
                             Pesan Cabin Ini
                         </Link>
+                        <a
+                            href={`https://wa.me/628123456789?text=Halo Admin, saya tertarik untuk memesan Cabin ${cabin.nama}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="mt-3 w-full bg-white dark:bg-slate-700 text-primary dark:text-white border border-primary/20 font-bold py-3 rounded-xl text-center hover:bg-neutral-50 dark:hover:bg-slate-600 transition-colors"
+                        >
+                            Hubungi Admin
+                        </a>
                     </BentoCard>
 
                 </BentoGrid>
