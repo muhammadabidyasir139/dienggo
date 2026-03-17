@@ -5,3 +5,4 @@ export { jeeps } from "./jeeps";
 export { wisata } from "./wisata";
 export { bookings } from "./bookings";
 export { facilities } from "./facilities";
+export { jeepIncludes } from "./jeep_includes";

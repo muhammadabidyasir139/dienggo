@@ -24,7 +24,7 @@ export default async function JeepDetailPage({ params }: { params: Promise<{ slu
                     {/* GALERI - Foto Utama Jeep */}
                     <BentoCard colSpan={2} rowSpan={2} className="relative overflow-hidden p-0 h-[400px] md:h-auto group">
                         <Image
-                            src={jeep.foto_utama}
+                            src={jeep.fotoUtama}
                             alt={jeep.nama}
                             fill
                             className="object-cover transition-transform duration-700 group-hover:scale-105"

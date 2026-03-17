@@ -3,6 +3,7 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
 import { Providers } from "./providers";
+import { Footer } from "@/components/Footer";
 import "./globals.css";
 
 const jakarta = Plus_Jakarta_Sans({
