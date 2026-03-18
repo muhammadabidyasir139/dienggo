@@ -6,9 +6,19 @@ import { GridSkeleton } from "@/components/CardSkeleton";
 import { Suspense } from "react";
 import Image from "next/image";
 import { getCabins } from "@/app/admin/actions/cabin";
+import { getFacilities } from "@/app/admin/actions/facility";
 
 export default async function CabinListingPage() {
-    const cabinsResponse = await getCabins();
+    const [cabinsResponse, facilitiesRaw] = await Promise.all([
+        getCabins(),
+        getFacilities()
+    ]);
+    
+    // Create a facility map based on IDs
+    const facilityMap = facilitiesRaw.reduce((acc: any, f: any) => {
+        acc[f.id] = f.name;
+        return acc;
+    }, {});
     
     // Transform data to match CabinProps
     const cabins = cabinsResponse.map(v => ({
@@ -19,7 +29,7 @@ export default async function CabinListingPage() {
         rating: Number(v.rating) || 0,
         ulasan: v.ulasan || 0,
         lokasi: v.lokasi || "",
-        fasilitasUtama: (v.fasilitasUtama as string[]) || [],
+        fasilitasUtama: ((v.fasilitasUtama as string[]) || []).map(id => facilityMap[id] || id),
         fotoUtama: v.fotoUtama || "",
     }));
 

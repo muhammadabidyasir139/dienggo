@@ -29,13 +29,24 @@ const facilityIcons: Record<string, React.ReactNode> = {
   "Resepsionis 24 Jam": <ConciergeBell size={16} className="text-primary" />,
 };
 
+import { getFacilities } from "@/app/admin/actions/facility";
+
 async function getVillaBySlug(slug: string) {
   const villa = await fetchVillaBySlug(slug);
   if (!villa) return null;
   
-  // Transform to match template expectation (camelCase database fields)
-  // The template already uses snake_case, but I'll update it to camelCase below.
-  return villa;
+  // Fetch facilities to map IDs to names
+  const facilitiesRaw = await getFacilities();
+  const facilityMap = facilitiesRaw.reduce((acc: any, f: any) => {
+    acc[f.id] = f.name;
+    return acc;
+  }, {});
+  
+  // Transform to match template expectation (names instead of IDs)
+  return {
+    ...villa,
+    fasilitasUtama: ((villa.fasilitasUtama as string[]) || []).map(id => facilityMap[id] || id)
+  };
 }
 
 export default async function VillaDetailPage({

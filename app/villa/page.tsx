@@ -6,9 +6,18 @@ import { GridSkeleton } from "@/components/CardSkeleton";
 import { Suspense } from "react";
 import Image from "next/image";
 import { getVillas } from "@/app/admin/actions/villa";
+import { getFacilities } from "@/app/admin/actions/facility";
 
 export default async function VillaListingPage() {
-    const villasResponse = await getVillas();
+    const [villasResponse, facilitiesRaw] = await Promise.all([
+        getVillas(),
+        getFacilities()
+    ]);
+    
+    const facilityMap = facilitiesRaw.reduce((acc: any, f: any) => {
+        acc[f.id] = f.name;
+        return acc;
+    }, {});
     
     // Transform data to match VillaProps if needed (though they should match now)
     const villas = villasResponse.map(v => ({
@@ -19,7 +28,7 @@ export default async function VillaListingPage() {
         rating: Number(v.rating) || 0,
         ulasan: v.ulasan || 0,
         lokasi: v.lokasi || "",
-        fasilitasUtama: (v.fasilitasUtama as string[]) || [],
+        fasilitasUtama: ((v.fasilitasUtama as string[]) || []).map(id => facilityMap[id] || id),
         fotoUtama: v.fotoUtama || "",
     }));
 

@@ -15,9 +15,24 @@ const facilityIcons: Record<string, React.ReactNode> = {
     "Parkir": <Car size={16} className="text-primary dark:text-accent" />
 };
 
+import { getFacilities } from "@/app/admin/actions/facility";
+
 async function getCabinBySlug(slug: string) {
     const cabin = await fetchCabinBySlug(slug);
-    return cabin || null;
+    if (!cabin) return null;
+    
+    // Fetch facilities to map IDs to names
+    const facilitiesRaw = await getFacilities();
+    const facilityMap = facilitiesRaw.reduce((acc: any, f: any) => {
+        acc[f.id] = f.name;
+        return acc;
+    }, {});
+    
+    // Transform to match template expectation (names instead of IDs)
+    return {
+        ...cabin,
+        fasilitasUtama: ((cabin.fasilitasUtama as string[]) || []).map(id => facilityMap[id] || id)
+    };
 }
 
 export default async function CabinDetailPage({ params }: { params: Promise<{ slug: string }> }) {

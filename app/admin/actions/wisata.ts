@@ -14,6 +14,11 @@ export async function getAktivitasById(id: string) {
     return result[0];
 }
 
+export async function getAktivitasBySlug(slug: string) {
+    const result = await db.select().from(wisata).where(eq(wisata.slug, slug));
+    return result[0];
+}
+
 export async function createAktivitas(data: any) {
     try {
         const [newAktivitas] = await db.insert(wisata).values(data).returning();

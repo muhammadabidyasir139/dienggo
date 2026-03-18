@@ -1,16 +1,34 @@
 import { Navbar } from "@/components/Navbar";
 import { BookingForm } from "@/components/BookingForm";
-import fs from "fs/promises";
-import path from "path";
+import { getVillaBySlug } from "@/app/admin/actions/villa";
+import { getCabinBySlug } from "@/app/admin/actions/cabin";
+import { getJeepBySlug } from "@/app/admin/actions/jeep";
+import { getAktivitasBySlug } from "@/app/admin/actions/wisata";
 import { notFound } from "next/navigation";
 
 async function getBookingItem(slug: string, type: string) {
     try {
-        const fileName = type === "hotel-cabin" ? "cabins.json" : type === "wisata" ? "wisata.json" : `${type}s.json`;
-        const filePath = path.join(process.cwd(), "data", fileName);
-        const jsonData = await fs.readFile(filePath, "utf-8");
-        const items = JSON.parse(jsonData);
-        return items.find((item: { slug: string; [key: string]: unknown }) => item.slug === slug) || null;
+        let item = null;
+        if (type === "villa") {
+            item = await getVillaBySlug(slug);
+        } else if (type === "hotel-cabin" || type === "cabin") {
+            item = await getCabinBySlug(slug);
+        } else if (type === "jeep") {
+            item = await getJeepBySlug(slug);
+        } else if (type === "wisata" || type === "aktivitas") {
+            item = await getAktivitasBySlug(slug);
+        }
+        
+        if (item) {
+            // map camelCase to snake_case for BookingForm compatibility and ensure types match
+            const anyItem = item as any;
+            return {
+                ...anyItem,
+                harga: Number(anyItem.harga) || 0,
+                foto_utama: anyItem.fotoUtama || anyItem.foto_utama || "",
+            };
+        }
+        return null;
     } catch {
         return null;
     }

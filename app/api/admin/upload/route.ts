@@ -5,16 +5,9 @@ import { authOptions } from "@/lib/auth";
 import fs from "fs/promises";
 import path from "path";
 
-export const dynamic = "force-dynamic";
-
 export async function POST(req: Request) {
     try {
         const session = await getServerSession(authOptions);
-        console.log("DEBUG - Upload attempt session:", session ? "Found" : "Not Found");
-        if (session) {
-            console.log("DEBUG - User email:", session.user.email);
-            console.log("DEBUG - User role:", session.user.role);
-        }
 
         if (!session) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
