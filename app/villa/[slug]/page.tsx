@@ -14,6 +14,8 @@ import {
 } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import { BentoGrid, BentoCard } from "@/components/BentoGrid";
+import { BentoGallery } from "@/components/BentoGallery";
+import { BookingButton } from "@/components/BookingButton";
 import { formatCurrency } from "@/lib/utils";
 import { getVillaBySlug as fetchVillaBySlug } from "@/app/admin/actions/villa";
 
@@ -34,18 +36,20 @@ import { getFacilities } from "@/app/admin/actions/facility";
 async function getVillaBySlug(slug: string) {
   const villa = await fetchVillaBySlug(slug);
   if (!villa) return null;
-  
+
   // Fetch facilities to map IDs to names
   const facilitiesRaw = await getFacilities();
   const facilityMap = facilitiesRaw.reduce((acc: any, f: any) => {
     acc[f.id] = f.name;
     return acc;
   }, {});
-  
+
   // Transform to match template expectation (names instead of IDs)
   return {
     ...villa,
-    fasilitasUtama: ((villa.fasilitasUtama as string[]) || []).map(id => facilityMap[id] || id)
+    fasilitasUtama: ((villa.fasilitasUtama as string[]) || []).map(
+      (id) => facilityMap[id] || id,
+    ),
   };
 }
 
@@ -68,53 +72,13 @@ export default async function VillaDetailPage({
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <BentoGrid>
-          {/* GALERI - Foto Utama (Besar) */}
-          <BentoCard
-            colSpan={2}
-            rowSpan={2}
-            className="relative overflow-hidden p-0 h-[400px] md:h-auto group"
-          >
-            <Image
-              src={villa.fotoUtama || ""}
-              alt={villa.nama}
-              fill
-              className="object-cover transition-transform duration-700 group-hover:scale-105"
-              priority
-            />
-          </BentoCard>
-
-          {/* GALERI - Foto Kecil 1 */}
-          <BentoCard
-            colSpan={1}
-            className="relative overflow-hidden p-0 h-[200px] md:h-auto group hidden md:block"
-          >
-            <Image
-              src={((villa.galeri as string[]) || [])[0] || villa.fotoUtama || ""}
-              alt={`${villa.nama} gallery 1`}
-              fill
-              className="object-cover transition-transform duration-500 group-hover:scale-110"
-            />
-          </BentoCard>
-
-          {/* GALERI - Foto Kecil 2 */}
-          <BentoCard
-            colSpan={1}
-            className="relative overflow-hidden p-0 h-[200px] md:h-auto group hidden md:block"
-          >
-            <Image
-              src={((villa.galeri as string[]) || [])[1] || ((villa.galeri as string[]) || [])[0] || villa.fotoUtama || ""}
-              alt={`${villa.nama} gallery 2`}
-              fill
-              className="object-cover transition-transform duration-500 group-hover:scale-110"
-            />
-            {((villa.galeri as string[]) || []).length > 2 && (
-              <div className="absolute inset-0 bg-black/40 flex items-center justify-center cursor-pointer hover:bg-black/50 transition-colors">
-                <span className="text-white font-bold text-xl">
-                  +{((villa.galeri as string[]) || []).length - 2} Foto
-                </span>
-              </div>
-            )}
-          </BentoCard>
+          <BentoGallery
+            images={[
+              villa.fotoUtama,
+              ...((villa.galeri as string[]) || []),
+            ].filter(Boolean)}
+            title={villa.nama}
+          />
 
           {/* INFO UTAMA */}
           <BentoCard colSpan={2} className="flex flex-col justify-center">
@@ -154,17 +118,19 @@ export default async function VillaDetailPage({
               Fasilitas Utama
             </h3>
             <div className="grid grid-cols-2 gap-3">
-              {((villa.fasilitasUtama as string[]) || []).map((fas: string, i: number) => (
-                <div
-                  key={i}
-                  className="flex items-center gap-2 text-sm font-medium text-neutral-700"
-                >
-                  {facilityIcons[fas] || (
-                    <span className="h-2 w-2 rounded-full bg-primary" />
-                  )}
-                  {fas}
-                </div>
-              ))}
+              {((villa.fasilitasUtama as string[]) || []).map(
+                (fas: string, i: number) => (
+                  <div
+                    key={i}
+                    className="flex items-center gap-2 text-sm font-medium text-neutral-700"
+                  >
+                    {facilityIcons[fas] || (
+                      <span className="h-2 w-2 rounded-full bg-primary" />
+                    )}
+                    {fas}
+                  </div>
+                ),
+              )}
             </div>
           </BentoCard>
 
@@ -181,7 +147,9 @@ export default async function VillaDetailPage({
               </div>
               <div className="flex-1 text-center sm:text-left">
                 <p className="font-bold text-foreground">Lokasi Akomodasi</p>
-                <p className="text-sm text-neutral-500">{villa.lokasi || "Lokasi belum ditentukan"}</p>
+                <p className="text-sm text-neutral-500">
+                  {villa.lokasi || "Lokasi belum ditentukan"}
+                </p>
               </div>
               <a
                 href={villa.koordinat || "#"}
@@ -207,12 +175,13 @@ export default async function VillaDetailPage({
               kamar.
             </p>
 
-            <Link
-              href={`/booking/${villa.slug}?type=villa`}
-              className="w-full bg-primary text-white font-black py-4 rounded-xl text-center hover:scale-[1.02] transition-transform shadow-lg shadow-primary/20"
+            <BookingButton
+              slug={villa.slug}
+              type="villa"
+              className="w-full bg-primary text-white font-black py-4 rounded-xl text-center hover:scale-[1.02] transition-transform shadow-lg shadow-primary/20 cursor-pointer"
             >
               Lanjutkan Pemesanan
-            </Link>
+            </BookingButton>
             <a
               href={`https://wa.me/628123456789?text=Halo Admin, saya tertarik untuk memesan Villa ${villa.nama}`}
               target="_blank"
@@ -233,12 +202,13 @@ export default async function VillaDetailPage({
             {formatCurrency(villa.harga)}
           </p>
         </div>
-        <Link
-          href={`/booking/${villa.slug}?type=villa`}
-          className="bg-primary text-white font-bold px-8 py-3 rounded-xl transition-all hover:bg-primary/90"
+        <BookingButton
+          slug={villa.slug}
+          type="villa"
+          className="bg-primary text-white font-bold px-8 py-3 rounded-xl transition-all hover:bg-primary/90 cursor-pointer"
         >
           Pesan
-        </Link>
+        </BookingButton>
       </div>
     </main>
   );

@@ -47,10 +47,6 @@ export default async function BookingPage({
   const { slug } = await params;
   const { type = "villa" } = await searchParams;
 
-  if (!session) {
-    redirect(`/login?callbackUrl=/booking/${slug}?type=${type}`);
-  }
-
   const item = await getBookingItem(slug, type);
 
   if (!item) {
