@@ -101,7 +101,7 @@ export default async function AktivitasDetailPage({ params }: { params: Promise<
                             {paragraphs.map((p, i) => (
                                 <p
                                     key={i}
-                                    className="text-neutral-700 dark:text-neutral-300 leading-relaxed text-base mb-5"
+                                    className="text-slate-900 font-medium leading-relaxed text-base mb-5"
                                 >
                                     {p}
                                 </p>
@@ -109,7 +109,7 @@ export default async function AktivitasDetailPage({ params }: { params: Promise<
                         </div>
 
                         {/* Share / CTA */}
-                        <div className="mt-10 pt-6 border-t border-neutral-200 dark:border-slate-800">
+                        <div className="mt-10 pt-6 border-t border-neutral-200">
                             <p className="text-sm text-neutral-500">
                                 Ditulis oleh <span className="font-bold text-foreground">{artikel.penulis}</span> · {formatTanggal(artikel.tanggal)}
                             </p>
@@ -118,7 +118,7 @@ export default async function AktivitasDetailPage({ params }: { params: Promise<
 
                     {/* Sidebar */}
                     <aside className="w-full lg:w-80 shrink-0">
-                        <div className="sticky top-20 bg-white dark:bg-slate-900 rounded-2xl border border-neutral-100 dark:border-slate-800 shadow-sm p-5">
+                        <div className="sticky top-20 bg-white rounded-2xl border border-neutral-100 shadow-sm p-5">
                             <h3 className="text-base font-bold text-foreground mb-4 flex items-center gap-2">
                                 <span className="w-1 h-5 bg-primary rounded-full"></span>
                                 Berita Terbaru
