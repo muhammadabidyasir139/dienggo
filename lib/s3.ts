@@ -1,14 +1,21 @@
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 
-const s3Client = new S3Client({
-    region: process.env.S3_REGION || "us-east-1",
-    endpoint: process.env.S3_ENDPOINT,
-    credentials: {
-        accessKeyId: process.env.S3_ACCESS_KEY!,
-        secretAccessKey: process.env.S3_SECRET_KEY!,
-    },
-    forcePathStyle: true,
-});
+let s3ClientInstance: S3Client | null = null;
+
+export function getS3Client(): S3Client {
+    if (!s3ClientInstance) {
+        s3ClientInstance = new S3Client({
+            region: process.env.S3_REGION || "us-east-1",
+            endpoint: process.env.S3_ENDPOINT,
+            credentials: {
+                accessKeyId: process.env.S3_ACCESS_KEY!,
+                secretAccessKey: process.env.S3_SECRET_KEY!,
+            },
+            forcePathStyle: true,
+        });
+    }
+    return s3ClientInstance;
+}
 
 export async function uploadToS3(
     file: Buffer,
@@ -16,8 +23,11 @@ export async function uploadToS3(
     contentType: string
 ): Promise<string> {
     const key = `uploads/${Date.now()}-${fileName}`;
+    
+    // Get the client lazily
+    const client = getS3Client();
 
-    await s3Client.send(
+    await client.send(
         new PutObjectCommand({
             Bucket: process.env.S3_BUCKET!,
             Key: key,
@@ -30,5 +40,3 @@ export async function uploadToS3(
     const bucket = process.env.S3_BUCKET!;
     return `${endpoint}/${bucket}/${key}`;
 }
-
-export { s3Client };
