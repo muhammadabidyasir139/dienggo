@@ -32,7 +32,9 @@ async function seedCustomer() {
             console.error("Error seeding customer user:", error);
         }
     } finally {
-        await client.end();
+        if (client) {
+            await client.end();
+        }
     }
 }
 
