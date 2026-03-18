@@ -4,6 +4,8 @@ import { db } from "@/db";
 import { bookings } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
+export const dynamic = "force-dynamic";
+
 export async function POST(req: NextRequest) {
     try {
         const notification = await req.json();

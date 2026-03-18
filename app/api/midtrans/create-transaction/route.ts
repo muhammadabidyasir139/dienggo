@@ -43,6 +43,8 @@ async function getDbItemId(slug: string, type: string): Promise<string | null> {
     }
 }
 
+export const dynamic = "force-dynamic";
+
 export async function POST(req: NextRequest) {
     try {
         const session = await getServerSession(authOptions);
