@@ -5,9 +5,10 @@ import { notFound } from "next/navigation";
 export default async function EditJeepPage({
     params,
 }: {
-    params: { id: string };
+    params: Promise<{ id: string }>;
 }) {
-    const jeep = await getJeepById(params.id);
+    const { id } = await params;
+    const jeep = await getJeepById(id);
 
     if (!jeep) {
         notFound();

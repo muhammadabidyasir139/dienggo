@@ -14,6 +14,11 @@ export async function getCabinById(id: string) {
     return result[0];
 }
 
+export async function getCabinBySlug(slug: string) {
+    const result = await db.select().from(cabins).where(eq(cabins.slug, slug));
+    return result[0];
+}
+
 export async function createCabin(data: any) {
     try {
         const [newCabin] = await db.insert(cabins).values(data).returning();

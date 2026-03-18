@@ -1,5 +1,7 @@
 import VillaForm from "../VillaForm";
+import { getFacilities } from "@/app/admin/actions/facility";
 
-export default function CreateVillaPage() {
-    return <VillaForm isEdit={false} />;
+export default async function CreateVillaPage() {
+    const facilities = await getFacilities();
+    return <VillaForm isEdit={false} facilities={facilities} />;
 }

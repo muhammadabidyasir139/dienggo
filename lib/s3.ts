@@ -23,7 +23,6 @@ export async function uploadToS3(
             Key: key,
             Body: file,
             ContentType: contentType,
-            ACL: "public-read",
         })
     );
 

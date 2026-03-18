@@ -50,11 +50,18 @@ export default function BookingTableClient({ data }: { data: any[] }) {
             accessorKey: "tanggal",
             cell: (item: any) => (
                 <div>
-                    <p className="text-sm font-medium text-slate-700">
-                        {item.checkIn || item.tanggal}
+                    <p className="text-sm font-bold text-slate-800">
+                        {item.checkIn && item.checkOut ? (
+                            <span className="flex flex-col">
+                                <span className="text-primary text-[10px] uppercase font-black mb-0.5">MENGINAP</span>
+                                <span>{new Date(item.checkIn).toLocaleDateString("id-ID", { day: "numeric", month: "short" })} - {new Date(item.checkOut).toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" })}</span>
+                            </span>
+                        ) : (
+                            <span>{item.tanggal ? new Date(item.tanggal).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" }) : "-"}</span>
+                        )}
                     </p>
-                    <p className="text-xs text-slate-500 mt-0.5">
-                        Dipesan: {new Date(item.createdAt).toLocaleDateString("id-ID")}
+                    <p className="text-[10px] text-slate-400 mt-1 uppercase font-bold">
+                        Dipesan: {new Date(item.createdAt).toLocaleDateString("id-ID", { day: "numeric", month: "short" })}
                     </p>
                 </div>
             ),

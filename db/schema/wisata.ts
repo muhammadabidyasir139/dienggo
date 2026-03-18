@@ -13,7 +13,7 @@ export const wisata = pgTable("wisata", {
     id: uuid("id").primaryKey().defaultRandom(),
     slug: text("slug").unique().notNull(),
     nama: text("nama").notNull(),
-    harga: integer("harga").notNull(),
+    harga: integer("harga").default(0),
     rating: real("rating").default(0),
     ulasan: text("ulasan").default("0"),
     lokasi: text("lokasi"),
@@ -30,6 +30,7 @@ export const wisata = pgTable("wisata", {
     authorName: text("author_name"),
     authorImage: text("author_image"),
     isActive: boolean("is_active").default(true),
+    isi: text("isi"),
     createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow(),
 });

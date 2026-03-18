@@ -9,7 +9,7 @@ import { getJeepBySlug } from "@/app/admin/actions/jeep";
 
 export default async function JeepDetailPage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
-    const jeep = await getJeepBySlug(slug);
+    const jeep: any = await getJeepBySlug(slug);
 
     if (!jeep) {
         notFound();
@@ -24,7 +24,7 @@ export default async function JeepDetailPage({ params }: { params: Promise<{ slu
                     {/* GALERI - Foto Utama Jeep */}
                     <BentoCard colSpan={2} rowSpan={2} className="relative overflow-hidden p-0 h-[400px] md:h-auto group">
                         <Image
-                            src={jeep.fotoUtama}
+                            src={jeep.fotoUtama || ""}
                             alt={jeep.nama}
                             fill
                             className="object-cover transition-transform duration-700 group-hover:scale-105"
@@ -35,7 +35,7 @@ export default async function JeepDetailPage({ params }: { params: Promise<{ slu
                     {/* GALERI - Foto Kecil 1 */}
                     <BentoCard colSpan={1} className="relative overflow-hidden p-0 h-[200px] md:h-auto group hidden md:block">
                         <Image
-                            src={jeep.galeri[0]}
+                            src={((jeep.galeri as string[]) || [])[0] || jeep.fotoUtama || ""}
                             alt={`${jeep.nama} gallery 1`}
                             fill
                             className="object-cover transition-transform duration-500 group-hover:scale-110"
@@ -45,7 +45,7 @@ export default async function JeepDetailPage({ params }: { params: Promise<{ slu
                     {/* GALERI - Foto Kecil 2 */}
                     <BentoCard colSpan={1} className="relative overflow-hidden p-0 h-[200px] md:h-auto group hidden md:block">
                         <Image
-                            src={jeep.galeri[1] || jeep.galeri[0]}
+                            src={((jeep.galeri as string[]) || [])[1] || ((jeep.galeri as string[]) || [])[0] || jeep.fotoUtama || ""}
                             alt={`${jeep.nama} gallery 2`}
                             fill
                             className="object-cover transition-transform duration-500 group-hover:scale-110"
@@ -62,7 +62,7 @@ export default async function JeepDetailPage({ params }: { params: Promise<{ slu
                             </div>
                             <div className="flex items-center gap-2 text-neutral-600 dark:text-neutral-400 font-medium">
                                 <Users size={18} className="text-primary dark:text-accent" />
-                                <span>Maksimum {jeep.maks_orang} Orang</span>
+                                <span>Maksimum {jeep.maksOrang || 0} Orang</span>
                             </div>
                         </div>
                     </BentoCard>
@@ -74,7 +74,7 @@ export default async function JeepDetailPage({ params }: { params: Promise<{ slu
                             Destinasi Wisata
                         </h3>
                         <ul className="flex flex-col gap-3">
-                            {jeep.includes.map((item: any) => (
+                            {jeep.includes?.map((item: any) => (
                                 <li key={item.facility.id} className="flex items-start gap-2 text-sm font-medium text-neutral-700 dark:text-neutral-300">
                                     <div className="mt-1 h-1.5 w-1.5 rounded-full bg-accent shrink-0" />
                                     {item.facility.name}
@@ -90,7 +90,7 @@ export default async function JeepDetailPage({ params }: { params: Promise<{ slu
                             Isi Paket
                         </h3>
                         <ul className="flex flex-col gap-3">
-                            {jeep.isi_paket.map((item: string, i: number) => (
+                            {((jeep.isiPaket as string[]) || []).map((item: string, i: number) => (
                                 <li key={i} className="flex items-center gap-2 text-sm text-neutral-600 dark:text-neutral-400">
                                     <span className="text-green-500">✓</span> {item}
                                 </li>
@@ -104,7 +104,7 @@ export default async function JeepDetailPage({ params }: { params: Promise<{ slu
                             Kebijakan & Syarat Ketentuan
                         </h3>
                         <ul className="flex flex-col gap-3 bg-rose-50/50 dark:bg-rose-900/10 p-4 rounded-xl border border-rose-100 dark:border-rose-900/30">
-                            {jeep.kebijakan.map((item: string, i: number) => (
+                            {((jeep.kebijakan as string[]) || []).map((item: string, i: number) => (
                                 <li key={i} className="flex items-start gap-2 text-sm text-neutral-700 dark:text-neutral-300">
                                     <span className="text-rose-500 shrink-0">•</span> {item}
                                 </li>

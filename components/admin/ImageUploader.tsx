@@ -33,12 +33,15 @@ export default function ImageUploader({ label, value, onChange, error }: ImageUp
                 body: formData,
             });
 
-            if (!res.ok) throw new Error("Upload failed");
+            if (!res.ok) {
+                const errorData = await res.json();
+                throw new Error(errorData.error || "Upload failed");
+            }
             const data = await res.json();
             onChange(data.url);
-        } catch (err) {
+        } catch (err: any) {
             console.error(err);
-            alert("Gagal upload gambar. Cek ukuran atau koneksi.");
+            alert("Gagal upload: " + err.message);
         } finally {
             setIsUploading(false);
         }

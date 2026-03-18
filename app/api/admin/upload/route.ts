@@ -2,12 +2,25 @@ import { NextResponse } from "next/server";
 import { uploadToS3 } from "@/lib/s3";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import fs from "fs/promises";
+import path from "path";
 
 export async function POST(req: Request) {
     try {
         const session = await getServerSession(authOptions);
+        console.log("DEBUG - Upload attempt session:", session ? "Found" : "Not Found");
+        if (session) {
+            console.log("DEBUG - User email:", session.user.email);
+            console.log("DEBUG - User role:", session.user.role);
+        }
+
         if (!session) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        }
+
+        // Verify admin role
+        if (session.user.role !== "admin") {
+            return NextResponse.json({ error: "Forbidden: Admin only" }, { status: 403 });
         }
 
         const formData = await req.formData();
@@ -20,13 +33,37 @@ export async function POST(req: Request) {
         const buffer = Buffer.from(await file.arrayBuffer());
         const safeName = file.name.replace(/[^a-zA-Z0-9.-]/g, "_");
 
-        const url = await uploadToS3(buffer, safeName, file.type);
+        // Use S3 if credentials are provided, otherwise fallback to local upload for development
+        const useS3 = process.env.S3_ACCESS_KEY && process.env.S3_SECRET_KEY && process.env.S3_BUCKET;
 
-        return NextResponse.json({ url });
+        console.log(`Attempting upload to bucket: ${process.env.S3_BUCKET}`);
+        
+        if (useS3) {
+            const url = await uploadToS3(buffer, safeName, file.type);
+            return NextResponse.json({ url });
+        } else {
+            // ... (local upload logic remain same)
+            console.log("S3 credentials missing, using local upload fallback...");
+            const uploadDir = path.join(process.cwd(), "public", "uploads");
+
+            try {
+                await fs.access(uploadDir);
+            } catch {
+                await fs.mkdir(uploadDir, { recursive: true });
+            }
+
+            const fileName = `${Date.now()}-${safeName}`;
+            const filePath = path.join(uploadDir, fileName);
+
+            await fs.writeFile(filePath, buffer);
+
+            const url = `/uploads/${fileName}`;
+            return NextResponse.json({ url });
+        }
     } catch (error: any) {
-        console.error("Upload error:", error);
+        console.error("DEBUG - Full Upload error:", error);
         return NextResponse.json(
-            { error: error.message || "Failed to upload file" },
+            { error: error.message || "Failed to upload file", details: error.name },
             { status: 500 }
         );
     }

@@ -62,8 +62,8 @@ export default function Sidebar() {
                     Settings
                 </Link>
                 <button
-                    onClick={() => signOut({ callbackUrl: "/admin/login" })}
-                    className="w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors text-red-400 hover:bg-slate-800 hover:text-red-300"
+                    onClick={() => signOut({ callbackUrl: "/villa" })}
+                    className="w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors text-red-400 hover:bg-slate-800 hover:text-red-300 cursor-pointer"
                 >
                     <LogOut className="w-5 h-5" />
                     Logout

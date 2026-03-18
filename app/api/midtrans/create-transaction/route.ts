@@ -62,8 +62,15 @@ export async function POST(req: NextRequest) {
 
         // Calculate prices
         const subtotal = item.harga;
-        const pajak = Math.round(subtotal * 0.11);
-        const total = subtotal + pajak;
+        let nightsTotal = 1;
+        if ((type === "villa" || type === "hotel-cabin") && checkIn && checkOut) {
+            const start = new Date(checkIn);
+            const end = new Date(checkOut);
+            const diffTime = Math.abs(end.getTime() - start.getTime());
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            nightsTotal = diffDays > 0 ? diffDays : 1;
+        }
+        const total = subtotal * nightsTotal;
 
         if (total === 0) {
             return NextResponse.json({ error: "Item gratis, tidak perlu pembayaran" }, { status: 400 });
@@ -101,7 +108,7 @@ export async function POST(req: NextRequest) {
             tanggal: tanggal || null,
             jumlahTamu: jumlahTamu || 1,
             subtotal,
-            pajak,
+            pajak: 0,
             total,
             metodeBayar: "pending",
             status: "unpaid",
@@ -119,14 +126,8 @@ export async function POST(req: NextRequest) {
                 {
                     id: slug,
                     price: subtotal,
-                    quantity: 1,
-                    name: item.nama.substring(0, 50), // Midtrans limit 50 chars
-                },
-                {
-                    id: "tax",
-                    price: pajak,
-                    quantity: 1,
-                    name: "Pajak Aplikasi (11%)",
+                    quantity: nightsTotal,
+                    name: `${item.nama.substring(0, 40)}${(type === "villa" || type === "hotel-cabin") ? ` (${nightsTotal} Malam)` : ""}`, // Midtrans limit 50 chars
                 },
             ],
             customer_details: {

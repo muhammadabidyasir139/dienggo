@@ -12,8 +12,8 @@ export interface VillaProps {
     rating: number;
     ulasan: number;
     lokasi: string;
-    foto_utama: string;
-    fasilitas_utama: string[];
+    fotoUtama: string;
+    fasilitasUtama: string[];
 }
 
 // Icon mapping helper
@@ -24,12 +24,12 @@ const facilityIcons: Record<string, React.ReactNode> = {
     "AC": <Wind size={14} className="text-primary " />
 };
 
-export function VillaCard({ slug, nama, harga, rating, ulasan, lokasi, foto_utama, fasilitas_utama }: VillaProps) {
+export function VillaCard({ slug, nama, harga, rating, ulasan, lokasi, fotoUtama, fasilitasUtama }: VillaProps) {
     return (
         <Link href={`/villa/${slug}`} className="group flex flex-col overflow-hidden rounded-2xl bg-white shadow-md border border-neutral-100 transition-all hover:shadow-xl cursor-pointer">
             <div className="relative h-56 w-full overflow-hidden bg-neutral-100">
                 <Image
-                    src={foto_utama}
+                    src={fotoUtama}
                     alt={nama}
                     fill
                     className="object-cover transition-transform duration-500 group-hover:scale-110"
@@ -46,15 +46,15 @@ export function VillaCard({ slug, nama, harga, rating, ulasan, lokasi, foto_utam
                 <p className="text-sm text-neutral-500 mb-3">{lokasi}</p>
 
                 <div className="mb-4 flex flex-wrap gap-2">
-                    {fasilitas_utama.slice(0, 3).map((fas, i) => (
+                    {fasilitasUtama.slice(0, 3).map((fas: string, i: number) => (
                         <div key={i} className="flex items-center gap-1.5 rounded-full bg-neutral-100 px-2.5 py-1 text-xs font-medium text-neutral-600  ">
                             {facilityIcons[fas] || <span className="h-2 w-2 rounded-full bg-primary" />}
                             {fas}
                         </div>
                     ))}
-                    {fasilitas_utama.length > 3 && (
+                    {fasilitasUtama.length > 3 && (
                         <div className="flex items-center gap-1.5 rounded-full bg-neutral-100 px-2.5 py-1 text-xs font-medium text-neutral-600  ">
-                            +{fasilitas_utama.length - 3}
+                            +{fasilitasUtama.length - 3}
                         </div>
                     )}
                 </div>

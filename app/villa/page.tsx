@@ -5,17 +5,23 @@ import { VillaCard, VillaProps } from "@/components/VillaCard";
 import { GridSkeleton } from "@/components/CardSkeleton";
 import { Suspense } from "react";
 import Image from "next/image";
-import fs from "fs/promises";
-import path from "path";
-
-async function getVillas(): Promise<VillaProps[]> {
-    const filePath = path.join(process.cwd(), "data", "villas.json");
-    const jsonData = await fs.readFile(filePath, "utf-8");
-    return JSON.parse(jsonData);
-}
+import { getVillas } from "@/app/admin/actions/villa";
 
 export default async function VillaListingPage() {
-    const villas = await getVillas();
+    const villasResponse = await getVillas();
+    
+    // Transform data to match VillaProps if needed (though they should match now)
+    const villas = villasResponse.map(v => ({
+        id: v.id,
+        slug: v.slug,
+        nama: v.nama,
+        harga: v.harga,
+        rating: Number(v.rating) || 0,
+        ulasan: v.ulasan || 0,
+        lokasi: v.lokasi || "",
+        fasilitasUtama: (v.fasilitasUtama as string[]) || [],
+        fotoUtama: v.fotoUtama || "",
+    }));
 
     return (
         <main className="min-h-screen bg-background pb-20">

@@ -17,7 +17,7 @@ export async function getAktivitasById(id: string) {
 export async function createAktivitas(data: any) {
     try {
         const [newAktivitas] = await db.insert(wisata).values(data).returning();
-        revalidatePath("/admin/aktivitas");
+        revalidatePath("/admin/wisata");
         return { success: true, data: newAktivitas };
     } catch (error: any) {
         console.error("Create aktivitas error:", error);
@@ -32,7 +32,7 @@ export async function updateAktivitas(id: string, data: any) {
             .set({ ...data, updatedAt: new Date() })
             .where(eq(wisata.id, id))
             .returning();
-        revalidatePath("/admin/aktivitas");
+        revalidatePath("/admin/wisata");
         return { success: true, data: updatedAktivitas };
     } catch (error: any) {
         console.error("Update aktivitas error:", error);
@@ -43,7 +43,7 @@ export async function updateAktivitas(id: string, data: any) {
 export async function deleteAktivitas(id: string) {
     try {
         await db.delete(wisata).where(eq(wisata.id, id));
-        revalidatePath("/admin/aktivitas");
+        revalidatePath("/admin/wisata");
         return { success: true };
     } catch (error: any) {
         console.error("Delete aktivitas error:", error);

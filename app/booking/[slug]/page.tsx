@@ -33,7 +33,7 @@ export default async function BookingPage({
     }
 
     return (
-        <main className="min-h-screen bg-neutral-50 dark:bg-slate-950 pb-20">
+        <main className="min-h-screen bg-primary-light pb-20">
             <Navbar />
             <div className="pt-24 md:pt-32 pb-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <h1 className="text-3xl font-black mb-8 text-foreground">Selesaikan Pemesanan Anda</h1>

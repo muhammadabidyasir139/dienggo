@@ -5,6 +5,8 @@ import { CreditCard, Wallet, Lock, CheckCircle2, Loader2 } from "lucide-react";
 import Image from "next/image";
 import { formatCurrency } from "@/lib/utils";
 import { useRouter } from "next/navigation";
+import { useSession, signIn } from "next-auth/react";
+import { X } from "lucide-react";
 
 declare global {
     interface Window {
@@ -40,11 +42,27 @@ export function BookingForm({ item, type }: BookingFormProps) {
         email: "",
         telepon: "",
         permintaan: "",
+        checkIn: "",
+        checkOut: "",
+        tanggal: "",
     });
 
+    const [nights, setNights] = useState(1);
+
+    useEffect(() => {
+        if ((type === "villa" || type === "hotel-cabin") && formData.checkIn && formData.checkOut) {
+            const start = new Date(formData.checkIn);
+            const end = new Date(formData.checkOut);
+            const diffTime = Math.abs(end.getTime() - start.getTime());
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            setNights(diffDays > 0 ? diffDays : 1);
+        } else {
+            setNights(1);
+        }
+    }, [formData.checkIn, formData.checkOut, type]);
+
     const subtotal = item.harga;
-    const pajak = Math.round(subtotal * 0.11);
-    const total = subtotal + pajak;
+    const total = subtotal * nights;
 
     // Load Midtrans Snap.js
     useEffect(() => {
@@ -67,6 +85,9 @@ export function BookingForm({ item, type }: BookingFormProps) {
         };
     }, []);
 
+    const [showLoginPopup, setShowLoginPopup] = useState(false);
+    const { data: session } = useSession();
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     };
@@ -78,12 +99,33 @@ export function BookingForm({ item, type }: BookingFormProps) {
             return;
         }
 
+        if ((type === "villa" || type === "hotel-cabin") && (!formData.checkIn || !formData.checkOut)) {
+            alert("Mohon pilih tanggal Check-in dan Check-out.");
+            return;
+        }
+
+        if ((type === "jeep" || type === "wisata") && !formData.tanggal) {
+            alert("Mohon pilih tanggal kunjungan.");
+            return;
+        }
+
         if (total === 0) {
             alert("Item ini gratis, tidak perlu pembayaran.");
             return;
         }
 
+        // Check if user is logged in
+        if (!session) {
+            setShowLoginPopup(true);
+            return;
+        }
+
+        proceedToPayment();
+    };
+
+    const proceedToPayment = async () => {
         setIsLoading(true);
+        setShowLoginPopup(false);
         setPaymentStatus("idle");
 
         try {
@@ -187,6 +229,44 @@ export function BookingForm({ item, type }: BookingFormProps) {
                                 />
                             </div>
                         </div>
+                        {(type === "villa" || type === "hotel-cabin") ? (
+                            <>
+                                <div className="flex flex-col gap-2">
+                                    <label className="text-sm font-bold text-neutral-600">Tanggal Check-in</label>
+                                    <input
+                                        type="date"
+                                        name="checkIn"
+                                        required
+                                        value={formData.checkIn}
+                                        onChange={handleChange}
+                                        className="bg-neutral-50 border border-neutral-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary transition-all cursor-pointer"
+                                    />
+                                </div>
+                                <div className="flex flex-col gap-2">
+                                    <label className="text-sm font-bold text-neutral-600">Tanggal Check-out</label>
+                                    <input
+                                        type="date"
+                                        name="checkOut"
+                                        required
+                                        value={formData.checkOut}
+                                        onChange={handleChange}
+                                        className="bg-neutral-50 border border-neutral-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary transition-all cursor-pointer"
+                                    />
+                                </div>
+                            </>
+                        ) : (
+                            <div className="flex flex-col gap-2">
+                                <label className="text-sm font-bold text-neutral-600">Tanggal Kunjungan</label>
+                                <input
+                                    type="date"
+                                    name="tanggal"
+                                    required
+                                    value={formData.tanggal}
+                                    onChange={handleChange}
+                                    className="bg-neutral-50 border border-neutral-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary transition-all cursor-pointer"
+                                />
+                            </div>
+                        )}
                         <div className="flex flex-col gap-2">
                             <label className="text-sm font-medium text-neutral-600 ">Permintaan Khusus (Opsional)</label>
                             <input
@@ -277,10 +357,12 @@ export function BookingForm({ item, type }: BookingFormProps) {
                             <span className="text-neutral-500">Harga per malam/paket</span>
                             <span className="font-medium">{formatCurrency(subtotal)}</span>
                         </div>
-                        <div className="flex justify-between items-center text-sm">
-                            <span className="text-neutral-500">Pajak aplikasi (11%)</span>
-                            <span className="font-medium">{formatCurrency(pajak)}</span>
-                        </div>
+                        {(type === "villa" || type === "hotel-cabin") && (
+                            <div className="flex justify-between items-center text-sm">
+                                <span className="text-neutral-500">Durasi Menginap</span>
+                                <span className="font-medium">{nights} Malam</span>
+                            </div>
+                        )}
                     </div>
 
                     <div className="flex justify-between items-center pb-6 border-b border-neutral-100 ">
@@ -317,6 +399,45 @@ export function BookingForm({ item, type }: BookingFormProps) {
                     </p>
                 </div>
             </div>
+
+            {/* Login Popup Modal */}
+            {showLoginPopup && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-in fade-in duration-200">
+                    <div className="bg-white rounded-3xl p-8 max-w-sm w-full shadow-2xl relative animate-in zoom-in-95 duration-200">
+                        <button 
+                            onClick={() => setShowLoginPopup(false)}
+                            className="absolute right-6 top-6 text-neutral-400 hover:text-neutral-600 transition-colors"
+                        >
+                            <X size={24} />
+                        </button>
+
+                        <div className="text-center">
+                            <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                                <Lock className="text-primary" size={32} />
+                            </div>
+                            <h3 className="text-xl font-bold text-foreground mb-2">Simpan Pesanan Kamu</h3>
+                            <p className="text-neutral-500 text-sm mb-8 leading-relaxed">
+                                Login untuk menyimpan pesanan kamu agar dapat dilihat kembali di menu "Pesanan Saya".
+                            </p>
+
+                            <div className="flex flex-col gap-3">
+                                <button
+                                    onClick={() => signIn(undefined, { callbackUrl: window.location.href })}
+                                    className="w-full bg-primary text-white font-bold py-3.5 rounded-xl hover:scale-[1.02] transition-transform cursor-pointer"
+                                >
+                                    Login Sekarang
+                                </button>
+                                <button
+                                    onClick={proceedToPayment}
+                                    className="w-full bg-neutral-100 text-neutral-600 font-bold py-3.5 rounded-xl hover:bg-neutral-200 transition-colors cursor-pointer"
+                                >
+                                    Lewati (Lanjut Bayar)
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
 
         </div>
     );

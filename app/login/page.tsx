@@ -20,7 +20,7 @@ export default function LoginPage() {
 
     const handleGoogleLogin = async () => {
         setIsLoading(true);
-        await signIn("google", { callbackUrl: "/" });
+        await signIn("google", { callbackUrl: "/dashboard" });
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -38,7 +38,15 @@ export default function LoginPage() {
             if (result?.error) {
                 setError("Email atau password salah.");
             } else {
-                router.push("/admin");
+                // Get the user session to check the role
+                const response = await fetch("/api/auth/session");
+                const session = await response.json();
+                
+                if (session?.user?.role === "admin") {
+                    router.push("/admin");
+                } else {
+                    router.push("/dashboard");
+                }
                 router.refresh();
             }
         } catch (err) {

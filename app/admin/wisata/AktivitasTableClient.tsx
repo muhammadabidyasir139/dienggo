@@ -6,7 +6,7 @@ import Image from "next/image";
 import { Pencil, Trash2 } from "lucide-react";
 import DataTable from "@/components/admin/DataTable";
 import DeleteDialog from "@/components/admin/DeleteDialog";
-import { deleteAktivitas } from "@/app/admin/actions/aktivitas";
+import { deleteAktivitas } from "@/app/admin/actions/wisata";
 
 export default function AktivitasTableClient({ data }: { data: any[] }) {
     const [deleteId, setDeleteId] = useState<string | null>(null);
@@ -41,29 +41,22 @@ export default function AktivitasTableClient({ data }: { data: any[] }) {
                     </div>
                     <div>
                         <p className="font-medium text-slate-900">{item.nama}</p>
-                        <p className="text-xs text-slate-500">{item.lokasi}</p>
+                        <p className="text-xs text-slate-500 line-clamp-1 max-w-xs">{item.isi || "Tidak ada konten"}</p>
                     </div>
                 </div>
             ),
         },
         {
-            header: "Harga Tiket",
-            accessorKey: "harga",
-            cell: (item: any) => (
-                <span>{item.harga === 0 ? "Gratis" : `Rp ${(item.harga || 0).toLocaleString("id-ID")}`}</span>
-            ),
-        },
-        {
-            header: "Status",
+            header: "Highlight",
             accessorKey: "isActive",
             cell: (item: any) => (
                 <span
                     className={`px-2.5 py-1 text-xs font-medium border rounded-full ${item.isActive
-                            ? "bg-green-100 text-green-700 border-green-200"
+                            ? "bg-amber-100 text-amber-700 border-amber-200"
                             : "bg-slate-100 text-slate-700 border-slate-200"
                         }`}
                 >
-                    {item.isActive ? "Aktif" : "Nonaktif"}
+                    {item.isActive ? "Highlighted" : "Biasa"}
                 </span>
             ),
         },
@@ -72,7 +65,7 @@ export default function AktivitasTableClient({ data }: { data: any[] }) {
     const actions = (item: any) => (
         <>
             <Link
-                href={`/admin/aktivitas/${item.id}/edit`}
+                href={`/admin/wisata/${item.id}/edit`}
                 className="inline-flex p-2 text-slate-500 hover:text-amber-600 hover:bg-amber-50 rounded-lg transition-colors"
                 title="Edit"
             >

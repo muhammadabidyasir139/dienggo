@@ -14,6 +14,11 @@ export async function getVillaById(id: string) {
     return result[0];
 }
 
+export async function getVillaBySlug(slug: string) {
+    const result = await db.select().from(villas).where(eq(villas.slug, slug));
+    return result[0];
+}
+
 export async function createVilla(data: any) {
     try {
         const [newVilla] = await db.insert(villas).values(data).returning();

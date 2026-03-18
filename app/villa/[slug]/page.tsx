@@ -15,8 +15,7 @@ import {
 import { Navbar } from "@/components/Navbar";
 import { BentoGrid, BentoCard } from "@/components/BentoGrid";
 import { formatCurrency } from "@/lib/utils";
-import fs from "fs/promises";
-import path from "path";
+import { getVillaBySlug as fetchVillaBySlug } from "@/app/admin/actions/villa";
 
 // Icon mapping helper (extended)
 const facilityIcons: Record<string, React.ReactNode> = {
@@ -31,14 +30,12 @@ const facilityIcons: Record<string, React.ReactNode> = {
 };
 
 async function getVillaBySlug(slug: string) {
-  const filePath = path.join(process.cwd(), "data", "villas.json");
-  const jsonData = await fs.readFile(filePath, "utf-8");
-  const villas = JSON.parse(jsonData);
-  return (
-    villas.find(
-      (v: { slug: string; [key: string]: unknown }) => v.slug === slug,
-    ) || null
-  );
+  const villa = await fetchVillaBySlug(slug);
+  if (!villa) return null;
+  
+  // Transform to match template expectation (camelCase database fields)
+  // The template already uses snake_case, but I'll update it to camelCase below.
+  return villa;
 }
 
 export default async function VillaDetailPage({
@@ -67,7 +64,7 @@ export default async function VillaDetailPage({
             className="relative overflow-hidden p-0 h-[400px] md:h-auto group"
           >
             <Image
-              src={villa.foto_utama}
+              src={villa.fotoUtama || ""}
               alt={villa.nama}
               fill
               className="object-cover transition-transform duration-700 group-hover:scale-105"
@@ -81,7 +78,7 @@ export default async function VillaDetailPage({
             className="relative overflow-hidden p-0 h-[200px] md:h-auto group hidden md:block"
           >
             <Image
-              src={villa.galeri[0]}
+              src={((villa.galeri as string[]) || [])[0] || villa.fotoUtama || ""}
               alt={`${villa.nama} gallery 1`}
               fill
               className="object-cover transition-transform duration-500 group-hover:scale-110"
@@ -94,15 +91,15 @@ export default async function VillaDetailPage({
             className="relative overflow-hidden p-0 h-[200px] md:h-auto group hidden md:block"
           >
             <Image
-              src={villa.galeri[1] || villa.galeri[0]}
+              src={((villa.galeri as string[]) || [])[1] || ((villa.galeri as string[]) || [])[0] || villa.fotoUtama || ""}
               alt={`${villa.nama} gallery 2`}
               fill
               className="object-cover transition-transform duration-500 group-hover:scale-110"
             />
-            {villa.galeri.length > 2 && (
+            {((villa.galeri as string[]) || []).length > 2 && (
               <div className="absolute inset-0 bg-black/40 flex items-center justify-center cursor-pointer hover:bg-black/50 transition-colors">
                 <span className="text-white font-bold text-xl">
-                  +{villa.galeri.length - 2} Foto
+                  +{((villa.galeri as string[]) || []).length - 2} Foto
                 </span>
               </div>
             )}
@@ -146,7 +143,7 @@ export default async function VillaDetailPage({
               Fasilitas Utama
             </h3>
             <div className="grid grid-cols-2 gap-3">
-              {villa.fasilitas_utama.map((fas: string, i: number) => (
+              {((villa.fasilitasUtama as string[]) || []).map((fas: string, i: number) => (
                 <div
                   key={i}
                   className="flex items-center gap-2 text-sm font-medium text-neutral-700"
@@ -164,7 +161,7 @@ export default async function VillaDetailPage({
           <BentoCard colSpan={2}>
             <h3 className="text-lg font-bold mb-3">Tentang Villa Ini</h3>
             <p className="text-neutral-600 leading-relaxed mb-6">
-              {villa.deskripsi}
+              {villa.deskripsi || "Tidak ada deskripsi tersedia."}
             </p>
 
             <div className="flex flex-col sm:flex-row items-center gap-4 bg-neutral-50 p-4 rounded-2xl border border-neutral-100">
@@ -173,10 +170,10 @@ export default async function VillaDetailPage({
               </div>
               <div className="flex-1 text-center sm:text-left">
                 <p className="font-bold text-foreground">Lokasi Akomodasi</p>
-                <p className="text-sm text-neutral-500">{villa.lokasi}</p>
+                <p className="text-sm text-neutral-500">{villa.lokasi || "Lokasi belum ditentukan"}</p>
               </div>
               <a
-                href={villa.koordinat}
+                href={villa.koordinat || "#"}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full sm:w-auto px-6 py-2.5 bg-white text-primary font-bold rounded-xl border border-neutral-200 hover:bg-neutral-50 transition text-center"

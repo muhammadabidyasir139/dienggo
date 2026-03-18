@@ -8,7 +8,18 @@ import Image from "next/image";
 import { getJeeps } from "@/app/admin/actions/jeep";
 
 export default async function JeepListingPage() {
-  const jeeps = await getJeeps();
+  const jeepsResponse = await getJeeps();
+
+  const jeeps = jeepsResponse.map(v => ({
+    id: v.id,
+    slug: v.slug,
+    nama: v.nama,
+    harga: v.harga,
+    maksOrang: v.maksOrang || 0,
+    durasi: v.durasi || "",
+    destinasiCount: v.destinasiCount || 0,
+    fotoUtama: v.fotoUtama || "",
+  }));
 
   return (
     <main className="min-h-screen bg-background pb-20">

@@ -10,6 +10,8 @@ export const users = pgTable("users", {
     email: text("email").unique().notNull(),
     password: text("password"),
     name: text("name").notNull(),
+    phone: text("phone"),
+    image: text("image"),
     role: text("role").default("customer"),
     createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow(),

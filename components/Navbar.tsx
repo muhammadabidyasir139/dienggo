@@ -117,7 +117,7 @@ export function Navbar() {
                                         <p className="text-xs text-neutral-400 truncate">{session.user.email}</p>
                                     </div>
                                     <Link
-                                        href="/pesanan"
+                                        href="/dashboard/pesanan"
                                         onClick={() => setUserMenuOpen(false)}
                                         className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-neutral-700 hover:bg-neutral-50 transition-colors"
                                     >
@@ -125,7 +125,7 @@ export function Navbar() {
                                         Pesanan Saya
                                     </Link>
                                     <button
-                                        onClick={() => { setUserMenuOpen(false); signOut({ callbackUrl: "/" }); }}
+                                        onClick={() => { setUserMenuOpen(false); signOut({ callbackUrl: "/villa" }); }}
                                         className="w-full flex items-center gap-3 px-4 py-3 text-sm font-medium text-red-600 hover:bg-red-50 transition-colors cursor-pointer"
                                     >
                                         <LogOut size={16} />
@@ -169,7 +169,7 @@ export function Navbar() {
 
                     {session?.user && (
                         <Link
-                            href="/pesanan"
+                            href="/dashboard/pesanan"
                             onClick={() => setMobileMenuOpen(false)}
                             className="px-4 py-3 text-base font-medium text-neutral-800 hover:bg-neutral-50 rounded-lg flex items-center gap-3"
                         >
@@ -194,7 +194,7 @@ export function Navbar() {
                                 </div>
                             </div>
                             <button
-                                onClick={() => { setMobileMenuOpen(false); signOut({ callbackUrl: "/" }); }}
+                                onClick={() => { setMobileMenuOpen(false); signOut({ callbackUrl: "/villa" }); }}
                                 className="text-center rounded-lg bg-red-50 py-3 font-semibold text-red-600 cursor-pointer"
                             >
                                 Keluar

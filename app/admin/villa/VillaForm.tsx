@@ -2,20 +2,26 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Loader2, ArrowLeft, Save } from "lucide-react";
+import { Loader2, ArrowLeft, Save, Plus } from "lucide-react";
 import FormField from "@/components/admin/FormField";
 import ImageUploader from "@/components/admin/ImageUploader";
 import Link from "next/link";
 import { createVilla, updateVilla } from "@/app/admin/actions/villa";
 
+import MultiSelect from "@/components/admin/MultiSelect";
+import FacilityModal from "@/components/admin/FacilityModal";
+
 interface VillaFormProps {
     initialData?: any;
     isEdit?: boolean;
+    facilities?: any[];
 }
 
-export default function VillaForm({ initialData, isEdit }: VillaFormProps) {
+export default function VillaForm({ initialData, isEdit, facilities = [] }: VillaFormProps) {
     const router = useRouter();
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [availableFacilities, setAvailableFacilities] = useState(facilities);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const [formData, setFormData] = useState({
         nama: initialData?.nama || "",
@@ -29,6 +35,7 @@ export default function VillaForm({ initialData, isEdit }: VillaFormProps) {
         maksTamu: initialData?.maksTamu || 2,
         kamarMandi: initialData?.kamarMandi || 1,
         isActive: initialData?.isActive ?? true,
+        fasilitasUtama: initialData?.fasilitasUtama || [],
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -195,6 +202,29 @@ export default function VillaForm({ initialData, isEdit }: VillaFormProps) {
                                 />
                             </div>
                         </div>
+
+                        <div className="space-y-1.5 font-medium">
+                            <div className="flex items-center justify-between">
+                                <label className="block text-sm font-medium text-slate-700">
+                                    Fasilitas Utama
+                                </label>
+                                <button
+                                    type="button"
+                                    onClick={() => setIsModalOpen(true)}
+                                    className="flex items-center gap-1 text-xs text-amber-600 hover:text-amber-700 font-semibold transition-colors bg-amber-50 px-2 py-1 rounded-md"
+                                >
+                                    <Plus className="w-3 h-3" />
+                                    Tambah Baru
+                                </button>
+                            </div>
+                            <MultiSelect
+                                label=""
+                                options={availableFacilities.map((f: any) => ({ id: f.id, name: f.name }))}
+                                selected={formData.fasilitasUtama}
+                                onChange={(selected) => setFormData((prev) => ({ ...prev, fasilitasUtama: selected }))}
+                                helpText="Pilih fasilitas yang tersedia untuk villa ini"
+                            />
+                        </div>
                     </div>
 
                     <div className="space-y-6 md:col-span-2">
@@ -231,6 +261,18 @@ export default function VillaForm({ initialData, isEdit }: VillaFormProps) {
                     </button>
                 </div>
             </form>
+
+            <FacilityModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                onSuccess={(newFacility) => {
+                    setAvailableFacilities((prev) => [newFacility, ...prev]);
+                    setFormData((prev) => ({
+                        ...prev,
+                        fasilitasUtama: [...prev.fasilitasUtama, newFacility.id],
+                    }));
+                }}
+            />
         </div>
     );
 }

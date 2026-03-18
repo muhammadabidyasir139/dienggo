@@ -8,18 +8,18 @@ export interface JeepProps {
     slug: string;
     nama: string;
     harga: number;
-    maks_orang: number;
+    maksOrang: number;
     durasi: string;
-    destinasi_count: number;
-    foto_utama: string;
+    destinasiCount: number;
+    fotoUtama: string;
 }
 
-export function JeepCard({ slug, nama, harga, maks_orang, durasi, destinasi_count, foto_utama }: JeepProps) {
+export function JeepCard({ slug, nama, harga, maksOrang, durasi, destinasiCount, fotoUtama }: JeepProps) {
     return (
         <Link href={`/jeep/${slug}`} className="group flex flex-col overflow-hidden rounded-2xl bg-white shadow-md border border-neutral-100 transition-all hover:shadow-xl cursor-pointer">
             <div className="relative h-56 w-full overflow-hidden bg-neutral-100">
                 <Image
-                    src={foto_utama}
+                    src={fotoUtama}
                     alt={nama}
                     fill
                     className="object-cover transition-transform duration-500 group-hover:scale-110"
@@ -27,7 +27,7 @@ export function JeepCard({ slug, nama, harga, maks_orang, durasi, destinasi_coun
                 />
                 <div className="absolute left-3 top-3 flex items-center gap-1 xl:gap-2">
                     <div className="rounded-full bg-white/90 px-2.5 py-1 text-xs font-bold text-neutral-800 shadow-sm backdrop-blur-sm flex items-center gap-1.5">
-                        <Users size={12} className="text-primary" /> Maks {maks_orang} Org
+                        <Users size={12} className="text-primary" /> Maks {maksOrang} Org
                     </div>
                 </div>
             </div>
@@ -42,7 +42,7 @@ export function JeepCard({ slug, nama, harga, maks_orang, durasi, destinasi_coun
                     </div>
                     <div className="flex items-center gap-2 text-sm text-neutral-600 ">
                         <Map size={16} className="text-primary " />
-                        <span>{destinasi_count} Destinasi Wisata</span>
+                        <span>{destinasiCount} Destinasi Wisata</span>
                     </div>
                 </div>
 

@@ -5,8 +5,7 @@ import { MapPin, Wifi, Flame, Droplet, Coffee, Car } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import { BentoGrid, BentoCard } from "@/components/BentoGrid";
 import { formatCurrency } from "@/lib/utils";
-import fs from "fs/promises";
-import path from "path";
+import { getCabinBySlug as fetchCabinBySlug } from "@/app/admin/actions/cabin";
 
 const facilityIcons: Record<string, React.ReactNode> = {
     "Perapian": <Flame size={16} className="text-primary dark:text-accent" />,
@@ -17,10 +16,8 @@ const facilityIcons: Record<string, React.ReactNode> = {
 };
 
 async function getCabinBySlug(slug: string) {
-    const filePath = path.join(process.cwd(), "data", "cabins.json");
-    const jsonData = await fs.readFile(filePath, "utf-8");
-    const cabins = JSON.parse(jsonData);
-    return cabins.find((c: { slug: string;[key: string]: unknown }) => c.slug === slug) || null;
+    const cabin = await fetchCabinBySlug(slug);
+    return cabin || null;
 }
 
 export default async function CabinDetailPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -40,7 +37,7 @@ export default async function CabinDetailPage({ params }: { params: Promise<{ sl
                     {/* GALERI - Foto Utama Cabin */}
                     <BentoCard colSpan={2} rowSpan={2} className="relative overflow-hidden p-0 h-[400px] md:h-auto group">
                         <Image
-                            src={cabin.foto_utama}
+                            src={cabin.fotoUtama || ""}
                             alt={cabin.nama}
                             fill
                             className="object-cover transition-transform duration-700 group-hover:scale-105"
@@ -51,7 +48,7 @@ export default async function CabinDetailPage({ params }: { params: Promise<{ sl
                     {/* GALERI - Foto Kecil 1 */}
                     <BentoCard colSpan={1} className="relative overflow-hidden p-0 h-[200px] md:h-auto group hidden md:block">
                         <Image
-                            src={cabin.galeri[0]}
+                            src={((cabin.galeri as string[]) || [])[0] || cabin.fotoUtama || ""}
                             alt={`${cabin.nama} gallery 1`}
                             fill
                             className="object-cover transition-transform duration-500 group-hover:scale-110"
@@ -61,7 +58,7 @@ export default async function CabinDetailPage({ params }: { params: Promise<{ sl
                     {/* GALERI - Foto Kecil 2 */}
                     <BentoCard colSpan={1} className="relative overflow-hidden p-0 h-[200px] md:h-auto group hidden md:block">
                         <Image
-                            src={cabin.galeri[1] || cabin.galeri[0]}
+                            src={((cabin.galeri as string[]) || [])[1] || ((cabin.galeri as string[]) || [])[0] || cabin.fotoUtama || ""}
                             alt={`${cabin.nama} gallery 2`}
                             fill
                             className="object-cover transition-transform duration-500 group-hover:scale-110"
@@ -97,7 +94,7 @@ export default async function CabinDetailPage({ params }: { params: Promise<{ sl
                             Fasilitas Cabin
                         </h3>
                         <div className="grid grid-cols-2 gap-3">
-                            {cabin.fasilitas_utama.map((fas: string, i: number) => (
+                            {((cabin.fasilitasUtama as string[]) || []).map((fas: string, i: number) => (
                                 <div key={i} className="flex items-center gap-2 text-sm font-medium text-neutral-700 dark:text-neutral-300">
                                     {facilityIcons[fas] || <span className="h-2 w-2 rounded-full bg-primary" />}
                                     {fas}
@@ -110,7 +107,7 @@ export default async function CabinDetailPage({ params }: { params: Promise<{ sl
                     <BentoCard colSpan={2}>
                         <h3 className="text-lg font-bold mb-3">Tentang Cabin Ini</h3>
                         <p className="text-neutral-600 dark:text-neutral-400 leading-relaxed mb-6">
-                            {cabin.deskripsi}
+                            {cabin.deskripsi || "Tidak ada deskripsi tersedia."}
                         </p>
 
                         <div className="flex flex-col sm:flex-row items-center gap-4 bg-neutral-50 dark:bg-slate-900/50 p-4 rounded-2xl border border-neutral-100 dark:border-slate-800">
@@ -119,10 +116,10 @@ export default async function CabinDetailPage({ params }: { params: Promise<{ sl
                             </div>
                             <div className="flex-1 text-center sm:text-left">
                                 <p className="font-bold text-foreground">Lokasi Cabin</p>
-                                <p className="text-sm text-neutral-500">{cabin.lokasi}</p>
+                                <p className="text-sm text-neutral-500">{cabin.lokasi || "Lokasi belum ditentukan"}</p>
                             </div>
                             <a
-                                href={cabin.koordinat}
+                                href={cabin.koordinat || "#"}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="w-full sm:w-auto px-6 py-2.5 bg-white dark:bg-slate-800 text-primary dark:text-white font-bold rounded-xl border border-neutral-200 dark:border-slate-700 hover:bg-neutral-50 dark:hover:bg-slate-700 transition text-center"

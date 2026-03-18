@@ -1,13 +1,14 @@
 import AktivitasForm from "../../AktivitasForm";
-import { getAktivitasById } from "@/app/admin/actions/aktivitas";
+import { getAktivitasById } from "@/app/admin/actions/wisata";
 import { notFound } from "next/navigation";
 
 export default async function EditAktivitasPage({
     params,
 }: {
-    params: { id: string };
+    params: Promise<{ id: string }>;
 }) {
-    const aktivitas = await getAktivitasById(params.id);
+    const { id } = await params;
+    const aktivitas = await getAktivitasById(id);
 
     if (!aktivitas) {
         notFound();

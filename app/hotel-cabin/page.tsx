@@ -5,17 +5,23 @@ import { CabinCard, CabinProps } from "@/components/CabinCard";
 import { GridSkeleton } from "@/components/CardSkeleton";
 import { Suspense } from "react";
 import Image from "next/image";
-import fs from "fs/promises";
-import path from "path";
-
-async function getCabins(): Promise<CabinProps[]> {
-    const filePath = path.join(process.cwd(), "data", "cabins.json");
-    const jsonData = await fs.readFile(filePath, "utf-8");
-    return JSON.parse(jsonData);
-}
+import { getCabins } from "@/app/admin/actions/cabin";
 
 export default async function CabinListingPage() {
-    const cabins = await getCabins();
+    const cabinsResponse = await getCabins();
+    
+    // Transform data to match CabinProps
+    const cabins = cabinsResponse.map(v => ({
+        id: v.id,
+        slug: v.slug,
+        nama: v.nama,
+        harga: v.harga,
+        rating: Number(v.rating) || 0,
+        ulasan: v.ulasan || 0,
+        lokasi: v.lokasi || "",
+        fasilitasUtama: (v.fasilitasUtama as string[]) || [],
+        fotoUtama: v.fotoUtama || "",
+    }));
 
     return (
         <main className="min-h-screen bg-background pb-20">

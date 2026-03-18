@@ -5,9 +5,10 @@ import { notFound } from "next/navigation";
 export default async function EditFacilityPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const facility = await getFacilityById(params.id);
+  const { id } = await params;
+  const facility = await getFacilityById(id);
 
   if (!facility) {
     notFound();
