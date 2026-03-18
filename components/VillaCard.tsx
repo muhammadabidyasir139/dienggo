@@ -29,7 +29,7 @@ export function VillaCard({ slug, nama, harga, rating, ulasan, lokasi, fotoUtama
         <Link href={`/villa/${slug}`} className="group flex flex-col overflow-hidden rounded-2xl bg-white shadow-md border border-neutral-100 transition-all hover:shadow-xl cursor-pointer">
             <div className="relative h-56 w-full overflow-hidden bg-neutral-100">
                 <Image
-                    src={fotoUtama}
+                    src={fotoUtama || "/placeholder-villa.jpg"}
                     alt={nama}
                     fill
                     className="object-cover transition-transform duration-500 group-hover:scale-110"

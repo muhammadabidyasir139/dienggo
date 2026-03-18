@@ -7,9 +7,14 @@ import * as relations from "./schema/relations";
 
 const connectionString = process.env.DATABASE_URL!;
 
+// Supabase always requires SSL; neon.tech uses rejectUnauthorized: false
+const sslConfig = connectionString.includes('neon.tech')
+    ? { rejectUnauthorized: false }
+    : "require";
+
 export const client = postgres(connectionString, {
     prepare: false,
-    ssl: connectionString.includes('neon.tech') ? { rejectUnauthorized: false } : (process.env.NODE_ENV === 'production' ? "require" : false),
+    ssl: sslConfig,
     max: 1, // Limit connections to prevent "MaxClients" errors on restricted plans
 });
 
