@@ -6,8 +6,10 @@ import { GridSkeleton } from "@/components/CardSkeleton";
 import { Suspense } from "react";
 import Image from "next/image";
 import { getJeeps } from "@/app/admin/actions/jeep";
+import { getTranslations } from "next-intl/server";
 
 export default async function JeepListingPage() {
+  const t = await getTranslations("Jeep");
   const jeepsResponse = await getJeeps();
 
   const jeeps = jeepsResponse.map(v => ({
@@ -37,10 +39,10 @@ export default async function JeepListingPage() {
 
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
           <h1 className="text-3xl font-black tracking-tight text-white md:text-5xl lg:text-6xl drop-shadow-lg">
-            Jelajahi Dieng dengan Jeep Petualang
+            {t("hero_title")}
           </h1>
           <p className="mt-4 text-sm font-medium text-white/90 md:text-lg">
-            Taklukkan medan ekstrem, temukan permata tersembunyi.
+            {t("hero_subtitle")}
           </p>
         </div>
 
@@ -50,11 +52,11 @@ export default async function JeepListingPage() {
 
       {/* Main Content */}
       <section className="mx-auto mt-20 max-w-7xl px-4 sm:px-6 lg:px-8 mt-24 md:mt-32">
-        <PromoBanner text="Paket Sunrise Prau – Mulai 350K/orang!" />
+        <PromoBanner text={t("promo_banner")} />
 
         <div className="mt-12">
           <h2 className="text-2xl font-bold text-foreground mb-6">
-            Pilihan Paket Wisata Jeep
+            {t("favorite_jeeps")}
           </h2>
           <Suspense fallback={<GridSkeleton />}>
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">

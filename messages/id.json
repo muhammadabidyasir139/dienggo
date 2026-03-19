@@ -24,6 +24,71 @@
     "book_now": "Pesan Sekarang",
     "view_details": "Lihat Detail",
     "view_map": "Lihat Peta",
-    "no_results": "Oops! Tidak ada data yang cocok. Coba kata kunci lain."
+    "no_results": "Oops! Tidak ada data yang cocok. Coba kata kunci lain.",
+    "starting_from": "Mulai dari",
+    "per_night": "/malam",
+    "reviews": "ulasan",
+    "main_facilities": "Fasilitas Utama",
+    "about_villa": "Tentang Villa Ini",
+    "about_cabin": "Tentang Cabin Ini",
+    "no_description": "Tidak ada deskripsi tersedia.",
+    "accommodation_location": "Lokasi Akomodasi",
+    "location_not_set": "Lokasi belum ditentukan",
+    "want_to_stay": "Ingin menginap di sini?",
+    "select_dates": "Tentukan tanggal check-in dan check-out untuk melihat ketersediaan kamar.",
+    "continue_booking": "Lanjutkan Pemesanan",
+    "contact_admin": "Hubungi Admin",
+    "book": "Pesan",
+    "book_cabin": "Pesan Cabin Ini",
+    "book_ticket": "Pesan Tiket / Tour",
+    "book_ticket_short": "Pesan Tiket",
+    "duration": "Durasi",
+    "max_people": "Maksimum {count} Orang",
+    "tourist_destinations": "Destinasi Wisata",
+    "package_includes": "Isi Paket",
+    "policies": "Kebijakan & Syarat Ketentuan",
+    "total_jeep_cost": "Total Biaya Jeep",
+    "per_jeep": "/jeep",
+    "determine_date": "Tentukan tanggal mainmu dan pesan sekarang!",
+    "select_date": "Pilih Tanggal",
+    "change": "Ubah",
+    "written_by": "Ditulis oleh",
+    "latest_news": "Berita Terbaru"
+  },
+  "Villa": {
+    "hero_title": "Temukan Villa Terbaik di Dieng",
+    "hero_subtitle": "Hunian nyaman dengan pemandangan pegunungan yang menakjubkan.",
+    "promo_banner": "Diskon 20% untuk booking weekday!",
+    "favorite_villas": "Pilihan Villa Favorit"
+  },
+  "Cabin": {
+    "hero_title": "Nikmati Malam di Cabin Hangat Dieng",
+    "hero_subtitle": "Berpadu dengan alam, ditemani api unggun dan teh hangat.",
+    "promo_banner": "EarlyBird: Menginap 2 malam gratis 1 malam!",
+    "favorite_cabins": "Pilihan Cabin & Glamping"
+  },
+  "Jeep": {
+    "hero_title": "Jelajahi Dieng dengan Jeep Petualang",
+    "hero_subtitle": "Taklukkan medan ekstrem, temukan permata tersembunyi.",
+    "promo_banner": "Paket Sunrise Prau – Mulai 350K/orang!",
+    "favorite_jeeps": "Pilihan Paket Wisata Jeep"
+  },
+  "Aktivitas": {
+    "breadcrumb": "Dieng / Aktivitas",
+    "hero_title": "Aktivitas & Berita",
+    "hero_subtitle": "Info terkini seputar kegiatan, wisata, kuliner, dan budaya di Dataran Tinggi Dieng.",
+    "all_articles": "Semua Artikel",
+    "back_to_activities": "Kembali ke Aktivitas"
+  },
+  "Wisata": {
+    "breadcrumb": "Xperience / Dieng",
+    "hero_title": "Tempat wisata di Dieng",
+    "reviews_text": "(1,142.5K ulasan) · oleh pengguna Dienggo",
+    "language": "Bahasa",
+    "open_in_map": "Buka di Peta",
+    "experience_awaits": "Pengalaman yang menunggumu",
+    "fun_snippets": "Cuplikan Keseruan",
+    "tour_rundown": "Rundown Perjalanan",
+    "free": "Gratis"
   }
 }

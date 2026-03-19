@@ -17,6 +17,7 @@ import { BookingButton } from "@/components/BookingButton";
 import { formatCurrency } from "@/lib/utils";
 import fs from "fs/promises";
 import path from "path";
+import { getTranslations } from "next-intl/server";
 
 async function getWisataBySlug(slug: string) {
   const filePath = path.join(process.cwd(), "data", "wisata.json");
@@ -34,6 +35,8 @@ export default async function WisataDetailPage({
 }: {
   params: Promise<{ slug: string }>;
 }) {
+  const t = await getTranslations("Common");
+  const tWisata = await getTranslations("Wisata");
   const { slug } = await params;
   const wisata = await getWisataBySlug(slug);
 
@@ -101,11 +104,11 @@ export default async function WisataDetailPage({
                   ⭐ {wisata.rating} ({wisata.ulasan})
                 </span>
                 <span className="flex items-center gap-1.5">
-                  <Clock size={16} /> Durasi:{" "}
+                  <Clock size={16} /> {t("duration")}:{" "}
                   {wisata.durasi_wisata || wisata.durasi}
                 </span>
                 <span className="flex items-center gap-1.5">
-                  <Globe2 size={16} /> Bahasa: {wisata.bahasa}
+                  <Globe2 size={16} /> {tWisata("language")}: {wisata.bahasa}
                 </span>
                 <span className="flex items-center gap-1.5">
                   <Headset size={16} /> {wisata.kontak}
@@ -127,7 +130,7 @@ export default async function WisataDetailPage({
                 rel="noopener noreferrer"
                 className="w-full px-4 py-2 bg-white text-primary font-bold rounded-xl border border-neutral-200 hover:bg-neutral-50 text-center text-sm"
               >
-                Buka di Peta
+                {tWisata("open_in_map")}
               </a>
             </div>
           </BentoCard>
@@ -136,16 +139,16 @@ export default async function WisataDetailPage({
           <div className="md:col-span-2 flex flex-col gap-4 md:gap-6">
             <BentoCard>
               <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-                <span className="bg-primary/10 text-primary dark:bg-accent/20 dark:text-accent p-2 rounded-lg">
+                <span className="bg-primary/10 text-primary p-2 rounded-lg">
                   <Sparkles size={20} />
                 </span>
-                Pengalaman yang menunggumu
+                {tWisata("experience_awaits")}
               </h3>
               <ul className="flex flex-col gap-3">
                 {wisata.narasi?.map((item: string, i: number) => (
                   <li
                     key={i}
-                    className="flex items-start gap-3 text-neutral-700 dark:text-neutral-300"
+                    className="flex items-start gap-3 text-neutral-700"
                   >
                     <CheckCircle
                       className="text-green-500 shrink-0 mt-0.5"
@@ -158,12 +161,12 @@ export default async function WisataDetailPage({
             </BentoCard>
 
             <BentoCard>
-              <h3 className="text-xl font-bold mb-4">Cuplikan Keseruan</h3>
+              <h3 className="text-xl font-bold mb-4">{tWisata("fun_snippets")}</h3>
               <VideoSlider videos={wisata.video_reels} />
             </BentoCard>
 
             <BentoCard>
-              <h3 className="text-xl font-bold mb-6">Rundown Perjalanan</h3>
+              <h3 className="text-xl font-bold mb-6">{tWisata("tour_rundown")}</h3>
               <TourTimeline items={wisata.rundown} />
             </BentoCard>
           </div>
@@ -171,10 +174,10 @@ export default async function WisataDetailPage({
           {/* Kolom Kanan: Sticky Booking Area */}
           <div className="md:col-span-1 hidden md:block">
             <div className="sticky top-24 flex flex-col gap-4">
-              <BentoCard className="flex flex-col items-center text-center bg-gradient-to-b from-primary/5 to-transparent dark:from-slate-800/50">
-                <p className="text-neutral-500 font-medium mb-1">Mulai dari</p>
-                <h2 className="text-4xl font-black text-primary dark:text-accent mb-6">
-                  {wisata.harga === 0 ? "Gratis" : formatCurrency(wisata.harga)}
+              <BentoCard className="flex flex-col items-center text-center bg-gradient-to-b from-primary/5 to-transparent">
+                <p className="text-neutral-500 font-medium mb-1">{t("starting_from")}</p>
+                <h2 className="text-4xl font-black text-primary mb-6">
+                  {wisata.harga === 0 ? tWisata("free") : formatCurrency(wisata.harga)}
                 </h2>
 
                 <BookingButton
@@ -182,16 +185,16 @@ export default async function WisataDetailPage({
                   type="wisata"
                   className="w-full bg-primary text-white font-bold py-4 rounded-xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all"
                 >
-                  Pesan Tiket / Tour
+                  {t("book_ticket")}
                 </BookingButton>
 
                 <a
                   href={`https://wa.me/628123456789?text=Halo Admin, saya tertarik untuk memesan Tiket/Tour ${wisata.nama}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-3 w-full bg-white dark:bg-slate-800 text-primary dark:text-white border border-primary/20 font-bold py-3 rounded-xl text-center hover:bg-neutral-50 dark:hover:bg-slate-700 transition-colors"
+                  className="mt-3 w-full bg-white text-primary border border-primary/20 font-bold py-3 rounded-xl text-center hover:bg-neutral-50 transition-colors"
                 >
-                  Hubungi Admin
+                  {t("contact_admin")}
                 </a>
 
                 <p className="text-xs text-neutral-400 mt-4 leading-relaxed">
@@ -205,11 +208,11 @@ export default async function WisataDetailPage({
       </div>
 
       {/* Sticky Booking Bar for Mobile */}
-      <div className="fixed bottom-0 left-0 w-full md:hidden bg-white dark:bg-slate-900 border-t border-neutral-200 dark:border-slate-800 p-4 flex items-center justify-between z-50">
+      <div className="fixed bottom-0 left-0 w-full md:hidden bg-white border-t border-neutral-200 p-4 flex items-center justify-between z-50">
         <div>
-          <p className="text-xs font-semibold text-neutral-500">Mulai dari</p>
-          <p className="text-xl font-black text-primary dark:text-accent">
-            {wisata.harga === 0 ? "Gratis" : formatCurrency(wisata.harga)}
+          <p className="text-xs font-semibold text-neutral-500">{t("starting_from")}</p>
+          <p className="text-xl font-black text-primary">
+            {wisata.harga === 0 ? tWisata("free") : formatCurrency(wisata.harga)}
           </p>
         </div>
         <BookingButton
@@ -217,7 +220,7 @@ export default async function WisataDetailPage({
           type="wisata"
           className="bg-primary text-white font-bold px-8 py-3 rounded-xl"
         >
-          Pesan Tiket
+          {t("book_ticket_short")}
         </BookingButton>
       </div>
     </main>

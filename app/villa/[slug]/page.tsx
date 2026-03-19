@@ -32,6 +32,7 @@ const facilityIcons: Record<string, React.ReactNode> = {
 };
 
 import { getFacilities } from "@/app/admin/actions/facility";
+import { getTranslations } from "next-intl/server";
 
 async function getVillaBySlug(slug: string) {
   const villa = await fetchVillaBySlug(slug);
@@ -58,6 +59,7 @@ export default async function VillaDetailPage({
 }: {
   params: Promise<{ slug: string }>;
 }) {
+  const t = await getTranslations("Common");
   const { slug } = await params;
   const villa = await getVillaBySlug(slug);
 
@@ -73,10 +75,11 @@ export default async function VillaDetailPage({
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <BentoGrid>
           <BentoGallery
-            images={[
-              villa.fotoUtama,
-              ...((villa.galeri as string[]) || []),
-            ].filter(Boolean)}
+            images={
+              [villa.fotoUtama, ...((villa.galeri as string[]) || [])].filter(
+                Boolean,
+              ) as string[]
+            }
             title={villa.nama}
           />
 
@@ -91,18 +94,18 @@ export default async function VillaDetailPage({
                   <span className="flex items-center gap-1 text-sm bg-accent/20 text-accent px-2 py-0.5 rounded-full font-bold">
                     ⭐ {villa.rating}
                   </span>
-                  <span>({villa.ulasan} ulasan)</span>
+                  <span>({villa.ulasan} {t("reviews")})</span>
                 </div>
               </div>
               <div className="text-left md:text-right bg-primary/5 p-4 rounded-2xl">
                 <p className="text-sm text-neutral-500 font-medium mb-1">
-                  Mulai dari
+                  {t("starting_from")}
                 </p>
                 <p className="text-2xl font-black text-primary">
                   {formatCurrency(villa.harga)}
                   <span className="text-base font-normal text-neutral-500">
                     {" "}
-                    /malam
+                    {t("per_night")}
                   </span>
                 </p>
               </div>
@@ -115,7 +118,7 @@ export default async function VillaDetailPage({
               <span className="bg-primary/10 text-primary p-2 rounded-lg">
                 ✨
               </span>
-              Fasilitas Utama
+              {t("main_facilities")}
             </h3>
             <div className="grid grid-cols-2 gap-3">
               {((villa.fasilitasUtama as string[]) || []).map(
@@ -136,9 +139,9 @@ export default async function VillaDetailPage({
 
           {/* LOKASI & DESKRIPSI (Merged in layout visually) */}
           <BentoCard colSpan={2}>
-            <h3 className="text-lg font-bold mb-3">Tentang Villa Ini</h3>
+            <h3 className="text-lg font-bold mb-3">{t("about_villa")}</h3>
             <p className="text-neutral-600 leading-relaxed mb-6">
-              {villa.deskripsi || "Tidak ada deskripsi tersedia."}
+              {villa.deskripsi || t("no_description")}
             </p>
 
             <div className="flex flex-col sm:flex-row items-center gap-4 bg-neutral-50 p-4 rounded-2xl border border-neutral-100">
@@ -146,9 +149,9 @@ export default async function VillaDetailPage({
                 <MapPin className="text-primary" size={24} />
               </div>
               <div className="flex-1 text-center sm:text-left">
-                <p className="font-bold text-foreground">Lokasi Akomodasi</p>
+                <p className="font-bold text-foreground">{t("accommodation_location")}</p>
                 <p className="text-sm text-neutral-500">
-                  {villa.lokasi || "Lokasi belum ditentukan"}
+                  {villa.lokasi || t("location_not_set")}
                 </p>
               </div>
               <a
@@ -157,7 +160,7 @@ export default async function VillaDetailPage({
                 rel="noopener noreferrer"
                 className="w-full sm:w-auto px-6 py-2.5 bg-white text-primary font-bold rounded-xl border border-neutral-200 hover:bg-neutral-50 transition text-center"
               >
-                Lihat Peta
+                {t("view_map")}
               </a>
             </div>
           </BentoCard>
@@ -168,11 +171,10 @@ export default async function VillaDetailPage({
             className="flex flex-col justify-center bg-primary-light border border-primary/10"
           >
             <h3 className="text-xl font-bold mb-2 text-foreground">
-              Ingin menginap di sini?
+              {t("want_to_stay")}
             </h3>
             <p className="text-neutral-500 text-sm mb-6">
-              Tentukan tanggal check-in dan check-out untuk melihat ketersediaan
-              kamar.
+              {t("select_dates")}
             </p>
 
             <BookingButton
@@ -180,7 +182,7 @@ export default async function VillaDetailPage({
               type="villa"
               className="w-full bg-primary text-white font-black py-4 rounded-xl text-center hover:scale-[1.02] transition-transform shadow-lg shadow-primary/20 cursor-pointer"
             >
-              Lanjutkan Pemesanan
+              {t("continue_booking")}
             </BookingButton>
             <a
               href={`https://wa.me/628123456789?text=Halo Admin, saya tertarik untuk memesan Villa ${villa.nama}`}
@@ -188,7 +190,7 @@ export default async function VillaDetailPage({
               rel="noopener noreferrer"
               className="mt-3 w-full bg-white text-primary border border-primary/20 font-bold py-3 rounded-xl text-center hover:bg-neutral-50 transition-colors"
             >
-              Hubungi Admin
+              {t("contact_admin")}
             </a>
           </BentoCard>
         </BentoGrid>
@@ -197,7 +199,7 @@ export default async function VillaDetailPage({
       {/* Sticky Booking Bar for Mobile */}
       <div className="fixed bottom-0 left-0 w-full md:hidden bg-white border-t border-neutral-200 p-4 flex items-center justify-between z-50">
         <div>
-          <p className="text-xs font-semibold text-neutral-500">Total Harga</p>
+          <p className="text-xs font-semibold text-neutral-500">{t("starting_from")}</p>
           <p className="text-xl font-black text-primary">
             {formatCurrency(villa.harga)}
           </p>
@@ -207,7 +209,7 @@ export default async function VillaDetailPage({
           type="villa"
           className="bg-primary text-white font-bold px-8 py-3 rounded-xl transition-all hover:bg-primary/90 cursor-pointer"
         >
-          Pesan
+          {t("book")}
         </BookingButton>
       </div>
     </main>

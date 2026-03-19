@@ -24,6 +24,71 @@
     "book_now": "Book Now",
     "view_details": "View Details",
     "view_map": "View Map",
-    "no_results": "Oops! No matching data found. Try another keyword."
+    "no_results": "Oops! No matching data found. Try another keyword.",
+    "starting_from": "Starting from",
+    "per_night": "/night",
+    "reviews": "reviews",
+    "main_facilities": "Main Facilities",
+    "about_villa": "About This Villa",
+    "about_cabin": "About This Cabin",
+    "no_description": "No description available.",
+    "accommodation_location": "Accommodation Location",
+    "location_not_set": "Location not set",
+    "want_to_stay": "Want to stay here?",
+    "select_dates": "Select check-in and check-out dates to see room availability.",
+    "continue_booking": "Continue Booking",
+    "contact_admin": "Contact Admin",
+    "book": "Book",
+    "book_cabin": "Book This Cabin",
+    "book_ticket": "Book Ticket / Tour",
+    "book_ticket_short": "Book Ticket",
+    "duration": "Duration",
+    "max_people": "Maximum {count} People",
+    "tourist_destinations": "Tourist Destinations",
+    "package_includes": "Package Includes",
+    "policies": "Policies & Terms",
+    "total_jeep_cost": "Total Jeep Cost",
+    "per_jeep": "/jeep",
+    "determine_date": "Determine your play date and book now!",
+    "select_date": "Select Date",
+    "change": "Change",
+    "written_by": "Written by",
+    "latest_news": "Latest News"
+  },
+  "Villa": {
+    "hero_title": "Find the Best Villas in Dieng",
+    "hero_subtitle": "Comfortable stays with breathtaking mountain views.",
+    "promo_banner": "20% discount for weekday bookings!",
+    "favorite_villas": "Favorite Villa Picks"
+  },
+  "Cabin": {
+    "hero_title": "Enjoy the Night in Cozy Dieng Cabins",
+    "hero_subtitle": "Blend with nature, accompanied by a campfire and warm tea.",
+    "promo_banner": "EarlyBird: Stay 2 nights, get 1 night free!",
+    "favorite_cabins": "Cabin & Glamping Picks"
+  },
+  "Jeep": {
+    "hero_title": "Explore Dieng with Adventurous Jeeps",
+    "hero_subtitle": "Conquer extreme terrains, discover hidden gems.",
+    "promo_banner": "Sunrise Prau Package – Starting from 350K/pax!",
+    "favorite_jeeps": "Jeep Tour Package Picks"
+  },
+  "Aktivitas": {
+    "breadcrumb": "Dieng / Activities",
+    "hero_title": "Activities & News",
+    "hero_subtitle": "Latest info on activities, tourism, culinary, and culture in the Dieng Plateau.",
+    "all_articles": "All Articles",
+    "back_to_activities": "Back to Activities"
+  },
+  "Wisata": {
+    "breadcrumb": "Xperience / Dieng",
+    "hero_title": "Tourist Attractions in Dieng",
+    "reviews_text": "(1,142.5K reviews) · by Dienggo users",
+    "language": "Language",
+    "open_in_map": "Open in Map",
+    "experience_awaits": "Experience that awaits you",
+    "fun_snippets": "Fun Snippets",
+    "tour_rundown": "Tour Rundown",
+    "free": "Free"
   }
 }

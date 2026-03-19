@@ -3,6 +3,7 @@ import { AktivitasCard, AktivitasProps } from "@/components/AktivitasCard";
 import Image from "next/image";
 import fs from "fs/promises";
 import path from "path";
+import { getTranslations } from "next-intl/server";
 
 interface AktivitasData extends AktivitasProps {
     konten: string;
@@ -16,6 +17,7 @@ async function getAktivitas(): Promise<AktivitasData[]> {
 }
 
 export default async function AktivitasListingPage() {
+    const t = await getTranslations("Aktivitas");
     const aktivitasData = await getAktivitas();
 
     return (
@@ -34,20 +36,20 @@ export default async function AktivitasListingPage() {
 
                 <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
                     <p className="text-accent font-bold tracking-widest uppercase text-xs mb-3">
-                        Dieng / Aktivitas
+                        {t("breadcrumb")}
                     </p>
                     <h1 className="text-3xl font-black tracking-tight text-white md:text-5xl lg:text-6xl drop-shadow-lg">
-                        Aktivitas & Berita
+                        {t("hero_title")}
                     </h1>
                     <p className="mt-4 text-sm font-medium text-white/80 md:text-lg max-w-2xl">
-                        Info terkini seputar kegiatan, wisata, kuliner, dan budaya di Dataran Tinggi Dieng.
+                        {t("hero_subtitle")}
                     </p>
                 </div>
             </section>
 
             {/* Main Content - Grid */}
             <section className="mx-auto mt-12 max-w-7xl px-4 sm:px-6 lg:px-8">
-                <h2 className="text-2xl font-bold text-foreground mb-8">Semua Artikel</h2>
+                <h2 className="text-2xl font-bold text-foreground mb-8">{t("all_articles")}</h2>
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                     {aktivitasData.map((item) => (
                         <AktivitasCard key={item.id} {...item} />

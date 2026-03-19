@@ -7,8 +7,10 @@ import { Suspense } from "react";
 import Image from "next/image";
 import { getVillas } from "@/app/admin/actions/villa";
 import { getFacilities } from "@/app/admin/actions/facility";
+import { getTranslations } from "next-intl/server";
 
 export default async function VillaListingPage() {
+    const t = await getTranslations("Villa");
     const [villasResponse, facilitiesRaw] = await Promise.all([
         getVillas(),
         getFacilities()
@@ -48,10 +50,10 @@ export default async function VillaListingPage() {
 
                 <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
                     <h1 className="text-3xl font-black tracking-tight text-white md:text-5xl lg:text-6xl drop-shadow-lg">
-                        Temukan Villa Terbaik di Dieng
+                        {t("hero_title")}
                     </h1>
                     <p className="mt-4 text-sm font-medium text-white/90 md:text-lg">
-                        Hunian nyaman dengan pemandangan pegunungan yang menakjubkan.
+                        {t("hero_subtitle")}
                     </p>
                 </div>
 
@@ -61,10 +63,10 @@ export default async function VillaListingPage() {
 
             {/* Main Content */}
             <section className="mx-auto mt-20 max-w-7xl px-4 sm:px-6 lg:px-8 mt-24 md:mt-32">
-                <PromoBanner text="Diskon 20% untuk booking weekday!" />
+                <PromoBanner text={t("promo_banner")} />
 
                 <div className="mt-12">
-                    <h2 className="text-2xl font-bold text-foreground mb-6">Pilihan Villa Favorit</h2>
+                    <h2 className="text-2xl font-bold text-foreground mb-6">{t("favorite_villas")}</h2>
                     <Suspense fallback={<GridSkeleton />}>
                         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                             {villas.map((villa) => (

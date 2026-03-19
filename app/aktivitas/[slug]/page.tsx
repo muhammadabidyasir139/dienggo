@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { Calendar, User, ArrowLeft, Tag } from "lucide-react";
 import fs from "fs/promises";
 import path from "path";
+import { getTranslations } from "next-intl/server";
 
 interface AktivitasItem {
   id: string;
@@ -18,9 +19,9 @@ interface AktivitasItem {
   foto_utama: string;
 }
 
-function formatTanggal(dateStr: string): string {
+function formatTanggal(dateStr: string, locale: string): string {
   const date = new Date(dateStr);
-  return date.toLocaleDateString("id-ID", {
+  return date.toLocaleDateString(locale === "en" ? "en-US" : "id-ID", {
     day: "numeric",
     month: "long",
     year: "numeric",
@@ -38,6 +39,8 @@ export default async function AktivitasDetailPage({
 }: {
   params: Promise<{ slug: string }>;
 }) {
+  const t = await getTranslations("Common");
+  const tAktivitas = await getTranslations("Aktivitas");
   const { slug } = await params;
   const allAktivitas = await getAllAktivitas();
   const artikel = allAktivitas.find((a) => a.slug === slug);
@@ -79,7 +82,7 @@ export default async function AktivitasDetailPage({
             <div className="flex items-center gap-4 mt-4 text-white/70 text-sm">
               <span className="flex items-center gap-1.5">
                 <Calendar size={14} />
-                {formatTanggal(artikel.tanggal)}
+                {formatTanggal(artikel.tanggal, "id")}
               </span>
               <span className="flex items-center gap-1.5">
                 <User size={14} />
@@ -97,12 +100,12 @@ export default async function AktivitasDetailPage({
           className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline mb-8"
         >
           <ArrowLeft size={16} />
-          Kembali ke Aktivitas
+          {tAktivitas("back_to_activities")}
         </Link>
 
-        <div className="flex flex-col lg:flex-row gap-10">
-          {/* Article Content */}
-          <article className="flex-1 min-w-0">
+        <div className="flex flex-col lg:flex-row gap-12">
+          {/* Main Article */}
+          <article className="flex-1">
             <div className="prose prose-neutral max-w-none">
               {paragraphs.map((p, i) => (
                 <p
@@ -117,11 +120,7 @@ export default async function AktivitasDetailPage({
             {/* Share / CTA */}
             <div className="mt-10 pt-6 border-t border-neutral-200">
               <p className="text-sm text-neutral-500">
-                Ditulis oleh{" "}
-                <span className="font-bold text-foreground">
-                  {artikel.penulis}
-                </span>{" "}
-                · {formatTanggal(artikel.tanggal)}
+                {t("written_by")} <span className="font-bold text-foreground">{artikel.penulis}</span> · {formatTanggal(artikel.tanggal, "id")}
               </p>
             </div>
           </article>
@@ -131,9 +130,8 @@ export default async function AktivitasDetailPage({
             <div className="sticky top-20 bg-primary-light rounded-2xl border border-primary/20 shadow-sm p-5">
               <h3 className="text-base font-bold text-foreground mb-4 flex items-center gap-2">
                 <span className="w-1 h-5 bg-primary rounded-full"></span>
-                Berita Terbaru
+                {t("latest_news")}
               </h3>
-
               <div className="flex flex-col gap-4">
                 {latestArticles.map((item) => (
                   <Link
@@ -141,21 +139,20 @@ export default async function AktivitasDetailPage({
                     href={`/aktivitas/${item.slug}`}
                     className="group flex gap-3 items-start"
                   >
-                    <div className="relative w-16 h-16 rounded-lg overflow-hidden bg-neutral-100 shrink-0">
+                    <div className="relative w-16 h-16 rounded-xl overflow-hidden shrink-0">
                       <Image
                         src={item.foto_utama}
                         alt={item.judul}
                         fill
-                        className="object-cover transition-transform duration-300 group-hover:scale-110"
-                        sizes="64px"
+                        className="object-cover transition-transform duration-500 group-hover:scale-110"
                       />
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-semibold text-foreground line-clamp-2 group-hover:text-primary transition-colors leading-snug">
+                    <div>
+                      <h4 className="text-sm font-bold text-foreground line-clamp-2 group-hover:text-primary transition-colors">
                         {item.judul}
-                      </p>
-                      <p className="text-xs text-neutral-400 mt-1">
-                        {formatTanggal(item.tanggal)}
+                      </h4>
+                      <p className="text-xs text-neutral-500 mt-1">
+                        {formatTanggal(item.tanggal, "id")}
                       </p>
                     </div>
                   </Link>

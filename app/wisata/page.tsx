@@ -5,6 +5,7 @@ import { WisataClientWrapper } from "./WisataClientWrapper";
 import fs from "fs/promises";
 import path from "path";
 import Image from "next/image";
+import { getTranslations } from "next-intl/server";
 
 async function getWisata(): Promise<WisataProps[]> {
     const filePath = path.join(process.cwd(), "data", "wisata.json");
@@ -13,6 +14,7 @@ async function getWisata(): Promise<WisataProps[]> {
 }
 
 export default async function WisataListingPage() {
+    const t = await getTranslations("Wisata");
     const wisataData = await getWisata();
 
     return (
@@ -30,12 +32,12 @@ export default async function WisataListingPage() {
                 />
 
                 <div className="relative z-10 flex flex-col items-center justify-center text-center px-4 pb-12 w-full h-full pt-16">
-                    <p className="text-accent font-bold tracking-widest uppercase text-xs mb-2">Xperience / Dieng</p>
+                    <p className="text-accent font-bold tracking-widest uppercase text-xs mb-2">{t("breadcrumb")}</p>
                     <h1 className="text-3xl font-black tracking-tight text-white md:text-5xl">
-                        Tempat wisata di Dieng
+                        {t("hero_title")}
                     </h1>
                     <p className="mt-3 text-sm font-medium text-white flex items-center gap-2 bg-black/20 backdrop-blur-sm px-4 py-1.5 rounded-full border border-white/10">
-                        <span className="text-accent drop-shadow-sm font-bold">⭐ 9.2</span> (1,142.5K ulasan) · oleh pengguna Dienggo
+                        <span className="text-accent drop-shadow-sm font-bold">⭐ 9.2</span> {t("reviews_text")}
                     </p>
 
                     <SearchBarWisata />
