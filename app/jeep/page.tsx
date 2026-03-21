@@ -37,11 +37,13 @@ export default async function JeepListingPage() {
           className="object-cover"
         />
 
+        <div className="absolute inset-0 bg-black/30" />
+
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
-          <h1 className="text-3xl font-black tracking-tight text-white md:text-5xl lg:text-6xl drop-shadow-lg">
+          <h1 className="text-3xl font-black tracking-tight text-white md:text-5xl lg:text-6xl drop-shadow-lg max-w-4xl">
             {t("hero_title")}
           </h1>
-          <p className="mt-4 text-sm font-medium text-white/90 md:text-lg">
+          <p className="mt-4 text-sm font-medium text-white/90 md:text-lg lg:text-xl drop-shadow-md">
             {t("hero_subtitle")}
           </p>
         </div>

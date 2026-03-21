@@ -6,7 +6,7 @@ import { CalendarIcon, MapPin, Search } from "lucide-react";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 
-export function SearchBarJeep() {
+export function SearchBarJeep({ className }: { className?: string }) {
     const [showDate, setShowDate] = useState(false);
     const [date, setDate] = useState<Date>();
     const [destination, setDestination] = useState("");
@@ -24,7 +24,7 @@ export function SearchBarJeep() {
     }, []);
 
     return (
-        <div className="absolute z-40 left-1/2 -bottom-8 w-[90%] max-w-4xl -translate-x-1/2 rounded-2xl bg-white p-2 text-foreground shadow-2xl md:-bottom-10 md:p-4">
+        <div className={`absolute z-[100] left-1/2 w-[90%] max-w-4xl -translate-x-1/2 rounded-2xl bg-white p-2 text-foreground shadow-2xl md:p-4 ${className || "-bottom-8 md:-bottom-10"}`}>
             <div className="grid grid-cols-1 gap-2 md:grid-cols-3 lg:gap-4">
 
                 {/* Destination */}

@@ -63,7 +63,7 @@ export function SearchBar({ className }: { className?: string }) {
   };
 
   return (
-    <div className={`absolute z-[100] left-1/2 w-[90%] max-w-4xl -translate-x-1/2 rounded-2xl bg-white p-2 text-neutral-900 shadow-2xl md:p-4 ${className || "bottom-0 translate-y-1/2"}`}>
+    <div className={`absolute z-[100] left-1/2 bottom-0 w-[90%] max-w-4xl -translate-x-1/2 translate-y-1/2 rounded-2xl bg-white p-2 text-neutral-900 shadow-2xl md:p-4 ${className || ""}`}>
       <div className="grid grid-cols-1 gap-2 md:grid-cols-3 lg:gap-4">
         {/* Check In */}
         <div

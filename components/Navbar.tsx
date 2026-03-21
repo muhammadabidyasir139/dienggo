@@ -60,7 +60,7 @@ export function Navbar() {
     const userInitial = session?.user?.name?.[0]?.toUpperCase() || "U";
 
     return (
-        <header ref={headerRef} className={`fixed top-0 z-50 w-full transition-all duration-300 ${navBgClass}`}>
+        <header ref={headerRef} className={`fixed top-0 z-[120] w-full transition-all duration-300 ${navBgClass}`}>
             <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
 
                 {/* Logo */}

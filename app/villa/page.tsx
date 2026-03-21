@@ -41,7 +41,7 @@ export default async function VillaListingPage() {
       <Navbar />
 
       {/* Hero Section */}
-      <section className="relative h-[50vh] w-full bg-slate-900 overflow-hidden">
+      <section className="relative h-[50vh] w-full bg-slate-900">
         <Image
           src="/asset/Villa Ira Dieng.jpg"
           alt="Villa Hero"
@@ -62,7 +62,7 @@ export default async function VillaListingPage() {
         </div>
 
         {/* Floating Search Bar */}
-        <SearchBar className="z-40" />
+        <SearchBar />
       </section>
 
       {/* Main Content */}
