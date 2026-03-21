@@ -3,14 +3,16 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Pencil, Trash2 } from "lucide-react";
+import { Pencil, Trash2, Calendar } from "lucide-react";
 import DataTable from "@/components/admin/DataTable";
 import DeleteDialog from "@/components/admin/DeleteDialog";
-import { deleteCabin } from "@/app/admin/actions/cabin";
+import BookedDatesModal from "@/components/admin/BookedDatesModal";
+import { deleteCabin, updateCabin } from "@/app/admin/actions/cabin";
 
 export default function CabinTableClient({ data }: { data: any[] }) {
     const [deleteId, setDeleteId] = useState<string | null>(null);
     const [isDeleting, setIsDeleting] = useState(false);
+    const [bookedModalData, setBookedModalData] = useState<{ id: string, name: string, dates: string[] } | null>(null);
 
     const handleDelete = async () => {
         if (!deleteId) return;
@@ -69,18 +71,35 @@ export default function CabinTableClient({ data }: { data: any[] }) {
         },
     ];
 
+    const handleSaveBookedDates = async (dates: string[]) => {
+        if (!bookedModalData) return;
+        try {
+            await updateCabin(bookedModalData.id, { bookedDates: dates });
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    };
+
     const actions = (item: any) => (
         <>
+            <button
+                onClick={() => setBookedModalData({ id: item.id, name: item.nama, dates: item.bookedDates || [] })}
+                className="inline-flex p-2 text-slate-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors cursor-pointer"
+                title="Kelola Tanggal Booked"
+            >
+                <Calendar className="w-4 h-4" />
+            </button>
             <Link
                 href={`/admin/cabin/${item.id}/edit`}
-                className="inline-flex p-2 text-slate-500 hover:text-amber-600 hover:bg-amber-50 rounded-lg transition-colors"
+                className="inline-flex p-2 text-slate-500 hover:text-amber-600 hover:bg-amber-50 rounded-lg transition-colors cursor-pointer"
                 title="Edit"
             >
                 <Pencil className="w-4 h-4" />
             </Link>
             <button
                 onClick={() => setDeleteId(item.id)}
-                className="inline-flex p-2 text-slate-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                className="inline-flex p-2 text-slate-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
                 title="Hapus"
             >
                 <Trash2 className="w-4 h-4" />
@@ -99,6 +118,16 @@ export default function CabinTableClient({ data }: { data: any[] }) {
                 isDeleting={isDeleting}
                 onConfirm={handleDelete}
                 onCancel={() => setDeleteId(null)}
+            />
+
+            <BookedDatesModal
+                isOpen={!!bookedModalData}
+                onClose={() => setBookedModalData(null)}
+                itemId={bookedModalData?.id || ""}
+                itemType="cabin"
+                itemName={bookedModalData?.name || ""}
+                initialDates={bookedModalData?.dates || []}
+                onSave={handleSaveBookedDates}
             />
         </>
     );

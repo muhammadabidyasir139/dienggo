@@ -86,7 +86,7 @@ export default function BookingTableClient({ data }: { data: any[] }) {
                 <button
                     onClick={() => handleUpdateStatus(item.id, "Paid")}
                     disabled={isUpdating === item.id}
-                    className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-green-700 bg-green-50 hover:bg-green-100 border border-green-200 rounded-lg transition-colors disabled:opacity-50"
+                    className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-green-700 bg-green-50 hover:bg-green-100 border border-green-200 rounded-lg transition-colors cursor-pointer disabled:opacity-50"
                     title="Tandai Lunas"
                 >
                     <CheckCircle className="w-3.5 h-3.5" /> Lunas
@@ -97,7 +97,7 @@ export default function BookingTableClient({ data }: { data: any[] }) {
                 <button
                     onClick={() => handleUpdateStatus(item.id, "Cancelled")}
                     disabled={isUpdating === item.id}
-                    className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-red-700 bg-red-50 hover:bg-red-100 border border-red-200 rounded-lg transition-colors disabled:opacity-50"
+                    className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-red-700 bg-red-50 hover:bg-red-100 border border-red-200 rounded-lg transition-colors cursor-pointer disabled:opacity-50"
                     title="Batalkan Booking"
                 >
                     <XCircle className="w-3.5 h-3.5" /> Batal

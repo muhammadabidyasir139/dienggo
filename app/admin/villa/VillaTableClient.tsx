@@ -3,15 +3,17 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Pencil, Trash2 } from "lucide-react";
+import { Pencil, Trash2, Calendar } from "lucide-react";
 import DataTable from "@/components/admin/DataTable";
 import StatusBadge from "@/components/admin/StatusBadge";
 import DeleteDialog from "@/components/admin/DeleteDialog";
-import { deleteVilla } from "@/app/admin/actions/villa";
+import BookedDatesModal from "@/components/admin/BookedDatesModal";
+import { deleteVilla, updateVilla } from "@/app/admin/actions/villa";
 
 export default function VillaTableClient({ data }: { data: any[] }) {
     const [deleteId, setDeleteId] = useState<string | null>(null);
     const [isDeleting, setIsDeleting] = useState(false);
+    const [bookedModalData, setBookedModalData] = useState<{ id: string, name: string, dates: string[] } | null>(null);
 
     // In Next.js, refreshing the router will re-fetch Server Components
     const handleDelete = async () => {
@@ -71,18 +73,35 @@ export default function VillaTableClient({ data }: { data: any[] }) {
         },
     ];
 
+    const handleSaveBookedDates = async (dates: string[]) => {
+        if (!bookedModalData) return;
+        try {
+            await updateVilla(bookedModalData.id, { bookedDates: dates });
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    };
+
     const actions = (item: any) => (
         <>
+            <button
+                onClick={() => setBookedModalData({ id: item.id, name: item.nama, dates: item.bookedDates || [] })}
+                className="inline-flex p-2 text-slate-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors cursor-pointer"
+                title="Kelola Tanggal Booked"
+            >
+                <Calendar className="w-4 h-4" />
+            </button>
             <Link
                 href={`/admin/villa/${item.id}/edit`}
-                className="inline-flex p-2 text-slate-500 hover:text-amber-600 hover:bg-amber-50 rounded-lg transition-colors"
+                className="inline-flex p-2 text-slate-500 hover:text-amber-600 hover:bg-amber-50 rounded-lg transition-colors cursor-pointer"
                 title="Edit"
             >
                 <Pencil className="w-4 h-4" />
             </Link>
             <button
                 onClick={() => setDeleteId(item.id)}
-                className="inline-flex p-2 text-slate-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                className="inline-flex p-2 text-slate-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
                 title="Hapus"
             >
                 <Trash2 className="w-4 h-4" />
@@ -98,9 +117,19 @@ export default function VillaTableClient({ data }: { data: any[] }) {
                 isOpen={!!deleteId}
                 title="Hapus Villa"
                 description="Apakah Anda yakin ingin menghapus villa ini? Data wisata terdekat dan lain-lain di dalamnya juga akan terhapus. Tindakan ini tidak dapat dibatalkan."
-                isDeleting={isDeleting}
                 onConfirm={handleDelete}
                 onCancel={() => setDeleteId(null)}
+                isDeleting={isDeleting}
+            />
+
+            <BookedDatesModal
+                isOpen={!!bookedModalData}
+                onClose={() => setBookedModalData(null)}
+                itemId={bookedModalData?.id || ""}
+                itemType="villa"
+                itemName={bookedModalData?.name || ""}
+                initialDates={bookedModalData?.dates || []}
+                onSave={handleSaveBookedDates}
             />
         </>
     );

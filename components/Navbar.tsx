@@ -17,6 +17,7 @@ export function Navbar() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [userMenuOpen, setUserMenuOpen] = useState(false);
     const userMenuRef = useRef<HTMLDivElement>(null);
+    const headerRef = useRef<HTMLElement>(null);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -26,11 +27,14 @@ export function Navbar() {
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
-    // Close user menu on outside click
+    // Close menus on outside click
     useEffect(() => {
         const handleClickOutside = (e: MouseEvent) => {
             if (userMenuRef.current && !userMenuRef.current.contains(e.target as Node)) {
                 setUserMenuOpen(false);
+            }
+            if (headerRef.current && !headerRef.current.contains(e.target as Node)) {
+                setMobileMenuOpen(false);
             }
         };
         document.addEventListener("mousedown", handleClickOutside);
@@ -56,7 +60,7 @@ export function Navbar() {
     const userInitial = session?.user?.name?.[0]?.toUpperCase() || "U";
 
     return (
-        <header className={`fixed top-0 z-50 w-full transition-all duration-300 ${navBgClass}`}>
+        <header ref={headerRef} className={`fixed top-0 z-50 w-full transition-all duration-300 ${navBgClass}`}>
             <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
 
                 {/* Logo */}

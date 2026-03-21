@@ -18,13 +18,24 @@ const sslConfig = connectionString.includes("neon.tech")
   ? { rejectUnauthorized: false }
   : "require";
 
-const client = connectionString
-  ? postgres(connectionString, {
-      prepare: false,
-      ssl: sslConfig,
-      max: 1, // Limit connections to prevent "MaxClients" errors on restricted plans
-    })
-  : null;
+// Use a global variable to prevent multiple connections in development
+const globalForDb = global as unknown as {
+  client: postgres.Sql | undefined;
+};
+
+const client =
+  globalForDb.client ??
+  (connectionString
+    ? postgres(connectionString, {
+        prepare: false,
+        ssl: sslConfig,
+        max: 1, // Stay at 1 for Supabase Session mode to avoid "MaxClientsInSessionMode" error
+      })
+    : null);
+
+if (process.env.NODE_ENV !== "production") {
+  globalForDb.client = client as postgres.Sql;
+}
 
 export const db = drizzle(client as any, {
   schema: { ...schema, ...relations },

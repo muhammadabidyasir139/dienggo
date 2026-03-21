@@ -35,7 +35,7 @@ export default function DataTable<T>({ columns, data, actions }: DataTableProps<
                             </tr>
                         ) : (
                             data.map((item, i) => (
-                                <tr key={i} className="hover:bg-slate-50/50 transition-colors">
+                                <tr key={i} className="hover:bg-slate-50/50 hover:cursor-pointer transition-colors">
                                     {columns.map((col, j) => (
                                         <td key={j} className="px-6 py-4">
                                             {col.cell ? col.cell(item) : (item[col.accessorKey] as React.ReactNode)}

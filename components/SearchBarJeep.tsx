@@ -24,7 +24,7 @@ export function SearchBarJeep() {
     }, []);
 
     return (
-        <div className="absolute z-[100] left-1/2 -bottom-8 w-[90%] max-w-4xl -translate-x-1/2 rounded-2xl bg-white p-2 text-foreground shadow-2xl md:-bottom-10 md:p-4">
+        <div className="absolute z-40 left-1/2 -bottom-8 w-[90%] max-w-4xl -translate-x-1/2 rounded-2xl bg-white p-2 text-foreground shadow-2xl md:-bottom-10 md:p-4">
             <div className="grid grid-cols-1 gap-2 md:grid-cols-3 lg:gap-4">
 
                 {/* Destination */}
@@ -55,7 +55,7 @@ export function SearchBarJeep() {
                     </div>
                     {showDate && (
                         <div
-                            className="absolute top-[110%] left-0 z-[101] rounded-xl bg-white p-4 shadow-xl border text-neutral-800"
+                            className="absolute top-[110%] left-0 z-50 rounded-xl bg-white p-4 shadow-xl border text-neutral-800"
                             onClick={(e) => e.stopPropagation()}
                         >
                             <DayPicker

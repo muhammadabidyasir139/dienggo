@@ -83,14 +83,14 @@ export default function JeepTableClient({ data }: { data: any[] }) {
         <>
             <Link
                 href={`/admin/jeep/${item.id}/edit`}
-                className="inline-flex p-2 text-slate-500 hover:text-amber-600 hover:bg-amber-50 rounded-lg transition-colors"
+                className="inline-flex p-2 text-slate-500 hover:text-amber-600 hover:bg-amber-50 rounded-lg transition-colors cursor-pointer"
                 title="Edit"
             >
                 <Pencil className="w-4 h-4" />
             </Link>
             <button
                 onClick={() => setDeleteId(item.id)}
-                className="inline-flex p-2 text-slate-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                className="inline-flex p-2 text-slate-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
                 title="Hapus"
             >
                 <Trash2 className="w-4 h-4" />

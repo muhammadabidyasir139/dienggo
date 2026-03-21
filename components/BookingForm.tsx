@@ -1,12 +1,15 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { CreditCard, Wallet, Lock, CheckCircle2, Loader2 } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { CreditCard, Wallet, Lock, CheckCircle2, Loader2, Calendar as CalendarIcon } from "lucide-react";
 import Image from "next/image";
 import { formatCurrency } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { useSession, signIn } from "next-auth/react";
 import { X } from "lucide-react";
+import { format, startOfDay } from "date-fns";
+import { DayPicker } from "react-day-picker";
+import "react-day-picker/dist/style.css";
 
 declare global {
     interface Window {
@@ -37,6 +40,31 @@ export function BookingForm({ item, type }: BookingFormProps) {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
     const [paymentStatus, setPaymentStatus] = useState<"idle" | "success" | "pending" | "error">("idle");
+    const [showCheckInPicker, setShowCheckInPicker] = useState(false);
+    const [showCheckOutPicker, setShowCheckOutPicker] = useState(false);
+    const [showTanggalPicker, setShowTanggalPicker] = useState(false);
+
+    const checkInRef = useRef<HTMLDivElement>(null);
+    const checkOutRef = useRef<HTMLDivElement>(null);
+    const tanggalRef = useRef<HTMLDivElement>(null);
+
+    // Close on click outside
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (checkInRef.current && !checkInRef.current.contains(event.target as Node)) {
+                setShowCheckInPicker(false);
+            }
+            if (checkOutRef.current && !checkOutRef.current.contains(event.target as Node)) {
+                setShowCheckOutPicker(false);
+            }
+            if (tanggalRef.current && !tanggalRef.current.contains(event.target as Node)) {
+                setShowTanggalPicker(false);
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
+
     const [formData, setFormData] = useState({
         namaLengkap: "",
         email: "",
@@ -89,7 +117,120 @@ export function BookingForm({ item, type }: BookingFormProps) {
     const { data: session } = useSession();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+        const { name, value } = e.target;
+        
+        // Validate booked dates
+        if ((name === "checkIn" || name === "checkOut" || name === "tanggal") && value) {
+            const bookedDates = (item.bookedDates as string[]) || [];
+            if (bookedDates.includes(value)) {
+                alert(`Tanggal ${value} sudah dipesan. Silakan pilih tanggal lain.`);
+                return;
+            }
+            
+            // For checkOut, also validate dates between checkIn and checkOut
+            if (name === "checkOut" && formData.checkIn) {
+                const start = new Date(formData.checkIn);
+                const end = new Date(value);
+                
+                if (end <= start) {
+                    alert("Tanggal Check-out harus setelah tanggal Check-in.");
+                    return;
+                }
+                
+                // Check if any date in between is booked
+                let currentDate = new Date(start);
+                currentDate.setDate(currentDate.getDate() + 1); // Start checking from day after check-in
+                
+                while (currentDate < end) {
+                    const dateStr = currentDate.toISOString().split('T')[0];
+                    if (bookedDates.includes(dateStr)) {
+                        alert(`Ada tanggal yang sudah dipesan di antara ${formData.checkIn} dan ${value}. Silakan pilih rentang tanggal lain.`);
+                        return;
+                    }
+                    currentDate.setDate(currentDate.getDate() + 1);
+                }
+            }
+            
+            // For checkIn, if checkOut is already selected, validate the range
+            if (name === "checkIn" && formData.checkOut) {
+                const start = new Date(value);
+                const end = new Date(formData.checkOut);
+                
+                if (end <= start) {
+                    // Reset checkout if it's before or equal to new checkin
+                    setFormData((prev) => ({ ...prev, [name]: value, checkOut: "" }));
+                    return;
+                }
+                
+                // Check if any date in between is booked
+                let currentDate = new Date(start);
+                currentDate.setDate(currentDate.getDate() + 1);
+                
+                while (currentDate < end) {
+                    const dateStr = currentDate.toISOString().split('T')[0];
+                    if (bookedDates.includes(dateStr)) {
+                        alert(`Ada tanggal yang sudah dipesan di antara ${value} dan ${formData.checkOut}. Silakan pilih rentang tanggal lain.`);
+                        // Reset checkout
+                        setFormData((prev) => ({ ...prev, [name]: value, checkOut: "" }));
+                        return;
+                    }
+                    currentDate.setDate(currentDate.getDate() + 1);
+                }
+            }
+        }
+
+        setFormData((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const handleDateSelect = (name: string, date: Date | undefined) => {
+        if (!date) return;
+        const dateString = format(date, "yyyy-MM-dd");
+        
+        // Pass to handleChange to trigger the validations
+        handleChange({
+            target: { name, value: dateString }
+        } as unknown as React.ChangeEvent<HTMLInputElement>);
+
+        if (name === "checkIn") {
+            setShowCheckInPicker(false);
+            if (!formData.checkOut) {
+                setShowCheckOutPicker(true);
+            }
+        }
+        if (name === "checkOut") setShowCheckOutPicker(false);
+        if (name === "tanggal") setShowTanggalPicker(false);
+    };
+
+    const getDisabledDates = (type: "checkIn" | "checkOut" | "tanggal") => {
+        return (date: Date): boolean => {
+            // Disable past dates
+            if (startOfDay(date) < startOfDay(new Date())) return true;
+            
+            // Disable booked dates
+            const dateString = format(date, "yyyy-MM-dd");
+            if ((item.bookedDates as string[] || []).includes(dateString)) return true;
+            
+            // Custom logic for checkOut
+            if (type === "checkOut" && formData.checkIn) {
+                const minCheckOut = startOfDay(new Date(formData.checkIn));
+                minCheckOut.setDate(minCheckOut.getDate() + 1); // Minimum 1 night
+                if (startOfDay(date) < minCheckOut) return true;
+
+                // Disable any dates after the nearest booked date
+                if (startOfDay(date) >= minCheckOut) {
+                    let currentDate = new Date(formData.checkIn);
+                    currentDate.setDate(currentDate.getDate() + 1);
+                    while (currentDate < date) {
+                        if ((item.bookedDates as string[] || []).includes(format(currentDate, "yyyy-MM-dd"))) {
+                            return true;
+                        }
+                        currentDate.setDate(currentDate.getDate() + 1);
+                    }
+                }
+            }
+            
+            return false;
+        };
     };
 
     const handleSubmit = async () => {
@@ -231,40 +372,90 @@ export function BookingForm({ item, type }: BookingFormProps) {
                         </div>
                         {(type === "villa" || type === "hotel-cabin") ? (
                             <>
-                                <div className="flex flex-col gap-2">
+                                <div className="flex flex-col gap-2 relative" ref={checkInRef}>
                                     <label className="text-sm font-bold text-neutral-600">Tanggal Check-in</label>
-                                    <input
-                                        type="date"
-                                        name="checkIn"
-                                        required
-                                        value={formData.checkIn}
-                                        onChange={handleChange}
-                                        className="bg-neutral-50 border border-neutral-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary transition-all cursor-pointer"
-                                    />
+                                    <div
+                                        onClick={() => { setShowCheckInPicker(!showCheckInPicker); setShowCheckOutPicker(false); }}
+                                        className="bg-neutral-50 border border-neutral-200 rounded-xl px-4 py-3 focus-within:ring-2 focus-within:ring-primary transition-all cursor-pointer flex items-center justify-between"
+                                    >
+                                        <span className={formData.checkIn ? "text-neutral-900" : "text-neutral-400"}>
+                                            {formData.checkIn ? format(new Date(formData.checkIn), "dd/MM/yyyy") : "dd/mm/yyyy"}
+                                        </span>
+                                        <CalendarIcon size={20} className="text-neutral-500" />
+                                    </div>
+                                    {showCheckInPicker && (
+                                        <div className="absolute top-[100%] mt-2 left-0 z-50 rounded-xl bg-white p-4 shadow-xl border border-neutral-100">
+                                            <DayPicker
+                                                mode="single"
+                                                selected={formData.checkIn ? new Date(formData.checkIn) : undefined}
+                                                defaultMonth={formData.checkIn ? new Date(formData.checkIn) : new Date()}
+                                                onSelect={(date) => handleDateSelect("checkIn", date)}
+                                                disabled={getDisabledDates("checkIn")}
+                                            />
+                                        </div>
+                                    )}
                                 </div>
-                                <div className="flex flex-col gap-2">
+                                <div className="flex flex-col gap-2 relative" ref={checkOutRef}>
                                     <label className="text-sm font-bold text-neutral-600">Tanggal Check-out</label>
-                                    <input
-                                        type="date"
-                                        name="checkOut"
-                                        required
-                                        value={formData.checkOut}
-                                        onChange={handleChange}
-                                        className="bg-neutral-50 border border-neutral-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary transition-all cursor-pointer"
-                                    />
+                                    <div
+                                        onClick={() => { setShowCheckOutPicker(!showCheckOutPicker); setShowCheckInPicker(false); }}
+                                        className="bg-neutral-50 border border-neutral-200 rounded-xl px-4 py-3 focus-within:ring-2 focus-within:ring-primary transition-all cursor-pointer flex items-center justify-between"
+                                    >
+                                        <span className={formData.checkOut ? "text-neutral-900" : "text-neutral-400"}>
+                                            {formData.checkOut ? format(new Date(formData.checkOut), "dd/MM/yyyy") : "dd/mm/yyyy"}
+                                        </span>
+                                        <CalendarIcon size={20} className="text-neutral-500" />
+                                    </div>
+                                    {showCheckOutPicker && (
+                                        <div className="absolute top-[100%] mt-2 left-0 z-50 rounded-xl bg-white p-4 shadow-xl border border-neutral-100">
+                                            <DayPicker
+                                                mode="single"
+                                                selected={formData.checkOut ? new Date(formData.checkOut) : undefined}
+                                                defaultMonth={formData.checkOut ? new Date(formData.checkOut) : (formData.checkIn ? new Date(formData.checkIn) : new Date())}
+                                                onSelect={(date) => handleDateSelect("checkOut", date)}
+                                                disabled={getDisabledDates("checkOut")}
+                                            />
+                                        </div>
+                                    )}
                                 </div>
+                                {item.bookedDates && (item.bookedDates as string[]).length > 0 && (
+                                    <div className="col-span-1 md:col-span-2 mt-1 p-3 bg-amber-50 border border-amber-100 rounded-xl">
+                                        <p className="text-xs text-amber-800 font-medium flex items-center gap-1.5">
+                                            <span className="w-2 h-2 rounded-full bg-amber-500"></span>
+                                            Tanggal yang sudah dipesan (tidak tersedia):
+                                        </p>
+                                        <div className="flex flex-wrap gap-1.5 mt-2">
+                                            {(item.bookedDates as string[]).sort().map((date, i) => (
+                                                <span key={i} className="text-[10px] bg-white border border-amber-200 text-amber-700 px-2 py-0.5 rounded-md font-medium">
+                                                    {new Date(date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
                             </>
                         ) : (
-                            <div className="flex flex-col gap-2">
+                            <div className="flex flex-col gap-2 relative" ref={tanggalRef}>
                                 <label className="text-sm font-bold text-neutral-600">Tanggal Kunjungan</label>
-                                <input
-                                    type="date"
-                                    name="tanggal"
-                                    required
-                                    value={formData.tanggal}
-                                    onChange={handleChange}
-                                    className="bg-neutral-50 border border-neutral-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary transition-all cursor-pointer"
-                                />
+                                <div
+                                    onClick={() => setShowTanggalPicker(!showTanggalPicker)}
+                                    className="bg-neutral-50 border border-neutral-200 rounded-xl px-4 py-3 focus-within:ring-2 focus-within:ring-primary transition-all cursor-pointer flex items-center justify-between"
+                                >
+                                    <span className={formData.tanggal ? "text-neutral-900" : "text-neutral-400"}>
+                                        {formData.tanggal ? format(new Date(formData.tanggal), "dd/MM/yyyy") : "dd/mm/yyyy"}
+                                    </span>
+                                    <CalendarIcon size={20} className="text-neutral-500" />
+                                </div>
+                                {showTanggalPicker && (
+                                    <div className="absolute top-[100%] mt-2 left-0 z-50 rounded-xl bg-white p-4 shadow-xl border border-neutral-100">
+                                        <DayPicker
+                                            mode="single"
+                                            selected={formData.tanggal ? new Date(formData.tanggal) : undefined}
+                                            onSelect={(date) => handleDateSelect("tanggal", date)}
+                                            disabled={getDisabledDates("tanggal")}
+                                        />
+                                    </div>
+                                )}
                             </div>
                         )}
                         <div className="flex flex-col gap-2">
