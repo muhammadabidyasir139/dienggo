@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useEffect, useState, useRef } from "react";
 import { LangToggle } from "./LangToggle";
-import { Menu, X, User, ShoppingBag, LogOut, ChevronDown } from "lucide-react";
+import { Menu, X, User, ShoppingBag, LogOut, ChevronDown, Home } from "lucide-react";
 import { useSession, signOut } from "next-auth/react";
 
 export function Navbar() {

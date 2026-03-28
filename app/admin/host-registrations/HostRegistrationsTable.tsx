@@ -147,13 +147,12 @@ export default function HostRegistrationsTable({ data }: { data: any[] }) {
   );
 
   return (
-    <>
-      <DataTable
-        columns={columns}
-        data={data}
-        actions={actions}
-        searchPlaceholder="Cari pendaftaran..."
-      />
+        <>
+            <DataTable 
+                columns={columns} 
+                data={data} 
+                actions={actions}
+            />
 
       {/* Detail Modal */}
       {selectedReg && (
