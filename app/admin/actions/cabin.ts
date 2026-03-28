@@ -5,8 +5,30 @@ import { cabins } from "@/db/schema";
 import { eq, desc } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
-export async function getCabins() {
-    return await db.select().from(cabins).orderBy(desc(cabins.createdAt));
+export async function getCabins(filter?: { checkIn?: string; checkOut?: string }) {
+    let query = db.select().from(cabins).orderBy(desc(cabins.createdAt));
+    const allCabins = await query;
+
+    if (filter?.checkIn && filter?.checkOut) {
+        const start = new Date(filter.checkIn);
+        const end = new Date(filter.checkOut);
+        
+        // Generate array of dates in the range
+        const datesInRange: string[] = [];
+        let currentDate = new Date(start);
+        while (currentDate < end) {
+            datesInRange.push(currentDate.toISOString().split('T')[0]);
+            currentDate.setDate(currentDate.getDate() + 1);
+        }
+
+        return allCabins.filter(cabin => {
+            const booked = (cabin.bookedDates as string[]) || [];
+            // Cabin is available if NONE of the dates in range are in bookedDates
+            return !datesInRange.some(date => booked.includes(date));
+        });
+    }
+
+    return allCabins;
 }
 
 export async function getCabinById(id: string) {

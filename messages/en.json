@@ -5,7 +5,9 @@
     "jeep": "Jeep Tours",
     "aktivitas": "Activities",
     "wisata": "Activities",
-    "login": "Login"
+    "login": "Login",
+    "host_registration": "Become a Host",
+    "my_registrations": "My Submissions"
   },
   "Hero": {
     "villa_title": "Find the Best Villas in Dieng",
@@ -17,6 +19,7 @@
     "check_in": "Check-in",
     "check_out": "Check-out",
     "destination": "Destination",
+    "destination_placeholder": "e.g. Sikidang Crater",
     "date": "Date",
     "price_per_night": "/ night",
     "price_per_pax": "/ pax",
@@ -51,26 +54,27 @@
     "per_jeep": "/jeep",
     "determine_date": "Determine your play date and book now!",
     "select_date": "Select Date",
+    "select_date_range": "Please select check-in and check-out dates",
     "change": "Change",
     "written_by": "Written by",
     "latest_news": "Latest News"
   },
   "Villa": {
     "hero_title": "Find the Best Villas in Dieng",
-    "hero_subtitle": "Enjoy unforgettable vacation moments with cool vibes and stunning views.",
+    "hero_subtitle": "Enjoy unforgettable holiday moments with a cool atmosphere and stunning views.",
     "promo_banner": "20% discount for weekday bookings!",
     "favorite_villas": "Favorite Villa Picks"
   },
   "Cabin": {
-    "hero_title": "Enjoy the Night in Cozy Dieng Cabins",
-    "hero_subtitle": "Blend with nature, accompanied by a campfire and warm tea.",
+    "hero_title": "Unforgettable Stay Experience in Dieng",
+    "hero_subtitle": "Find the best cabin and glamping comfort with complete facilities.",
     "promo_banner": "EarlyBird: Stay 2 nights, get 1 night free!",
     "favorite_cabins": "Cabin & Glamping Picks"
   },
   "Jeep": {
-    "hero_title": "Explore Dieng with Adventurous Jeeps",
-    "hero_subtitle": "Conquer extreme terrains, discover hidden gems.",
-    "promo_banner": "Sunrise Prau Package – Starting from 350K/pax!",
+    "hero_title": "Exciting Adventure Around Dieng with Jeep",
+    "hero_subtitle": "Explore the beauty of Dieng nature with choice jeep fleets and experienced guides.",
+    "promo_banner": "EarlyBird: Stay 2 nights, get 1 night free!",
     "favorite_jeeps": "Jeep Tour Package Picks"
   },
   "Aktivitas": {

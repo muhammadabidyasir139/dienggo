@@ -27,6 +27,7 @@ export const villas = pgTable("villas", {
     galeri: jsonb("galeri").default([]),
     wisataTerdekat: jsonb("wisata_terdekat").default([]),
     bookedDates: jsonb("booked_dates").default([]),
+    whatsappOwner: text("whatsapp_owner"),
     isActive: boolean("is_active").default(true),
     createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow(),

@@ -5,7 +5,9 @@
     "jeep": "Wisata Jeep",
     "aktivitas": "Aktivitas",
     "wisata": "Wisata",
-    "login": "Masuk"
+    "login": "Masuk",
+    "host_registration": "Daftar Tuan Rumah",
+    "my_registrations": "Pengajuan Saya"
   },
   "Hero": {
     "villa_title": "Temukan Villa Terbaik di Dieng",
@@ -17,6 +19,7 @@
     "check_in": "Check-in",
     "check_out": "Check-out",
     "destination": "Destinasi",
+    "destination_placeholder": "Cth: Kawah Sikidang",
     "date": "Tanggal",
     "price_per_night": "/ malam",
     "price_per_pax": "/ orang",
@@ -51,6 +54,7 @@
     "per_jeep": "/jeep",
     "determine_date": "Tentukan tanggal mainmu dan pesan sekarang!",
     "select_date": "Pilih Tanggal",
+    "select_date_range": "Silakan pilih tanggal check-in dan check-out",
     "change": "Ubah",
     "written_by": "Ditulis oleh",
     "latest_news": "Berita Terbaru"
@@ -62,14 +66,14 @@
     "favorite_villas": "Pilihan Villa Favorit"
   },
   "Cabin": {
-    "hero_title": "Nikmati Malam di Cabin Hangat Dieng",
-    "hero_subtitle": "Berpadu dengan alam, ditemani api unggun dan teh hangat.",
+    "hero_title": "Pengalaman Menginap Tak Terlupakan di Dieng",
+    "hero_subtitle": "Temukan kenyamanan cabin dan glamping terbaik dengan fasilitas lengkap.",
     "promo_banner": "EarlyBird: Menginap 2 malam gratis 1 malam!",
     "favorite_cabins": "Pilihan Cabin & Glamping"
   },
   "Jeep": {
-    "hero_title": "Jelajahi Dieng dengan Jeep Petualang",
-    "hero_subtitle": "Taklukkan medan ekstrem, temukan permata tersembunyi.",
+    "hero_title": "Petualangan Seru Keliling Dieng dengan Jeep",
+    "hero_subtitle": "Jelajahi keindahan alam Dieng dengan armada jeep pilihan dan pemandu berpengalaman.",
     "promo_banner": "Paket Sunrise Prau – Mulai 350K/orang!",
     "favorite_jeeps": "Pilihan Paket Wisata Jeep"
   },

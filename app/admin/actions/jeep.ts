@@ -2,11 +2,32 @@
 
 import { db } from "@/db";
 import { jeeps, jeepIncludes, facilities } from "@/db/schema";
-import { eq, desc } from "drizzle-orm";
+import { eq, desc, ilike, or, sql } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
-export async function getJeeps() {
-  return await db.select().from(jeeps).orderBy(desc(jeeps.createdAt));
+export async function getJeeps(filter?: { q?: string; date?: string }) {
+  let query = db.select().from(jeeps).orderBy(desc(jeeps.createdAt));
+  let result = await query;
+
+  if (filter?.q) {
+    const qLower = filter.q.toLowerCase();
+    result = result.filter(
+      (jeep) =>
+        jeep.nama.toLowerCase().includes(qLower) ||
+        ((jeep.destinasi as string[]) || []).some((d) =>
+          d.toLowerCase().includes(qLower),
+        ),
+    );
+  }
+
+  if (filter?.date) {
+    result = result.filter((jeep) => {
+      const booked = (jeep.bookedDates as string[]) || [];
+      return !booked.includes(filter.date!);
+    });
+  }
+
+  return result;
 }
 
 export async function getJeepBySlug(slug: string) {

@@ -6,17 +6,43 @@ import { Calendar as CalendarIcon, Search } from "lucide-react";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 import { useTranslations } from "next-intl";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
 export function SearchBar({ className }: { className?: string }) {
   const tHero = useTranslations("Hero");
   const tCommon = useTranslations("Common");
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
   const [showCheckIn, setShowCheckIn] = useState(false);
   const [showCheckOut, setShowCheckOut] = useState(false);
-  const [checkIn, setCheckIn] = useState<Date>();
-  const [checkOut, setCheckOut] = useState<Date>();
+  const [checkIn, setCheckIn] = useState<Date | undefined>(
+    searchParams.get("checkIn")
+      ? new Date(searchParams.get("checkIn")!)
+      : undefined,
+  );
+  const [checkOut, setCheckOut] = useState<Date | undefined>(
+    searchParams.get("checkOut")
+      ? new Date(searchParams.get("checkOut")!)
+      : undefined,
+  );
 
   const checkInRef = useRef<HTMLDivElement>(null);
   const checkOutRef = useRef<HTMLDivElement>(null);
+
+  const handleSearch = () => {
+    if (!checkIn || !checkOut) {
+      alert(tCommon("select_date_range"));
+      return;
+    }
+
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("checkIn", format(checkIn, "yyyy-MM-dd"));
+    params.set("checkOut", format(checkOut, "yyyy-MM-dd"));
+
+    router.push(`${pathname}?${params.toString()}`);
+  };
 
   // Close on click outside
   useEffect(() => {
@@ -63,7 +89,9 @@ export function SearchBar({ className }: { className?: string }) {
   };
 
   return (
-    <div className={`absolute z-[100] left-1/2 bottom-0 w-[90%] max-w-4xl -translate-x-1/2 translate-y-1/2 rounded-2xl bg-white p-2 text-neutral-900 shadow-2xl md:p-4 ${className || ""}`}>
+    <div
+      className={`absolute z-[100] left-1/2 bottom-0 w-[90%] max-w-4xl -translate-x-1/2 translate-y-1/2 rounded-2xl bg-white p-2 text-neutral-900 shadow-2xl md:p-4 ${className || ""}`}
+    >
       <div className="grid grid-cols-1 gap-2 md:grid-cols-3 lg:gap-4">
         {/* Check In */}
         <div
@@ -133,9 +161,13 @@ export function SearchBar({ className }: { className?: string }) {
 
         {/* Button */}
         <div className="flex items-center">
-          <button className="flex h-full w-full items-center justify-center gap-2 rounded-xl bg-[#1a90ec] px-6 py-4 font-bold text-white transition-transform hover:scale-[1.02]">
+          <button
+            onClick={handleSearch}
+            className="flex h-full w-full items-center justify-center gap-2 rounded-xl bg-[#1a90ec] px-6 py-4 font-bold text-white transition-transform hover:scale-[1.02] cursor-pointer"
+          >
             <Search size={20} />
-            {tHero("search_button")} Villa
+            {tHero("search_button")}{" "}
+            {pathname.includes("cabin") ? "Cabin" : "Villa"}
           </button>
         </div>
       </div>

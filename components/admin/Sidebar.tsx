@@ -21,6 +21,7 @@ const menuItems = [
     { name: "Jeep", href: "/admin/jeep", icon: Car },
     { name: "Wisata", href: "/admin/wisata", icon: Map },
     { name: "Booking", href: "/admin/booking", icon: CalendarCheck },
+    { name: "Registrasi Host", href: "/admin/host-registrations", icon: Home },
 ];
 
 export default function Sidebar() {

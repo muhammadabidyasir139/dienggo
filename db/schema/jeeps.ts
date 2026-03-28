@@ -24,6 +24,8 @@ export const jeeps = pgTable("jeeps", {
     destinasi: jsonb("destinasi").default([]),
     isiPaket: jsonb("isi_paket").default([]),
     kebijakan: jsonb("kebijakan").default([]),
+    bookedDates: jsonb("booked_dates").default([]),
+    whatsappOwner: text("whatsapp_owner"),
     isActive: boolean("is_active").default(true),
     createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow(),

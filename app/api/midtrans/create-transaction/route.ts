@@ -11,36 +11,52 @@ function generateOrderId() {
     return `DG-${Date.now()}-${Math.random().toString(36).substring(2, 7).toUpperCase()}`;
 }
 
-async function getItemFromJson(slug: string, type: string) {
+async function getItemDetails(slug: string, type: string) {
+    // 1. Try database first
+    const { villas, cabins, jeeps, wisata } = await import("@/db/schema");
+    const { eq } = await import("drizzle-orm");
+    try {
+        let dbItem: any = null;
+        if (type === "villa") {
+            [dbItem] = await db.select().from(villas).where(eq(villas.slug, slug)).limit(1);
+        } else if (type === "hotel-cabin") {
+            [dbItem] = await db.select().from(cabins).where(eq(cabins.slug, slug)).limit(1);
+        } else if (type === "jeep") {
+            [dbItem] = await db.select().from(jeeps).where(eq(jeeps.slug, slug)).limit(1);
+        } else if (type === "wisata") {
+            [dbItem] = await db.select().from(wisata).where(eq(wisata.slug, slug)).limit(1);
+        }
+        
+        if (dbItem) {
+            return {
+                id: dbItem.id,
+                nama: dbItem.nama,
+                harga: dbItem.harga
+            };
+        }
+    } catch (e) {
+        console.error("DB item lookup error:", e);
+    }
+
+    // 2. Fallback to JSON
     try {
         const fileName = type === "hotel-cabin" ? "cabins.json" : type === "wisata" ? "wisata.json" : `${type}s.json`;
         const filePath = path.join(process.cwd(), "data", fileName);
         const jsonData = await fs.readFile(filePath, "utf-8");
         const items = JSON.parse(jsonData);
-        return items.find((item: { slug: string; [key: string]: unknown }) => item.slug === slug);
-    } catch {
-        return null;
-    }
-}
-
-async function getDbItemId(slug: string, type: string): Promise<string | null> {
-    const { villas, cabins, jeeps, wisata } = await import("@/db/schema");
-    const { eq } = await import("drizzle-orm");
-    try {
-        let result: { id: string }[] = [];
-        if (type === "villa") {
-            result = await db.select({ id: villas.id }).from(villas).where(eq(villas.slug, slug)).limit(1);
-        } else if (type === "hotel-cabin") {
-            result = await db.select({ id: cabins.id }).from(cabins).where(eq(cabins.slug, slug)).limit(1);
-        } else if (type === "jeep") {
-            result = await db.select({ id: jeeps.id }).from(jeeps).where(eq(jeeps.slug, slug)).limit(1);
-        } else if (type === "wisata") {
-            result = await db.select({ id: wisata.id }).from(wisata).where(eq(wisata.slug, slug)).limit(1);
+        const jsonItem = items.find((item: { slug: string; [key: string]: unknown }) => item.slug === slug);
+        if (jsonItem) {
+            return {
+                id: jsonItem.id,
+                nama: jsonItem.nama,
+                harga: jsonItem.harga
+            };
         }
-        return result[0]?.id || null;
-    } catch {
-        return null;
+    } catch (e) {
+        console.error("JSON item lookup error:", e);
     }
+
+    return null;
 }
 
 export const dynamic = "force-dynamic";
@@ -56,8 +72,8 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: "Data tidak lengkap" }, { status: 400 });
         }
 
-        // Fetch item details from JSON data
-        const item = await getItemFromJson(slug, type);
+        // Fetch item details
+        const item = await getItemDetails(slug, type);
         if (!item) {
             return NextResponse.json({ error: "Item tidak ditemukan" }, { status: 404 });
         }
@@ -80,14 +96,9 @@ export async function POST(req: NextRequest) {
 
         const orderId = generateOrderId();
 
-        // Look up the actual UUID from the database using the slug
-        // (JSON data has short ids like "j-2" which are not valid UUIDs)
-        const dbItemId = await getDbItemId(slug, type);
-
-        // Build item ID references using the real DB UUID (not the JSON string id)
-        // Ensure dbItemId is a valid UUID to avoid Postgres errors
+        // Ensure we have a valid UUID for the database reference
         const isUUID = (id: string | null) => id && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
-        const validDbItemId = isUUID(dbItemId) ? dbItemId : null;
+        const validDbItemId = isUUID(item.id) ? item.id : null;
 
         const itemRefs: Record<string, string | null> = {
             villaId: type === "villa" ? validDbItemId : null,

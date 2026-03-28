@@ -41,6 +41,7 @@ export default function VillaForm({
     isActive: initialData?.isActive ?? true,
     fasilitasUtama: initialData?.fasilitasUtama || [],
     galeri: initialData?.galeri || [],
+    whatsappOwner: initialData?.whatsappOwner || "",
   });
 
   const handleChange = (
@@ -151,6 +152,15 @@ export default function VillaForm({
                 min={0}
                 value={formData.harga}
                 onChange={handleChange}
+              />
+              <FormField
+                label="WhatsApp Owner"
+                name="whatsappOwner"
+                type="text"
+                placeholder="628123456789"
+                value={formData.whatsappOwner}
+                onChange={handleChange}
+                helpText="Gunakan format internasional tanpa +, e.g. 628..."
               />
               <div className="flex items-center gap-2 mt-8">
                 <input

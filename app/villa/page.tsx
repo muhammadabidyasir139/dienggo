@@ -9,10 +9,16 @@ import { getVillas } from "@/app/admin/actions/villa";
 import { getFacilities } from "@/app/admin/actions/facility";
 import { getTranslations } from "next-intl/server";
 
-export default async function VillaListingPage() {
+export default async function VillaListingPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ checkIn?: string; checkOut?: string }>;
+}) {
   const t = await getTranslations("Villa");
+  const { checkIn, checkOut } = await searchParams;
+
   const [villasResponse, facilitiesRaw] = await Promise.all([
-    getVillas(),
+    getVillas({ checkIn, checkOut }),
     getFacilities(),
   ]);
 
@@ -30,9 +36,11 @@ export default async function VillaListingPage() {
     rating: Number(v.rating) || 0,
     ulasan: v.ulasan || 0,
     lokasi: v.lokasi || "",
-    fasilitasUtama: ((v.fasilitasUtama as string[]) || []).map(
-      (id) => facilityMap[id] || id,
-    ),
+    fasilitasUtama: Array.isArray(v.fasilitasUtama)
+      ? (v.fasilitasUtama as any[])
+          .filter((id) => id && typeof id === "string")
+          .map((id) => facilityMap[id as string] || id)
+      : [],
     fotoUtama: v.fotoUtama || "",
   }));
 
@@ -67,6 +75,7 @@ export default async function VillaListingPage() {
 
       {/* Main Content */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-[200px] sm:mt-[220px] md:mt-32">
+        {/* Promo Poster Section */}
         <div className="relative w-full overflow-hidden rounded-2xl h-[450px] sm:h-[400px] md:h-[350px] lg:h-[450px] shadow-lg border border-slate-200">
           <Image
             src="/asset/villa-poste.jpeg"

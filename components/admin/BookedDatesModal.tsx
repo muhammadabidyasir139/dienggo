@@ -11,7 +11,7 @@ interface BookedDatesModalProps {
     isOpen: boolean;
     onClose: () => void;
     itemId: string;
-    itemType: "villa" | "cabin";
+    itemType: "villa" | "cabin" | "jeep";
     itemName: string;
     initialDates: string[];
     onSave: (dates: string[]) => Promise<void>;

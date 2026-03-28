@@ -69,6 +69,13 @@ export default function CabinTableClient({ data }: { data: any[] }) {
                 </span>
             ),
         },
+        {
+            header: "WhatsApp Owner",
+            accessorKey: "whatsappOwner",
+            cell: (item: any) => (
+                <span className="text-sm text-slate-600">{item.whatsappOwner || "-"}</span>
+            ),
+        },
     ];
 
     const handleSaveBookedDates = async (dates: string[]) => {

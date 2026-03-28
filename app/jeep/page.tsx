@@ -8,11 +8,16 @@ import Image from "next/image";
 import { getJeeps } from "@/app/admin/actions/jeep";
 import { getTranslations } from "next-intl/server";
 
-export default async function JeepListingPage() {
+export default async function JeepListingPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ q?: string; date?: string }>;
+}) {
   const t = await getTranslations("Jeep");
-  const jeepsResponse = await getJeeps();
+  const { q, date } = await searchParams;
+  const jeepsResponse = await getJeeps({ q, date });
 
-  const jeeps = jeepsResponse.map(v => ({
+  const jeeps = jeepsResponse.map((v) => ({
     id: v.id,
     slug: v.slug,
     nama: v.nama,
@@ -30,7 +35,7 @@ export default async function JeepListingPage() {
       {/* Hero Section */}
       <section className="relative h-[50vh] w-full bg-slate-900">
         <Image
-          src="/asset/Merapi Jeep Tour.jpg"
+          src="/asset/jeep-hero.jpg"
           alt="Jeep Hero"
           fill
           priority
@@ -53,7 +58,7 @@ export default async function JeepListingPage() {
       </section>
 
       {/* Main Content */}
-      <section className="mx-auto mt-20 max-w-7xl px-4 sm:px-6 lg:px-8 mt-24 md:mt-32">
+      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-[200px] sm:mt-[220px] md:mt-32">
         <PromoBanner text={t("promo_banner")} />
 
         <div className="mt-12">
