@@ -128,6 +128,25 @@ export default async function CabinDetailPage({
               {cabin.deskripsi || t("no_description")}
             </p>
 
+            {/* View Map Embed */}
+            {(cabin.koordinat || cabin.lokasi) && (
+              <div className="w-full h-64 md:h-80 rounded-2xl overflow-hidden mb-6 border border-neutral-100 shadow-sm">
+                <iframe
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  loading="lazy"
+                  allowFullScreen
+                  referrerPolicy="no-referrer-when-downgrade"
+                  src={`https://maps.google.com/maps?q=${encodeURIComponent(
+                    cabin.koordinat && cabin.koordinat.includes("q=")
+                      ? cabin.koordinat.split("q=")[1].split("&")[0]
+                      : cabin.koordinat || cabin.lokasi || ""
+                  )}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
+                ></iframe>
+              </div>
+            )}
+
             <div className="flex flex-col sm:flex-row items-center gap-4 bg-neutral-50 p-4 rounded-2xl border border-neutral-100">
               <div className="bg-primary/10 p-3 rounded-full">
                 <MapPin className="text-primary" size={24} />
