@@ -8,6 +8,7 @@ import DataTable from "@/components/admin/DataTable";
 import DeleteDialog from "@/components/admin/DeleteDialog";
 import BookedDatesModal from "@/components/admin/BookedDatesModal";
 import { deleteJeep, updateJeep } from "@/app/admin/actions/jeep";
+import Toast from "@/components/admin/Toast";
 
 export default function JeepTableClient({ data }: { data: any[] }) {
   const [deleteId, setDeleteId] = useState<string | null>(null);
@@ -17,6 +18,7 @@ export default function JeepTableClient({ data }: { data: any[] }) {
     name: string;
     dates: string[];
   } | null>(null);
+  const [toast, setToast] = useState<{ message: string, type: "success" | "error" } | null>(null);
 
   const handleDelete = async () => {
     if (!deleteId) return;
@@ -24,9 +26,10 @@ export default function JeepTableClient({ data }: { data: any[] }) {
     try {
       await deleteJeep(deleteId);
       setDeleteId(null);
+      setToast({ message: "Paket Jeep berhasil dihapus", type: "success" });
     } catch (error) {
       console.error(error);
-      alert("Gagal menghapus jeep");
+      setToast({ message: "Gagal menghapus jeep", type: "error" });
     } finally {
       setIsDeleting(false);
     }
@@ -145,6 +148,14 @@ export default function JeepTableClient({ data }: { data: any[] }) {
   return (
     <>
       <DataTable columns={columns} data={data} actions={actions} />
+
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
 
       <DeleteDialog
         isOpen={!!deleteId}

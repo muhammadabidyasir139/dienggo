@@ -9,11 +9,13 @@ import StatusBadge from "@/components/admin/StatusBadge";
 import DeleteDialog from "@/components/admin/DeleteDialog";
 import BookedDatesModal from "@/components/admin/BookedDatesModal";
 import { deleteVilla, updateVilla } from "@/app/admin/actions/villa";
+import Toast from "@/components/admin/Toast";
 
 export default function VillaTableClient({ data }: { data: any[] }) {
     const [deleteId, setDeleteId] = useState<string | null>(null);
     const [isDeleting, setIsDeleting] = useState(false);
     const [bookedModalData, setBookedModalData] = useState<{ id: string, name: string, dates: string[] } | null>(null);
+    const [toast, setToast] = useState<{ message: string, type: "success" | "error" } | null>(null);
 
     // In Next.js, refreshing the router will re-fetch Server Components
     const handleDelete = async () => {
@@ -22,9 +24,10 @@ export default function VillaTableClient({ data }: { data: any[] }) {
         try {
             await deleteVilla(deleteId);
             setDeleteId(null);
+            setToast({ message: "Villa berhasil dihapus", type: "success" });
         } catch (error) {
             console.error(error);
-            alert("Gagal menghapus villa");
+            setToast({ message: "Gagal menghapus villa", type: "error" });
         } finally {
             setIsDeleting(false);
         }
@@ -119,6 +122,14 @@ export default function VillaTableClient({ data }: { data: any[] }) {
     return (
         <>
             <DataTable columns={columns} data={data} actions={actions} />
+
+            {toast && (
+                <Toast
+                    message={toast.message}
+                    type={toast.type}
+                    onClose={() => setToast(null)}
+                />
+            )}
 
             <DeleteDialog
                 isOpen={!!deleteId}

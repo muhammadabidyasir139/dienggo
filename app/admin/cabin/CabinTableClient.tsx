@@ -8,11 +8,13 @@ import DataTable from "@/components/admin/DataTable";
 import DeleteDialog from "@/components/admin/DeleteDialog";
 import BookedDatesModal from "@/components/admin/BookedDatesModal";
 import { deleteCabin, updateCabin } from "@/app/admin/actions/cabin";
+import Toast from "@/components/admin/Toast";
 
 export default function CabinTableClient({ data }: { data: any[] }) {
     const [deleteId, setDeleteId] = useState<string | null>(null);
     const [isDeleting, setIsDeleting] = useState(false);
     const [bookedModalData, setBookedModalData] = useState<{ id: string, name: string, dates: string[] } | null>(null);
+    const [toast, setToast] = useState<{ message: string, type: "success" | "error" } | null>(null);
 
     const handleDelete = async () => {
         if (!deleteId) return;
@@ -20,9 +22,10 @@ export default function CabinTableClient({ data }: { data: any[] }) {
         try {
             await deleteCabin(deleteId);
             setDeleteId(null);
+            setToast({ message: "Cabin berhasil dihapus", type: "success" });
         } catch (error) {
             console.error(error);
-            alert("Gagal menghapus cabin");
+            setToast({ message: "Gagal menghapus cabin", type: "error" });
         } finally {
             setIsDeleting(false);
         }
@@ -117,6 +120,14 @@ export default function CabinTableClient({ data }: { data: any[] }) {
     return (
         <>
             <DataTable columns={columns} data={data} actions={actions} />
+
+            {toast && (
+                <Toast
+                    message={toast.message}
+                    type={toast.type}
+                    onClose={() => setToast(null)}
+                />
+            )}
 
             <DeleteDialog
                 isOpen={!!deleteId}

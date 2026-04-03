@@ -7,10 +7,12 @@ import { Pencil, Trash2 } from "lucide-react";
 import DataTable from "@/components/admin/DataTable";
 import DeleteDialog from "@/components/admin/DeleteDialog";
 import { deleteAktivitas } from "@/app/admin/actions/wisata";
+import Toast from "@/components/admin/Toast";
 
 export default function AktivitasTableClient({ data }: { data: any[] }) {
     const [deleteId, setDeleteId] = useState<string | null>(null);
     const [isDeleting, setIsDeleting] = useState(false);
+    const [toast, setToast] = useState<{ message: string, type: "success" | "error" } | null>(null);
 
     const handleDelete = async () => {
         if (!deleteId) return;
@@ -18,9 +20,10 @@ export default function AktivitasTableClient({ data }: { data: any[] }) {
         try {
             await deleteAktivitas(deleteId);
             setDeleteId(null);
+            setToast({ message: "Aktivitas berhasil dihapus", type: "success" });
         } catch (error) {
             console.error(error);
-            alert("Gagal menghapus aktivitas");
+            setToast({ message: "Gagal menghapus aktivitas", type: "error" });
         } finally {
             setIsDeleting(false);
         }
@@ -84,6 +87,14 @@ export default function AktivitasTableClient({ data }: { data: any[] }) {
     return (
         <>
             <DataTable columns={columns} data={data} actions={actions} />
+
+            {toast && (
+                <Toast
+                    message={toast.message}
+                    type={toast.type}
+                    onClose={() => setToast(null)}
+                />
+            )}
 
             <DeleteDialog
                 isOpen={!!deleteId}

@@ -75,6 +75,8 @@ export function BookingForm({ item, type }: BookingFormProps) {
         tanggal: "",
     });
 
+    const [errors, setErrors] = useState<Record<string, boolean>>({});
+
     const [nights, setNights] = useState(1);
 
     useEffect(() => {
@@ -180,6 +182,10 @@ export function BookingForm({ item, type }: BookingFormProps) {
         }
 
         setFormData((prev) => ({ ...prev, [name]: value }));
+        // Clear error when user changes value
+        if (errors[name]) {
+            setErrors((prev) => ({ ...prev, [name]: false }));
+        }
     };
 
     const handleDateSelect = (name: string, date: Date | undefined) => {
@@ -235,18 +241,28 @@ export function BookingForm({ item, type }: BookingFormProps) {
 
     const handleSubmit = async () => {
         // Validate
-        if (!formData.namaLengkap || !formData.email || !formData.telepon) {
-            alert("Mohon lengkapi data pemesan (Nama, Email, Telepon).");
-            return;
-        }
+        const newErrors: Record<string, boolean> = {};
+        let isValid = true;
 
-        if ((type === "villa" || type === "hotel-cabin") && (!formData.checkIn || !formData.checkOut)) {
-            alert("Mohon pilih tanggal Check-in dan Check-out.");
-            return;
+        if (!formData.namaLengkap) { newErrors.namaLengkap = true; isValid = false; }
+        if (!formData.email) { newErrors.email = true; isValid = false; }
+        if (!formData.telepon) { newErrors.telepon = true; isValid = false; }
+
+        if ((type === "villa" || type === "hotel-cabin")) {
+            if (!formData.checkIn) { newErrors.checkIn = true; isValid = false; }
+            if (!formData.checkOut) { newErrors.checkOut = true; isValid = false; }
         }
 
         if ((type === "jeep" || type === "wisata") && !formData.tanggal) {
-            alert("Mohon pilih tanggal kunjungan.");
+            newErrors.tanggal = true;
+            isValid = false;
+        }
+
+        setErrors(newErrors);
+
+        if (!isValid) {
+            const firstErrorField = Object.keys(newErrors)[0];
+            alert("Mohon lengkapi data yang wajib diisi (bertanda *).");
             return;
         }
 
@@ -335,53 +351,61 @@ export function BookingForm({ item, type }: BookingFormProps) {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="flex flex-col gap-2">
-                            <label className="text-sm font-medium text-neutral-600 ">Nama Lengkap</label>
+                            <label className={`text-sm font-medium ${errors.namaLengkap ? "text-red-500" : "text-neutral-600"} `}>
+                                Nama Lengkap <span className="text-red-500">*</span>
+                            </label>
                             <input
                                 type="text"
                                 name="namaLengkap"
                                 value={formData.namaLengkap}
                                 onChange={handleChange}
                                 placeholder="Sesuai KTP/Paspor"
-                                className="bg-neutral-50  border border-neutral-200  rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary :ring-accent transition-all"
+                                className={`bg-neutral-50 border ${errors.namaLengkap ? "border-red-500 ring-1 ring-red-500" : "border-neutral-200"} rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary transition-all`}
                             />
                         </div>
                         <div className="flex flex-col gap-2">
-                            <label className="text-sm font-medium text-neutral-600 ">Email</label>
+                            <label className={`text-sm font-medium ${errors.email ? "text-red-500" : "text-neutral-600"} `}>
+                                Email <span className="text-red-500">*</span>
+                            </label>
                             <input
                                 type="email"
                                 name="email"
                                 value={formData.email}
                                 onChange={handleChange}
                                 placeholder="contoh@email.com"
-                                className="bg-neutral-50  border border-neutral-200  rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary :ring-accent transition-all"
+                                className={`bg-neutral-50 border ${errors.email ? "border-red-500 ring-1 ring-red-500" : "border-neutral-200"} rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary transition-all`}
                             />
                         </div>
                         <div className="flex flex-col gap-2">
-                            <label className="text-sm font-medium text-neutral-600 ">Nomor Telepon / WhatsApp</label>
+                            <label className={`text-sm font-medium ${errors.telepon ? "text-red-500" : "text-neutral-600"} `}>
+                                Nomor Telepon / WhatsApp <span className="text-red-500">*</span>
+                            </label>
                             <div className="flex">
-                                <span className="bg-neutral-100  border border-r-0 border-neutral-200  rounded-l-xl px-4 py-3 text-neutral-500 font-medium">+62</span>
+                                <span className={`bg-neutral-100 border border-r-0 ${errors.telepon ? "border-red-500 text-red-500" : "border-neutral-200 text-neutral-500"} rounded-l-xl px-4 py-3 font-medium transition-colors`}>+62</span>
                                 <input
                                     type="tel"
                                     name="telepon"
                                     value={formData.telepon}
                                     onChange={handleChange}
                                     placeholder="81234567890"
-                                    className="w-full bg-neutral-50  border border-neutral-200  rounded-r-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary :ring-accent transition-all"
+                                    className={`w-full bg-neutral-50 border ${errors.telepon ? "border-red-500 ring-1 ring-red-500" : "border-neutral-200"} rounded-r-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary transition-all`}
                                 />
                             </div>
                         </div>
                         {(type === "villa" || type === "hotel-cabin") ? (
                             <>
                                 <div className="flex flex-col gap-2 relative" ref={checkInRef}>
-                                    <label className="text-sm font-bold text-neutral-600">Tanggal Check-in</label>
+                                    <label className={`text-sm font-bold ${errors.checkIn ? "text-red-500" : "text-neutral-600"}`}>
+                                        Tanggal Check-in <span className="text-red-500">*</span>
+                                    </label>
                                     <div
                                         onClick={() => { setShowCheckInPicker(!showCheckInPicker); setShowCheckOutPicker(false); }}
-                                        className="bg-neutral-50 border border-neutral-200 rounded-xl px-4 py-3 focus-within:ring-2 focus-within:ring-primary transition-all cursor-pointer flex items-center justify-between"
+                                        className={`bg-neutral-50 border ${errors.checkIn ? "border-red-500 ring-1 ring-red-500" : "border-neutral-200"} rounded-xl px-4 py-3 focus-within:ring-2 focus-within:ring-primary transition-all cursor-pointer flex items-center justify-between`}
                                     >
                                         <span className={formData.checkIn ? "text-neutral-900" : "text-neutral-400"}>
                                             {formData.checkIn ? format(new Date(formData.checkIn), "dd/MM/yyyy") : "dd/mm/yyyy"}
                                         </span>
-                                        <CalendarIcon size={20} className="text-neutral-500" />
+                                        <CalendarIcon size={20} className={errors.checkIn ? "text-red-500" : "text-neutral-500"} />
                                     </div>
                                     {showCheckInPicker && (
                                         <div className="absolute top-[100%] mt-2 left-0 z-50 rounded-xl bg-white p-4 shadow-xl border border-neutral-100">
@@ -396,15 +420,17 @@ export function BookingForm({ item, type }: BookingFormProps) {
                                     )}
                                 </div>
                                 <div className="flex flex-col gap-2 relative" ref={checkOutRef}>
-                                    <label className="text-sm font-bold text-neutral-600">Tanggal Check-out</label>
+                                    <label className={`text-sm font-bold ${errors.checkOut ? "text-red-500" : "text-neutral-600"}`}>
+                                        Tanggal Check-out <span className="text-red-500">*</span>
+                                    </label>
                                     <div
                                         onClick={() => { setShowCheckOutPicker(!showCheckOutPicker); setShowCheckInPicker(false); }}
-                                        className="bg-neutral-50 border border-neutral-200 rounded-xl px-4 py-3 focus-within:ring-2 focus-within:ring-primary transition-all cursor-pointer flex items-center justify-between"
+                                        className={`bg-neutral-50 border ${errors.checkOut ? "border-red-500 ring-1 ring-red-500" : "border-neutral-200"} rounded-xl px-4 py-3 focus-within:ring-2 focus-within:ring-primary transition-all cursor-pointer flex items-center justify-between`}
                                     >
                                         <span className={formData.checkOut ? "text-neutral-900" : "text-neutral-400"}>
                                             {formData.checkOut ? format(new Date(formData.checkOut), "dd/MM/yyyy") : "dd/mm/yyyy"}
                                         </span>
-                                        <CalendarIcon size={20} className="text-neutral-500" />
+                                        <CalendarIcon size={20} className={errors.checkOut ? "text-red-500" : "text-neutral-500"} />
                                     </div>
                                     {showCheckOutPicker && (
                                         <div className="absolute top-[100%] mt-2 left-0 z-50 rounded-xl bg-white p-4 shadow-xl border border-neutral-100">
@@ -436,15 +462,17 @@ export function BookingForm({ item, type }: BookingFormProps) {
                             </>
                         ) : (
                             <div className="flex flex-col gap-2 relative" ref={tanggalRef}>
-                                <label className="text-sm font-bold text-neutral-600">Tanggal Kunjungan</label>
+                                <label className={`text-sm font-bold ${errors.tanggal ? "text-red-500" : "text-neutral-600"}`}>
+                                    Tanggal Kunjungan <span className="text-red-500">*</span>
+                                </label>
                                 <div
                                     onClick={() => setShowTanggalPicker(!showTanggalPicker)}
-                                    className="bg-neutral-50 border border-neutral-200 rounded-xl px-4 py-3 focus-within:ring-2 focus-within:ring-primary transition-all cursor-pointer flex items-center justify-between"
+                                    className={`bg-neutral-50 border ${errors.tanggal ? "border-red-500 ring-1 ring-red-500" : "border-neutral-200"} rounded-xl px-4 py-3 focus-within:ring-2 focus-within:ring-primary transition-all cursor-pointer flex items-center justify-between`}
                                 >
                                     <span className={formData.tanggal ? "text-neutral-900" : "text-neutral-400"}>
                                         {formData.tanggal ? format(new Date(formData.tanggal), "dd/MM/yyyy") : "dd/mm/yyyy"}
                                     </span>
-                                    <CalendarIcon size={20} className="text-neutral-500" />
+                                    <CalendarIcon size={20} className={errors.tanggal ? "text-red-500" : "text-neutral-500"} />
                                 </div>
                                 {showTanggalPicker && (
                                     <div className="absolute top-[100%] mt-2 left-0 z-50 rounded-xl bg-white p-4 shadow-xl border border-neutral-100">
