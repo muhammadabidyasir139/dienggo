@@ -4,19 +4,46 @@ import { getFacilities } from "@/app/admin/actions/facility";
 import { notFound } from "next/navigation";
 
 export default async function EditVillaPage({
-    params,
+  params,
 }: {
-    params: Promise<{ id: string }>;
+  params: Promise<{ id: string }>;
 }) {
-    const { id } = await params;
-    const [villa, facilities] = await Promise.all([
-        getVillaById(id),
-        getFacilities(),
+  let id: string;
+  try {
+    const resolvedParams = await params;
+    id = (resolvedParams as any).id;
+  } catch (error) {
+    console.error("Error awaiting params:", error);
+    return notFound();
+  }
+
+  if (!id) return notFound();
+
+  try {
+    const [villa, rawFacilities] = await Promise.all([
+      getVillaById(id),
+      getFacilities(),
     ]);
 
     if (!villa) {
-        notFound();
+      return notFound();
     }
 
-    return <VillaForm isEdit={true} initialData={villa} facilities={facilities} />;
+    // Sanitize data to ensure it's a plain serializable object for Client Components
+    // This avoids issues with Date objects or Drizzle-internal properties
+    const serializedVilla = JSON.parse(JSON.stringify(villa));
+    const facilities = JSON.parse(JSON.stringify(rawFacilities));
+
+    return (
+      <VillaForm
+        isEdit={true}
+        initialData={serializedVilla}
+        facilities={facilities}
+      />
+    );
+  } catch (error) {
+    console.error("Error loading villa data:", error);
+    // If it's a UUID conversion error or similar DB error, show not found
+    return notFound();
+  }
 }

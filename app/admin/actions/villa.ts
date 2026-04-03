@@ -32,8 +32,14 @@ export async function getVillas(filter?: { checkIn?: string; checkOut?: string }
 }
 
 export async function getVillaById(id: string) {
-    const result = await db.select().from(villas).where(eq(villas.id, id));
-    return result[0];
+    try {
+        if (!id) return null;
+        const result = await db.select().from(villas).where(eq(villas.id, id));
+        return result[0] || null;
+    } catch (error) {
+        console.error(`Error fetching villa by id ${id}:`, error);
+        return null;
+    }
 }
 
 export async function getVillaBySlug(slug: string) {
