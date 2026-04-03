@@ -2,7 +2,24 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Loader2, ArrowLeft, Save, Plus } from "lucide-react";
+import {
+  Loader2,
+  ArrowLeft,
+  Save,
+  Plus,
+  Bed,
+  Layers,
+  Thermometer,
+  Utensils,
+  Coffee,
+  Refrigerator,
+  Wine,
+  Egg,
+  Tv,
+  Wifi,
+  Sofa,
+  Users,
+} from "lucide-react";
 import FormField from "@/components/admin/FormField";
 import ImageUploader from "@/components/admin/ImageUploader";
 import MultiImageUploader from "@/components/admin/MultiImageUploader";
@@ -10,6 +27,22 @@ import MultiSelect from "@/components/admin/MultiSelect";
 import Link from "next/link";
 import { createVilla, updateVilla } from "@/app/admin/actions/villa";
 import FacilityModal from "@/components/admin/FacilityModal";
+
+const facilityIconMap: Record<string, React.ReactNode> = {
+  "Kamar Tidur": <Bed className="w-4 h-4" />,
+  "Kamar Mezzanine": <Layers className="w-4 h-4" />,
+  "Air Hangat": <Thermometer className="w-4 h-4" />,
+  "Meja makan": <Utensils className="w-4 h-4" />,
+  Dapur: <Coffee className="w-4 h-4" />,
+  Kulkas: <Refrigerator className="w-4 h-4" />,
+  "Piring & Gelas": <Wine className="w-4 h-4" />,
+  Sarapan: <Egg className="w-4 h-4" />,
+  "Smart TV": <Tv className="w-4 h-4" />,
+  "Free Wifi": <Wifi className="w-4 h-4" />,
+  "Kopi, Teh, Gula": <Coffee className="w-4 h-4" />,
+  "Ruang Santai": <Sofa className="w-4 h-4" />,
+  "Ruang Tamu": <Users className="w-4 h-4" />,
+};
 
 interface VillaFormProps {
   initialData?: any;
@@ -202,14 +235,34 @@ export default function VillaForm({
                 value={formData.lokasi}
                 onChange={handleChange}
               />
-              <FormField
-                label="Link Google Maps (Peta)"
-                name="koordinat"
-                type="url"
-                value={formData.koordinat}
-                onChange={handleChange}
-                helpText="https://maps.google.com/?q=..."
-              />
+              <div className="space-y-4">
+                <FormField
+                  label="Link Google Maps (Peta)"
+                  name="koordinat"
+                  type="url"
+                  value={formData.koordinat}
+                  onChange={handleChange}
+                  helpText="https://maps.google.com/?q=..."
+                />
+                
+                {formData.koordinat && (
+                  <div className="mt-2 w-full h-48 rounded-lg overflow-hidden border border-slate-200">
+                    <iframe
+                      width="100%"
+                      height="100%"
+                      style={{ border: 0 }}
+                      loading="lazy"
+                      allowFullScreen
+                      referrerPolicy="no-referrer-when-downgrade"
+                      src={`https://maps.google.com/maps?q=${encodeURIComponent(
+                        formData.koordinat.includes("q=")
+                          ? formData.koordinat.split("q=")[1].split("&")[0]
+                          : formData.koordinat
+                      )}&output=embed`}
+                    ></iframe>
+                  </div>
+                )}
+              </div>
               <div className="grid grid-cols-3 gap-4 md:col-span-2">
                 <FormField
                   label="Kmr. Tidur"
@@ -252,12 +305,26 @@ export default function VillaForm({
                   Tambah Baru
                 </button>
               </div>
+
               <MultiSelect
                 label=""
-                options={availableFacilities.map((f: any) => ({
-                  id: f.id,
-                  name: f.name,
-                }))}
+                options={[
+                  ...Object.keys(facilityIconMap)
+                    .filter(
+                      (name) =>
+                        !availableFacilities.some((f: any) => f.name === name),
+                    )
+                    .map((name) => ({
+                      id: name, // Use name as ID for standard facilities if not in DB
+                      name: name,
+                      icon: facilityIconMap[name],
+                    })),
+                  ...availableFacilities.map((f: any) => ({
+                    id: f.id,
+                    name: f.name,
+                    icon: facilityIconMap[f.name],
+                  })),
+                ]}
                 selected={formData.fasilitasUtama}
                 onChange={(selected) =>
                   setFormData((prev) => ({ ...prev, fasilitasUtama: selected }))

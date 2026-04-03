@@ -31,6 +31,7 @@ export const bookings = pgTable("bookings", {
     metodeBayar: text("metode_bayar").notNull().default("pending"),
     status: text("status").default("unpaid"), // unpaid | paid | cancelled | refunded
     snapToken: text("snap_token"),
+    paymentUrl: text("payment_url"),
     midtransOrderId: text("midtrans_order_id"),
     villaId: uuid("villa_id").references(() => villas.id),
     cabinId: uuid("cabin_id").references(() => cabins.id),

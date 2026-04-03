@@ -6,6 +6,7 @@ import { Check, ChevronDown, X } from "lucide-react";
 interface Option {
     id: string;
     name: string;
+    icon?: React.ReactNode;
 }
 
 interface MultiSelectProps {
@@ -72,8 +73,9 @@ export default function MultiSelect({
                         selectedOptions.map((opt) => (
                             <span
                                 key={opt.id}
-                                className="inline-flex items-center gap-1 px-2 py-0.5 bg-amber-100 text-amber-800 text-xs font-medium rounded-md"
+                                className="inline-flex items-center gap-1.5 px-2 py-0.5 bg-amber-100 text-amber-800 text-xs font-medium rounded-md"
                             >
+                                {opt.icon && <span className="opacity-70">{opt.icon}</span>}
                                 {opt.name}
                                 <button
                                     onClick={(e) => removeOption(e, opt.id)}
@@ -101,9 +103,12 @@ export default function MultiSelect({
                                     onClick={() => toggleOption(opt.id)}
                                     className="px-4 py-2 hover:bg-slate-50 cursor-pointer flex items-center justify-between group"
                                 >
-                                    <span className={`text-sm ${selected.includes(opt.id) ? "text-amber-600 font-medium" : "text-slate-700"}`}>
-                                        {opt.name}
-                                    </span>
+                                    <div className="flex items-center gap-2">
+                                        {opt.icon && <span className="text-slate-400 group-hover:text-amber-500">{opt.icon}</span>}
+                                        <span className={`text-sm ${selected.includes(opt.id) ? "text-amber-600 font-medium" : "text-slate-700"}`}>
+                                            {opt.name}
+                                        </span>
+                                    </div>
                                     {selected.includes(opt.id) && (
                                         <Check className="w-4 h-4 text-amber-500" />
                                     )}

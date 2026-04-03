@@ -144,7 +144,7 @@ export default async function WisataDetailPage({
                 </span>
                 {tWisata("experience_awaits")}
               </h3>
-              <ul className="flex flex-col gap-3">
+              <ul className="flex flex-col gap-3 mb-6">
                 {wisata.narasi?.map((item: string, i: number) => (
                   <li
                     key={i}
@@ -158,6 +158,25 @@ export default async function WisataDetailPage({
                   </li>
                 ))}
               </ul>
+
+              {/* View Map Embed */}
+              {(wisata.koordinat || wisata.lokasi) && (
+                <div className="w-full h-64 md:h-80 rounded-2xl overflow-hidden border border-neutral-100 shadow-sm">
+                  <iframe
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    loading="lazy"
+                    allowFullScreen
+                    referrerPolicy="no-referrer-when-downgrade"
+                    src={`https://maps.google.com/maps?q=${encodeURIComponent(
+                      wisata.koordinat && wisata.koordinat.includes("q=")
+                        ? wisata.koordinat.split("q=")[1].split("&")[0]
+                        : wisata.koordinat || wisata.lokasi || ""
+                    )}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
+                  ></iframe>
+                </div>
+              )}
             </BentoCard>
 
             <BentoCard>

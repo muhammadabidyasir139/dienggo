@@ -82,6 +82,14 @@ export default function BookingTableClient({ data }: { data: any[] }) {
 
     const actions = (item: any) => (
         <div className="flex justify-end gap-2">
+            <button
+                onClick={() => window.location.href = `/admin/booking/${item.id}`}
+                className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded-lg transition-colors cursor-pointer"
+                title="Lihat Detail"
+            >
+                Detail
+            </button>
+
             {item.status.toLowerCase() !== "paid" && (
                 <button
                     onClick={() => handleUpdateStatus(item.id, "Paid")}

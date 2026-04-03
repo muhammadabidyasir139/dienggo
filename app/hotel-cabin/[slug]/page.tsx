@@ -1,7 +1,24 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { MapPin, Wifi, Flame, Droplet, Coffee, Car } from "lucide-react";
+import {
+  MapPin,
+  Wifi,
+  Flame,
+  Droplet,
+  Coffee,
+  Car,
+  Bed,
+  Layers,
+  Thermometer,
+  Utensils,
+  Refrigerator,
+  Wine,
+  Egg,
+  Tv,
+  Sofa,
+  Users,
+} from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import { BentoGrid, BentoCard } from "@/components/BentoGrid";
 import { BentoGallery } from "@/components/BentoGallery";
@@ -12,9 +29,21 @@ import { getCabinBySlug as fetchCabinBySlug } from "@/app/admin/actions/cabin";
 const facilityIcons: Record<string, React.ReactNode> = {
   Perapian: <Flame size={16} className="text-primary" />,
   WiFi: <Wifi size={16} className="text-primary" />,
+  "Free Wifi": <Wifi size={16} className="text-primary" />,
   "Air Hangat": <Droplet size={16} className="text-primary" />,
   "Dapur Mini": <Coffee size={16} className="text-primary" />,
+  Dapur: <Coffee size={16} className="text-primary" />,
   Parkir: <Car size={16} className="text-primary" />,
+  "Kamar Tidur": <Bed size={16} className="text-primary" />,
+  "Kamar Mezzanine": <Layers size={16} className="text-primary" />,
+  "Meja makan": <Utensils size={16} className="text-primary" />,
+  Kulkas: <Refrigerator size={16} className="text-primary" />,
+  "Piring & Gelas": <Wine size={16} className="text-primary" />,
+  Sarapan: <Egg size={16} className="text-primary" />,
+  "Smart TV": <Tv size={16} className="text-primary" />,
+  "Kopi, Teh, Gula": <Coffee size={16} className="text-primary" />,
+  "Ruang Santai": <Sofa size={16} className="text-primary" />,
+  "Ruang Tamu": <Users size={16} className="text-primary" />,
 };
 
 import { getFacilities } from "@/app/admin/actions/facility";

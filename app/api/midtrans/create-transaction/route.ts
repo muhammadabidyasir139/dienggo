@@ -152,10 +152,13 @@ export async function POST(req: NextRequest) {
 
         const transaction = await snap.createTransaction(parameter);
 
-        // Update booking with snap token
+        // Update booking with snap token and payment URL
         const { eq } = await import("drizzle-orm");
         await db.update(bookings)
-            .set({ snapToken: transaction.token })
+            .set({ 
+                snapToken: transaction.token,
+                paymentUrl: transaction.redirect_url 
+            })
             .where(eq(bookings.id, booking.id));
 
         return NextResponse.json({

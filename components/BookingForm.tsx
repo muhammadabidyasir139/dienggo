@@ -302,7 +302,13 @@ export function BookingForm({ item, type }: BookingFormProps) {
                 throw new Error(data.error || "Gagal membuat transaksi");
             }
 
-            // Open Snap popup
+            // Handle redirection for Villa, Cabin, and Jeep
+            if (type === "villa" || type === "hotel-cabin" || type === "cabin" || type === "jeep") {
+                router.push(`/booking/invoice/${data.orderId}`);
+                return;
+            }
+
+            // Open Snap popup for other types (default flow)
             if (window.snap) {
                 window.snap.pay(data.token, {
                     onSuccess: (result: any) => {
@@ -486,6 +492,25 @@ export function BookingForm({ item, type }: BookingFormProps) {
                                 )}
                             </div>
                         )}
+
+                        {/* Notice availability */}
+                        {(type === "villa" || type === "hotel-cabin" || type === "cabin") && (
+                            <div className="col-span-1 md:col-span-2 p-4 bg-amber-50 border border-amber-200 rounded-2xl flex gap-3 shadow-sm">
+                                <div className="bg-amber-100 text-amber-600 p-2 rounded-lg h-fit">
+                                    <CalendarIcon size={18} />
+                                </div>
+                                <div className="flex flex-col gap-1">
+                                    <p className="text-xs font-bold text-amber-800 uppercase tracking-widest flex items-center gap-1.5">
+                                        <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
+                                        Informasi Penting
+                                    </p>
+                                    <p className="text-sm text-amber-900 leading-relaxed font-medium">
+                                        Data ketersediaan belum terupdate secara realtime. Pilih tanggal check-in dan check out untuk info harga sesuai tanggal, kemudian klik <span className="font-bold underline decoration-amber-300">Cek Ketersediaan</span> admin akan mengirimkan konfirmasi pemesanan.
+                                    </p>
+                                </div>
+                            </div>
+                        )}
+
                         <div className="flex flex-col gap-2">
                             <label className="text-sm font-medium text-neutral-600 ">Permintaan Khusus (Opsional)</label>
                             <input
@@ -609,7 +634,7 @@ export function BookingForm({ item, type }: BookingFormProps) {
                         ) : (
                             <>
                                 <CheckCircle2 size={20} />
-                                Bayar Sekarang
+                                Cek Ketersediaan
                             </>
                         )}
                     </button>

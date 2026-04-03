@@ -11,6 +11,15 @@ import {
   Flame,
   Car,
   ConciergeBell,
+  Bed,
+  Utensils,
+  Refrigerator,
+  Wine,
+  Egg,
+  Sofa,
+  Users,
+  Layers,
+  Thermometer,
 } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import { BentoGrid, BentoCard } from "@/components/BentoGrid";
@@ -22,13 +31,24 @@ import { getVillaBySlug as fetchVillaBySlug } from "@/app/admin/actions/villa";
 // Icon mapping helper (extended)
 const facilityIcons: Record<string, React.ReactNode> = {
   WiFi: <Wifi size={16} className="text-primary" />,
+  "Free Wifi": <Wifi size={16} className="text-primary" />,
   TV: <Tv size={16} className="text-primary" />,
+  "Smart TV": <Tv size={16} className="text-primary" />,
   "Air Hangat": <Droplet size={16} className="text-primary" />,
   AC: <Wind size={16} className="text-primary" />,
   Dapur: <Coffee size={16} className="text-primary" />,
   "Api Unggun": <Flame size={16} className="text-primary" />,
   Parkir: <Car size={16} className="text-primary" />,
   "Resepsionis 24 Jam": <ConciergeBell size={16} className="text-primary" />,
+  "Kamar Tidur": <Bed size={16} className="text-primary" />,
+  "Kamar Mezzanine": <Layers size={16} className="text-primary" />,
+  "Meja makan": <Utensils size={16} className="text-primary" />,
+  Kulkas: <Refrigerator size={16} className="text-primary" />,
+  "Piring & Gelas": <Wine size={16} className="text-primary" />,
+  Sarapan: <Egg size={16} className="text-primary" />,
+  "Kopi, Teh, Gula": <Coffee size={16} className="text-primary" />,
+  "Ruang Santai": <Sofa size={16} className="text-primary" />,
+  "Ruang Tamu": <Users size={16} className="text-primary" />,
 };
 
 import { getFacilities } from "@/app/admin/actions/facility";
