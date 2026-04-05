@@ -3,6 +3,9 @@ import { Home, Tent, Car, Map, Banknote } from "lucide-react";
 import { db } from "@/db";
 import { villas, cabins, jeeps, wisata, bookings } from "@/db/schema";
 import { count, sum } from "drizzle-orm";
+import { getDashboardData } from "@/app/admin/actions/dashboard";
+import DashboardChart from "@/components/admin/DashboardChart";
+import RecentBookings from "@/components/admin/RecentBookings";
 
 export default async function AdminDashboard() {
     // Query total counts from Drizzle
@@ -12,12 +15,14 @@ export default async function AdminDashboard() {
         jeepCount,
         wisataCount,
         bookingTotal,
+        { latestBookings, revenueData },
     ] = await Promise.all([
         db.select({ value: count() }).from(villas),
         db.select({ value: count() }).from(cabins),
         db.select({ value: count() }).from(jeeps),
         db.select({ value: count() }).from(wisata),
         db.select({ value: sum(bookings.total) }).from(bookings),
+        getDashboardData(),
     ]);
 
     const rp = new Intl.NumberFormat("id-ID", {
@@ -42,14 +47,12 @@ export default async function AdminDashboard() {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">
-                <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-slate-200 p-6 min-h-[400px] flex items-center justify-center text-slate-400">
-                    (Area untuk Chart Pendapatan)
+                <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-slate-200 p-6 min-h-[400px]">
+                    <DashboardChart data={revenueData} />
                 </div>
                 <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
                     <h3 className="font-bold text-slate-900 mb-4">Booking Terbaru</h3>
-                    <div className="flex items-center justify-center h-[300px] text-slate-400 text-sm">
-                        Belum ada booking.
-                    </div>
+                    <RecentBookings bookings={latestBookings as any} />
                 </div>
             </div>
         </div>

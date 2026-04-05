@@ -160,19 +160,33 @@ export default async function CabinDetailPage({
             {/* View Map Embed */}
             {(cabin.koordinat || cabin.lokasi) && (
               <div className="w-full h-64 md:h-80 rounded-2xl overflow-hidden mb-6 border border-neutral-100 shadow-sm">
-                <iframe
-                  width="100%"
-                  height="100%"
-                  style={{ border: 0 }}
-                  loading="lazy"
-                  allowFullScreen
-                  referrerPolicy="no-referrer-when-downgrade"
-                  src={`https://maps.google.com/maps?q=${encodeURIComponent(
-                    cabin.koordinat && cabin.koordinat.includes("q=")
-                      ? cabin.koordinat.split("q=")[1].split("&")[0]
-                      : cabin.koordinat || cabin.lokasi || ""
-                  )}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
-                ></iframe>
+                {(() => {
+                  let src = "";
+                  if (cabin.koordinat?.includes("src=\"")) {
+                    const match = cabin.koordinat.match(/src="([^"]+)"/);
+                    src = match ? match[1] : "";
+                  } else if (cabin.koordinat?.startsWith("http")) {
+                    src = cabin.koordinat;
+                  } else {
+                    src = cabin.lokasi || "";
+                  }
+
+                  if (!src) return null;
+
+                  return (
+                    <iframe
+                      width="100%"
+                      height="100%"
+                      style={{ border: 0 }}
+                      loading="lazy"
+                      allowFullScreen
+                      referrerPolicy="no-referrer-when-downgrade"
+                      src={src.includes("google.com/maps/embed") ? src : `https://maps.google.com/maps?q=${encodeURIComponent(
+                        src.includes("q=") ? src.split("q=")[1].split("&")[0] : src
+                      )}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
+                    ></iframe>
+                  );
+                })()}
               </div>
             )}
 
@@ -187,7 +201,13 @@ export default async function CabinDetailPage({
                 </p>
               </div>
               <a
-                href={cabin.koordinat || "#"}
+                href={(() => {
+                  if (cabin.koordinat?.includes("src=\"")) {
+                    const match = cabin.koordinat.match(/src="([^"]+)"/);
+                    return match ? match[1] : "#";
+                  }
+                  return cabin.koordinat || "#";
+                })()}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full sm:w-auto px-6 py-2.5 bg-white text-primary font-bold rounded-xl border border-neutral-200 hover:bg-neutral-50 transition text-center"

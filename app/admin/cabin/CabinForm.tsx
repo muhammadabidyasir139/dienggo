@@ -228,29 +228,43 @@ export default function CabinForm({
               />
               <div className="space-y-4">
                 <FormField
-                  label="Link Google Maps (Peta)"
+                  label="Embed Google Maps"
                   name="koordinat"
-                  type="url"
+                  type="textarea"
                   value={formData.koordinat}
                   onChange={handleChange}
-                  helpText="https://maps.google.com/?q=..."
+                  placeholder='<iframe src="https://www.google.com/maps/embed?..." ...></iframe>'
+                  helpText="Masukkan link 'Embed a map' dari Google Maps (seluruh tag iframe atau link src saja)"
                 />
 
                 {formData.koordinat && (
-                  <div className="mt-2 w-full h-48 rounded-lg overflow-hidden border border-slate-200">
-                    <iframe
-                      width="100%"
-                      height="100%"
-                      style={{ border: 0 }}
-                      loading="lazy"
-                      allowFullScreen
-                      referrerPolicy="no-referrer-when-downgrade"
-                      src={`https://maps.google.com/maps?q=${encodeURIComponent(
-                        formData.koordinat.includes("q=")
-                          ? formData.koordinat.split("q=")[1].split("&")[0]
-                          : formData.koordinat
-                      )}&output=embed`}
-                    ></iframe>
+                  <div className="mt-2 w-full h-48 rounded-lg overflow-hidden border border-slate-200 bg-slate-50 flex items-center justify-center">
+                    {(() => {
+                      let src = "";
+                      if (formData.koordinat.includes("src=\"")) {
+                        // Extract src from iframe tag
+                        const match = formData.koordinat.match(/src="([^"]+)"/);
+                        src = match ? match[1] : "";
+                      } else if (formData.koordinat.startsWith("http")) {
+                        src = formData.koordinat;
+                      }
+
+                      if (!src) return <div className="text-slate-400 text-sm">Link tidak valid</div>;
+
+                      return (
+                        <iframe
+                          width="100%"
+                          height="100%"
+                          style={{ border: 0 }}
+                          loading="lazy"
+                          allowFullScreen
+                          referrerPolicy="no-referrer-when-downgrade"
+                          src={src.includes("google.com/maps/embed") ? src : `https://maps.google.com/maps?q=${encodeURIComponent(
+                            src.includes("q=") ? src.split("q=")[1].split("&")[0] : src
+                          )}&output=embed`}
+                        ></iframe>
+                      );
+                    })()}
                   </div>
                 )}
               </div>
