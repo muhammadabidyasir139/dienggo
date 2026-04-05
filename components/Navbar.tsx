@@ -46,15 +46,15 @@ export function Navbar() {
 
   const navLinks = [
     { href: "/villa", label: t("villa") },
-    { href: "/hotel-cabin", label: t("hotel-cabin") },
-    { href: "/jeep", label: t("jeep") },
+    // { href: "/hotel-cabin", label: t("hotel-cabin") },
+    // { href: "/jeep", label: t("jeep") },
     { href: "/aktivitas", label: t("aktivitas") },
   ];
 
   const isTransparentBase =
     pathname === "/villa" ||
-    pathname === "/hotel-cabin" ||
-    pathname === "/jeep" ||
+    // pathname === "/hotel-cabin" ||
+    // pathname === "/jeep" ||
     pathname === "/aktivitas";
   const navBgClass =
     isScrolled || !isTransparentBase
@@ -92,13 +92,12 @@ export function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`text-sm font-medium transition-colors hover:opacity-70 ${
-                  isActive
+                className={`text-sm font-medium transition-colors hover:opacity-70 ${isActive
                     ? isScrolled || !isTransparentBase
                       ? "text-primary font-bold"
                       : "text-white font-bold"
                     : textColorClass
-                }`}
+                  }`}
               >
                 {link.label}
               </Link>
@@ -112,11 +111,10 @@ export function Navbar() {
 
           <Link
             href="/daftar-tuan-rumah"
-            className={`text-sm font-bold px-4 py-2 rounded-xl transition-all border ${
-              isScrolled || !isTransparentBase
+            className={`text-sm font-bold px-4 py-2 rounded-xl transition-all border ${isScrolled || !isTransparentBase
                 ? "border-primary text-primary hover:bg-primary hover:text-white"
                 : "border-white text-white hover:bg-white hover:text-primary"
-            }`}
+              }`}
           >
             {t("host_registration")}
           </Link>

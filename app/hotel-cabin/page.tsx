@@ -8,6 +8,13 @@ import Image from "next/image";
 import { getCabins } from "@/app/admin/actions/cabin";
 import { getFacilities } from "@/app/admin/actions/facility";
 import { getTranslations } from "next-intl/server";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Hotel Cabin Dieng | Menginap Eksklusif di Alam Dieng",
+  description: "Nikmati pengalaman menginap unik di hotel cabin Dieng. Desain modern, view pegunungan, dan suasana sejuk yang menenangkan.",
+  keywords: ["hotel cabin dieng", "cabin premium dieng", "glamping dieng", "penginapan unik dieng"],
+};
 
 export default async function CabinListingPage({
   searchParams,

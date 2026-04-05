@@ -27,6 +27,28 @@ import { BentoGallery } from "@/components/BentoGallery";
 import { BookingButton } from "@/components/BookingButton";
 import { formatCurrency } from "@/lib/utils";
 import { getVillaBySlug as fetchVillaBySlug } from "@/app/admin/actions/villa";
+import { Metadata } from "next";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const villa = await fetchVillaBySlug(slug);
+
+  if (!villa) return { title: "Villa Not Found" };
+
+  return {
+    title: `${villa.nama} Dieng | Sewa Villa Exclusive`,
+    description: `Pesan ${villa.nama} di Dieng. ${villa.deskripsi?.slice(0, 150)}... Fasilitas lengkap, lokasi strategis di ${villa.lokasi}.`,
+    openGraph: {
+      title: `${villa.nama} - Penginapan Dieng`,
+      description: `Menginap di ${villa.nama}, pilihan tepat untuk liburan di Dieng plateau.`,
+      images: [villa.fotoUtama || ""],
+    },
+  };
+}
 
 // Icon mapping helper (extended)
 const facilityIcons: Record<string, React.ReactNode> = {

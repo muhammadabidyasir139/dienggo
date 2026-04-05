@@ -6,6 +6,13 @@ import fs from "fs/promises";
 import path from "path";
 import Image from "next/image";
 import { getTranslations } from "next-intl/server";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Wisata Dieng | Destinasi Liburan Populer di Dieng Plateu",
+  description: "Jelajahi tempat wisata terbaik di Dieng: Kawah Sikidang, Candi Arjuna, Telaga Warna, dan Golden Sunrise Sikunir. Dapatkan informasi tiket dan rute terlengkap.",
+  keywords: ["wisata dieng", "destinasi dieng", "kawah sikidang", "candi arjuna", "telaga warna", "sikunir sunrise"],
+};
 
 async function getWisata(): Promise<WisataProps[]> {
     const filePath = path.join(process.cwd(), "data", "wisata.json");

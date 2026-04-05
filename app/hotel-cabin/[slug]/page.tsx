@@ -25,6 +25,28 @@ import { BentoGallery } from "@/components/BentoGallery";
 import { BookingButton } from "@/components/BookingButton";
 import { formatCurrency } from "@/lib/utils";
 import { getCabinBySlug as fetchCabinBySlug } from "@/app/admin/actions/cabin";
+import { Metadata } from "next";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const cabin = await fetchCabinBySlug(slug);
+
+  if (!cabin) return { title: "Cabin Not Found" };
+
+  return {
+    title: `${cabin.nama} Dieng | Staycation Cabin Premium`,
+    description: `Nikmati menginap di ${cabin.nama} Dieng. ${cabin.deskripsi?.slice(0, 150)}... Pemandangan indah dan udara sejuk di ${cabin.lokasi}.`,
+    openGraph: {
+      title: `${cabin.nama} - Modern Cabin Dieng`,
+      description: `Staycation seru di ${cabin.nama}, hotel cabin terbaik di Dieng.`,
+      images: [cabin.fotoUtama || ""],
+    },
+  };
+}
 
 const facilityIcons: Record<string, React.ReactNode> = {
   Perapian: <Flame size={16} className="text-primary" />,

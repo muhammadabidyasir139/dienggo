@@ -8,6 +8,13 @@ import Image from "next/image";
 import { getVillas } from "@/app/admin/actions/villa";
 import { getFacilities } from "@/app/admin/actions/facility";
 import { getTranslations } from "next-intl/server";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Sewa Villa Dieng | Penginapan Nyaman & Murah di Dieng",
+  description: "Daftar villa terbaik di Dieng. Temukan villa dengan pemandangan indah, fasilitas lengkap, dan harga terjangkau untuk liburan keluarga atau rombongan.",
+  keywords: ["villa dieng murah", "sewa villa dieng wonosobo", "villa dieng fasilitas lengkap", "staycation dieng"],
+};
 
 export default async function VillaListingPage({
   searchParams,
