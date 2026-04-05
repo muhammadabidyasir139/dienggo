@@ -25,10 +25,7 @@ export function WisataCard({ slug, nama, harga, rating, ulasan, lokasi, foto_uta
                     className="object-cover transition-transform duration-500 group-hover:scale-110"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 25vw"
                 />
-                <div className="absolute right-3 top-3 flex items-center gap-1 rounded-full bg-black/50 backdrop-blur-md px-2 py-1 text-xs font-bold text-white shadow-sm">
-                    <Star size={12} className="fill-accent text-accent" />
-                    {rating} <span className="text-white/80 font-normal">({ulasan})</span>
-                </div>
+
             </div>
 
             <div className="flex flex-col p-4 grow">

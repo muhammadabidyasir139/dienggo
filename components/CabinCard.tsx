@@ -33,10 +33,7 @@ export function CabinCard({ slug, nama, harga, rating, ulasan, lokasi, fotoUtama
                     className="object-cover transition-transform duration-500 group-hover:scale-110"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />
-                <div className="absolute left-3 top-3 flex items-center gap-1 rounded-full bg-white/90 px-2 py-1 text-xs font-bold text-neutral-800 shadow-sm backdrop-blur-sm">
-                    <Star size={12} className="fill-accent text-accent" />
-                    {rating} <span className="text-neutral-500 font-normal">({ulasan})</span>
-                </div>
+
             </div>
 
             <div className="flex flex-col p-5 grow">
