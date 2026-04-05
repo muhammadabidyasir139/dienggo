@@ -23,6 +23,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }))
 
+  const aktivitasPath = require('path').join(process.cwd(), 'data', 'aktivitas.json')
+  const aktivitasData = JSON.parse(require('fs').readFileSync(aktivitasPath, 'utf-8'))
+  const aktivitasEntries = aktivitasData.map((a: any) => ({
+    url: `${baseUrl}/aktivitas/${a.slug}`,
+    lastModified: new Date(a.tanggal) || new Date(),
+    changeFrequency: 'weekly' as const,
+    priority: 0.7,
+  }))
+
   return [
     {
       url: baseUrl,
@@ -54,7 +63,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'weekly',
       priority: 0.7,
     },
+    {
+      url: `${baseUrl}/aktivitas`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.7,
+    },
     ...villaEntries,
     ...cabinEntries,
+    ...aktivitasEntries,
   ]
 }
