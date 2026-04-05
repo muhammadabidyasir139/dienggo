@@ -119,7 +119,7 @@ export default function DashboardChart({ data }: DashboardChartProps) {
                             axisLine={false} 
                             tickLine={false} 
                             tick={{ fill: "#94a3b8", fontSize: 12 }}
-                            tickFormatter={(value) => `Rp ${value / 1000}k`}
+                            tickFormatter={(value: any) => `Rp ${Number(value) / 1000}k`}
                         />
                         <Tooltip
                             contentStyle={{
@@ -127,7 +127,7 @@ export default function DashboardChart({ data }: DashboardChartProps) {
                                 border: "none",
                                 boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
                             }}
-                            formatter={(value: number) => [formatCurrency(value), "Pendapatan"]}
+                            formatter={(value: any) => [formatCurrency(Number(value || 0)), "Pendapatan"]}
                         />
                         <Area
                             type="monotone"
