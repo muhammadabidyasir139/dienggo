@@ -5,9 +5,16 @@ import { getCabins } from './admin/actions/cabin'
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://dienggo.id' // Change to actual site URL
 
-  // Fetch all villas and cabins
-  const villas = await getVillas()
-  const cabins = await getCabins()
+  // Fetch all villas and cabins with fallback for build-time safety
+  let villas = []
+  let cabins = []
+  
+  try {
+    villas = await getVillas()
+    cabins = await getCabins()
+  } catch (error) {
+    console.error("Sitemap generation error (skipping DB entries):", error)
+  }
 
   const villaEntries = villas.map((villa) => ({
     url: `${baseUrl}/villa/${villa.slug}`,
