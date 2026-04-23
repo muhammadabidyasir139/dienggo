@@ -6,8 +6,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://dienggo.id' // Change to actual site URL
 
   // Fetch all villas and cabins with fallback for build-time safety
-  let villas = []
-  let cabins = []
+  let villas: any[] = []
+  let cabins: any[] = []
   
   try {
     villas = await getVillas()
