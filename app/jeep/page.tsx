@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { Navbar } from "@/components/Navbar";
 import { SearchBarJeep } from "@/components/SearchBarJeep";
 import { PromoBanner } from "@/components/PromoBanner";

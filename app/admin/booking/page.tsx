@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { getBookings } from "@/app/admin/actions/booking";
 import BookingTableClient from "./BookingTableClient";
 

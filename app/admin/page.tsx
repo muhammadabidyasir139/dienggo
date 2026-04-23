@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import StatsCard from "@/components/admin/StatsCard";
 import { Home, Tent, Car, Map, Banknote } from "lucide-react";
 import { db } from "@/db";

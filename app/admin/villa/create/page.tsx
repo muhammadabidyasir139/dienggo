@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import VillaForm from "../VillaForm";
 import { getFacilities } from "@/app/admin/actions/facility";
 
