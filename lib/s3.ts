@@ -22,7 +22,7 @@ export async function uploadToS3(
     fileName: string,
     contentType: string
 ): Promise<string> {
-    const key = `uploads/${Date.now()}-${fileName}`;
+    const key = `villa/${Date.now()}-${fileName}`;
     
     // Get the client lazily
     const client = getS3Client();

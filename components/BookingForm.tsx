@@ -11,18 +11,7 @@ import { format, startOfDay } from "date-fns";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 
-declare global {
-    interface Window {
-        snap: {
-            pay: (token: string, options: {
-                onSuccess: (result: any) => void;
-                onPending: (result: any) => void;
-                onError: (result: any) => void;
-                onClose: () => void;
-            }) => void;
-        };
-    }
-}
+// DOKU doesn't require extra global window types for the redirect flow.
 
 interface BookingFormProps {
     item: {
@@ -94,26 +83,7 @@ export function BookingForm({ item, type }: BookingFormProps) {
     const subtotal = item.harga;
     const total = subtotal * nights;
 
-    // Load Midtrans Snap.js
-    useEffect(() => {
-        const clientKey = process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY;
-        const midtransUrl = process.env.MIDTRANS_IS_PRODUCTION === "true"
-            ? "https://app.midtrans.com/snap/snap.js"
-            : "https://app.sandbox.midtrans.com/snap/snap.js";
-
-        // Check if script already loaded
-        if (document.querySelector(`script[src="${midtransUrl}"]`)) return;
-
-        const script = document.createElement("script");
-        script.src = midtransUrl;
-        script.setAttribute("data-client-key", clientKey || "");
-        script.async = true;
-        document.head.appendChild(script);
-
-        return () => {
-            // Don't remove on cleanup — Snap needs to stay loaded
-        };
-    }, []);
+    // Midtrans Snap.js removal — DOKU redirect-based flow doesn't need external JS loading.
 
     const [showLoginPopup, setShowLoginPopup] = useState(false);
     const { data: session } = useSession();
@@ -286,7 +256,7 @@ export function BookingForm({ item, type }: BookingFormProps) {
         setPaymentStatus("idle");
 
         try {
-            const res = await fetch("/api/midtrans/create-transaction", {
+            const res = await fetch("/api/doku/create-transaction", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -302,37 +272,11 @@ export function BookingForm({ item, type }: BookingFormProps) {
                 throw new Error(data.error || "Gagal membuat transaksi");
             }
 
-            // Handle redirection for Villa, Cabin, and Jeep
-            if (type === "villa" || type === "hotel-cabin" || type === "cabin" || type === "jeep") {
-                router.push(`/booking/invoice/${data.orderId}`);
-                return;
-            }
-
-            // Open Snap popup for other types (default flow)
-            if (window.snap) {
-                window.snap.pay(data.token, {
-                    onSuccess: (result: any) => {
-                        console.log("Payment success:", result);
-                        setPaymentStatus("success");
-                        setTimeout(() => {
-                            router.push("/pesanan");
-                        }, 2000);
-                    },
-                    onPending: (result: any) => {
-                        console.log("Payment pending:", result);
-                        setPaymentStatus("pending");
-                    },
-                    onError: (result: any) => {
-                        console.error("Payment error:", result);
-                        setPaymentStatus("error");
-                    },
-                    onClose: () => {
-                        console.log("Payment popup closed");
-                        setIsLoading(false);
-                    },
-                });
+            // DOKU Redirect Flow
+            if (data.redirect_url) {
+                window.location.href = data.redirect_url;
             } else {
-                throw new Error("Midtrans Snap belum dimuat. Coba muat ulang halaman.");
+                throw new Error("Gagal mendapatkan link pembayaran DOKU.");
             }
         } catch (error: any) {
             console.error("Booking error:", error);
@@ -539,8 +483,8 @@ export function BookingForm({ item, type }: BookingFormProps) {
                                     <CreditCard className="text-primary " size={20} />
                                 </div>
                                 <div className="flex flex-col">
-                                    <span className="font-bold text-foreground">Midtrans Payment Gateway</span>
-                                    <span className="text-xs text-neutral-500">VA, Gopay, QRIS, Dana, OVO, Kartu Kredit & Lainnya</span>
+                                    <span className="font-bold text-foreground">DOKU Payment Gateway</span>
+                                    <span className="text-xs text-neutral-500">Virtual Account, QRIS, Credit Card, e-Wallet & Lainnya</span>
                                 </div>
                             </div>
                             <CheckCircle2 className="text-primary " size={20} />
@@ -548,7 +492,7 @@ export function BookingForm({ item, type }: BookingFormProps) {
 
                         <div className="p-4 bg-blue-50  rounded-2xl border border-blue-100 ">
                             <p className="text-sm text-blue-700 ">
-                                💡 Anda dapat memilih metode pembayaran di halaman pembayaran Midtrans (Virtual Account, e-Wallet, QRIS, Kartu Kredit, dll.)
+                                💡 Anda akan diarahkan ke halaman pembayaran aman DOKU untuk menyelesaikan proses transaksi.
                             </p>
                         </div>
                     </div>

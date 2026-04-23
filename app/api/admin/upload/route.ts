@@ -41,7 +41,7 @@ export async function POST(req: Request) {
         } else {
             // ... (local upload logic remain same)
             console.log("S3 credentials missing, using local upload fallback...");
-            const uploadDir = path.join(process.cwd(), "public", "uploads");
+            const uploadDir = path.join(process.cwd(), "public", "villa");
 
             try {
                 await fs.access(uploadDir);
@@ -54,7 +54,7 @@ export async function POST(req: Request) {
 
             await fs.writeFile(filePath, buffer);
 
-            const url = `/uploads/${fileName}`;
+            const url = `/villa/${fileName}`;
             return NextResponse.json({ url });
         }
     } catch (error: any) {
