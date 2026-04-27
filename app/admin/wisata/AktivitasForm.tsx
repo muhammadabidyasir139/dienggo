@@ -105,6 +105,7 @@ export default function AktivitasForm({ initialData, isEdit }: AktivitasFormProp
                                 label="Gambar Utama"
                                 value={formData.fotoUtama}
                                 onChange={(url) => setFormData((prev) => ({ ...prev, fotoUtama: url }))}
+                                folder="berita"
                             />
 
                             <FormField

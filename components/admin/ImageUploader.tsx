@@ -9,9 +9,10 @@ interface ImageUploaderProps {
     value: string;
     onChange: (url: string) => void;
     error?: string;
+    folder?: string;
 }
 
-export default function ImageUploader({ label, value, onChange, error }: ImageUploaderProps) {
+export default function ImageUploader({ label, value, onChange, error, folder = "villa" }: ImageUploaderProps) {
     const [isUploading, setIsUploading] = useState(false);
 
     const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,6 +28,7 @@ export default function ImageUploader({ label, value, onChange, error }: ImageUp
         try {
             const formData = new FormData();
             formData.append("file", file);
+            formData.append("folder", folder);
 
             const res = await fetch("/api/admin/upload", {
                 method: "POST",

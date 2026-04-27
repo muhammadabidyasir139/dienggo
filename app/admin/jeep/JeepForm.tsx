@@ -292,6 +292,7 @@ export default function JeepForm({ initialData, isEdit }: JeepFormProps) {
               onChange={(url) =>
                 setFormData((prev) => ({ ...prev, fotoUtama: url }))
               }
+              folder="jeep"
             />
             <div className="pt-4">
               <MultiImageUploader
@@ -300,6 +301,7 @@ export default function JeepForm({ initialData, isEdit }: JeepFormProps) {
                 onChange={(urls) =>
                   setFormData((prev) => ({ ...prev, galeri: urls }))
                 }
+                folder="jeep"
               />
             </div>
           </div>

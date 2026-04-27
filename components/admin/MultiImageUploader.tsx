@@ -9,9 +9,10 @@ interface MultiImageUploaderProps {
     values: string[];
     onChange: (urls: string[]) => void;
     error?: string;
+    folder?: string;
 }
 
-export default function MultiImageUploader({ label, values = [], onChange, error }: MultiImageUploaderProps) {
+export default function MultiImageUploader({ label, values = [], onChange, error, folder = "villa" }: MultiImageUploaderProps) {
     const [isUploading, setIsUploading] = useState(false);
 
     const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,6 +34,7 @@ export default function MultiImageUploader({ label, values = [], onChange, error
 
                 const formData = new FormData();
                 formData.append("file", file);
+                formData.append("folder", folder);
 
                 const res = await fetch("/api/admin/upload", {
                     method: "POST",

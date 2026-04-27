@@ -356,6 +356,7 @@ export default function VillaForm({
               onChange={(url) =>
                 setFormData((prev) => ({ ...prev, fotoUtama: url }))
               }
+              folder="villa"
             />
             <div className="pt-4">
               <MultiImageUploader
@@ -364,6 +365,7 @@ export default function VillaForm({
                 onChange={(urls) =>
                   setFormData((prev) => ({ ...prev, galeri: urls }))
                 }
+                folder="villa"
               />
             </div>
           </div>

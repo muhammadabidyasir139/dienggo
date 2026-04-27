@@ -347,6 +347,7 @@ export default function CabinForm({
               onChange={(url) =>
                 setFormData((prev) => ({ ...prev, fotoUtama: url }))
               }
+              folder="cabin"
             />
             <div className="pt-4">
               <MultiImageUploader
@@ -355,6 +356,7 @@ export default function CabinForm({
                 onChange={(urls) =>
                   setFormData((prev) => ({ ...prev, galeri: urls }))
                 }
+                folder="cabin"
               />
             </div>
           </div>
