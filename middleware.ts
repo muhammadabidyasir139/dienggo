@@ -10,6 +10,7 @@ export async function middleware(request: NextRequest) {
     const isAdminRoute = pathname.startsWith('/admin')
     const isLoginRoute = pathname.startsWith('/login')
     const isApiRoute = pathname.startsWith('/api')
+    const isStaticAsset = pathname.startsWith('/_next') || pathname.includes('.')
     const requestHeaders = new Headers(request.headers)
     requestHeaders.set('x-pathname', pathname)
 
