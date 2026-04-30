@@ -102,6 +102,8 @@ export default function HostRegistrationPage() {
   const [currentStep, setCurrentStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const [validationError, setValidationError] = useState("");
+
   const [formData, setFormData] = useState({
     category: "",
     nama: "",
@@ -124,7 +126,44 @@ export default function HostRegistrationPage() {
   });
 
   const nextStep = () => setCurrentStep((prev) => Math.min(prev + 1, 6));
-  const prevStep = () => setCurrentStep((prev) => Math.max(prev - 1, 1));
+  const prevStep = () => {
+    setValidationError("");
+    setCurrentStep((prev) => Math.max(prev - 1, 1));
+  };
+
+  const handleNextStep = () => {
+    setValidationError("");
+
+    if (currentStep === 1) {
+      if (!formData.category) {
+        setValidationError("Silakan pilih kategori properti Anda.");
+        return;
+      }
+    } else if (currentStep === 2) {
+      if (
+        !formData.nama.trim() ||
+        !formData.alamatJalan.trim() ||
+        !formData.kota.trim() ||
+        !formData.provinsi.trim() ||
+        !formData.kodePos.trim() ||
+        !formData.whatsappOwner.trim()
+      ) {
+        setValidationError("Harap lengkapi semua field wajib (*) pada form lokasi.");
+        return;
+      }
+    } else if (currentStep === 4) {
+      if (formData.fotos.length < 5) {
+        setValidationError("Harap unggah minimal 5 foto properti Anda.");
+        return;
+      }
+      if (!formData.deskripsi.trim()) {
+        setValidationError("Deskripsi properti wajib diisi.");
+        return;
+      }
+    }
+
+    nextStep();
+  };
 
   const handleCategorySelect = (id: string) => {
     setFormData({ ...formData, category: id });
@@ -192,6 +231,12 @@ export default function HostRegistrationPage() {
   };
 
   const handleSubmit = async () => {
+    setValidationError("");
+    if (formData.hargaDasar <= 0) {
+      setValidationError("Harga dasar wajib diisi dan harus lebih dari 0.");
+      return;
+    }
+
     if (!session?.user) {
       alert("Silakan login terlebih dahulu.");
       return;
@@ -332,7 +377,7 @@ export default function HostRegistrationPage() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <label className="text-sm font-bold text-slate-700">
-                        Nama Villa / Cabin
+                        Nama Villa / Cabin <span className="text-red-500">*</span>
                       </label>
                       <input
                         type="text"
@@ -360,7 +405,7 @@ export default function HostRegistrationPage() {
                     </div>
                     <div className="md:col-span-2 space-y-2">
                       <label className="text-sm font-bold text-slate-700">
-                        Alamat Jalan
+                        Alamat Jalan <span className="text-red-500">*</span>
                       </label>
                       <input
                         type="text"
@@ -377,7 +422,7 @@ export default function HostRegistrationPage() {
                     </div>
                     <div className="space-y-2">
                       <label className="text-sm font-bold text-slate-700">
-                        Kota / Kabupaten
+                        Kota / Kabupaten <span className="text-red-500">*</span>
                       </label>
                       <input
                         type="text"
@@ -391,7 +436,7 @@ export default function HostRegistrationPage() {
                     </div>
                     <div className="space-y-2">
                       <label className="text-sm font-bold text-slate-700">
-                        Provinsi
+                        Provinsi <span className="text-red-500">*</span>
                       </label>
                       <input
                         type="text"
@@ -405,7 +450,7 @@ export default function HostRegistrationPage() {
                     </div>
                     <div className="space-y-2">
                       <label className="text-sm font-bold text-slate-700">
-                        Kode Pos
+                        Kode Pos <span className="text-red-500">*</span>
                       </label>
                       <input
                         type="text"
@@ -419,7 +464,7 @@ export default function HostRegistrationPage() {
                     </div>
                     <div className="space-y-2">
                       <label className="text-sm font-bold text-slate-700">
-                        WhatsApp Owner
+                        WhatsApp Owner <span className="text-red-500">*</span>
                       </label>
                       <input
                         type="text"
@@ -583,7 +628,7 @@ export default function HostRegistrationPage() {
 
                   <div className="pt-6">
                     <label className="text-sm font-bold text-slate-700 mb-2 block">
-                      Deskripsi Properti
+                      Deskripsi Properti <span className="text-red-500">*</span>
                     </label>
                     <textarea
                       className="w-full p-4 rounded-2xl border border-slate-200 focus:ring-2 focus:ring-primary outline-none min-h-[150px] cursor-text text-slate-900"
@@ -611,7 +656,7 @@ export default function HostRegistrationPage() {
                     <div className="p-6 rounded-3xl border border-slate-100 bg-slate-50 space-y-4">
                       <div className="flex items-center gap-3 text-slate-900 font-bold">
                         <Zap size={20} className="text-primary" />
-                        Harga Dasar
+                        Harga Dasar <span className="text-red-500">*</span>
                       </div>
                       <div className="relative">
                         <span className="absolute left-4 top-1/2 -translate-y-1/2 font-bold text-slate-400">
@@ -731,45 +776,46 @@ export default function HostRegistrationPage() {
 
           {/* Footer Actions */}
           {currentStep < 6 && (
-            <div className="mt-12 pt-8 border-t border-slate-100 flex items-center justify-between">
-              <button
-                onClick={prevStep}
-                disabled={currentStep === 1}
-                className={`flex items-center gap-2 font-bold px-6 py-3 rounded-2xl transition-all cursor-pointer ${
-                  currentStep === 1
-                    ? "opacity-0 pointer-events-none"
-                    : "text-slate-500 hover:bg-slate-50"
-                }`}
-              >
-                <ArrowLeft size={20} />
-                Kembali
-              </button>
-
-              {currentStep === 5 ? (
-                <button
-                  onClick={handleSubmit}
-                  disabled={isSubmitting || formData.fotos.length < 5}
-                  className="flex items-center gap-2 bg-primary text-white font-bold px-10 py-4 rounded-2xl shadow-lg shadow-primary/20 hover:scale-[1.05] transition-all disabled:opacity-50 disabled:hover:scale-100 cursor-pointer"
-                >
-                  {isSubmitting ? "Mengirim..." : "Kirim Pendaftaran"}
-                  {!isSubmitting && <CheckCircle2 size={20} />}
-                </button>
-              ) : (
-                <button
-                  onClick={nextStep}
-                  disabled={
-                    (currentStep === 1 && !formData.category) ||
-                    (currentStep === 2 &&
-                      (!formData.nama ||
-                        !formData.alamatJalan ||
-                        !formData.kota))
-                  }
-                  className="flex items-center gap-2 bg-slate-900 text-white font-bold px-8 py-4 rounded-2xl shadow-lg hover:scale-[1.05] transition-all disabled:opacity-50 disabled:hover:scale-100 cursor-pointer"
-                >
-                  Lanjutkan
-                  <ArrowRight size={20} />
-                </button>
+            <div className="mt-12 pt-8 border-t border-slate-100 flex flex-col gap-4">
+              {validationError && (
+                <div className="bg-red-50 text-red-500 p-4 rounded-2xl flex items-center gap-3 text-sm font-bold border border-red-100">
+                  <AlertTriangle size={20} />
+                  {validationError}
+                </div>
               )}
+              <div className="flex items-center justify-between">
+                <button
+                  onClick={prevStep}
+                  disabled={currentStep === 1}
+                  className={`flex items-center gap-2 font-bold px-6 py-3 rounded-2xl transition-all cursor-pointer ${
+                    currentStep === 1
+                      ? "opacity-0 pointer-events-none"
+                      : "text-slate-500 hover:bg-slate-50"
+                  }`}
+                >
+                  <ArrowLeft size={20} />
+                  Kembali
+                </button>
+
+                {currentStep === 5 ? (
+                  <button
+                    onClick={handleSubmit}
+                    disabled={isSubmitting}
+                    className="flex items-center gap-2 bg-primary text-white font-bold px-10 py-4 rounded-2xl shadow-lg shadow-primary/20 hover:scale-[1.05] transition-all disabled:opacity-50 disabled:hover:scale-100 cursor-pointer"
+                  >
+                    {isSubmitting ? "Mengirim..." : "Kirim Pendaftaran"}
+                    {!isSubmitting && <CheckCircle2 size={20} />}
+                  </button>
+                ) : (
+                  <button
+                    onClick={handleNextStep}
+                    className="flex items-center gap-2 bg-slate-900 text-white font-bold px-8 py-4 rounded-2xl shadow-lg hover:scale-[1.05] transition-all cursor-pointer"
+                  >
+                    Lanjutkan
+                    <ArrowRight size={20} />
+                  </button>
+                )}
+              </div>
             </div>
           )}
         </div>

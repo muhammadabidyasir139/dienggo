@@ -114,7 +114,7 @@ export async function POST(req: NextRequest) {
             },
             items: [
                 {
-                    name: `${item.nama.substring(0, 40)}${(type === "villa" || type === "hotel-cabin") ? ` (${nightsTotal} Malam)` : ""}`,
+                    name: `${item.nama.substring(0, 40)}${(type === "villa" || type === "hotel-cabin") ? ` - ${nightsTotal} Malam` : ""}`.replace(/[^a-zA-Z0-9 .\-\/\+,=_:'@%]/g, ""),
                     price: subtotal,
                     quantity: nightsTotal,
                 },

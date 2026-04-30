@@ -272,11 +272,11 @@ export function BookingForm({ item, type }: BookingFormProps) {
                 throw new Error(data.error || "Gagal membuat transaksi");
             }
 
-            // DOKU Redirect Flow
-            if (data.redirect_url) {
-                window.location.href = data.redirect_url;
+            // Redirect to intermediate payment page
+            if (data.orderId) {
+                router.push(`/payment/${data.orderId}`);
             } else {
-                throw new Error("Gagal mendapatkan link pembayaran DOKU.");
+                throw new Error("Gagal mendapatkan link pembayaran.");
             }
         } catch (error: any) {
             console.error("Booking error:", error);
