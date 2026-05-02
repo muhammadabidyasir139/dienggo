@@ -9,9 +9,7 @@ const nextConfig: NextConfig = {
       bodySizeLimit: "100mb",
     },
   },
-  serverOptions: {
-    middlewareClientMaxBodySize: "100mb",
-  },
+
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "images.unsplash.com" },
