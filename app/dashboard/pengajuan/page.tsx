@@ -7,6 +7,7 @@ import { Home, Mountain, Car, MapPin, Calendar, Clock } from "lucide-react";
 import StatusBadge from "@/components/admin/StatusBadge";
 import { formatCurrency } from "@/lib/utils";
 import { getTranslations } from "next-intl/server";
+import Link from "next/link";
 
 export default async function UserRegistrationsPage() {
   const session = await getServerSession(authOptions);
@@ -98,9 +99,9 @@ export default async function UserRegistrationsPage() {
                   </div>
                 </div>
 
-                <div className="flex flex-row md:flex-col items-center md:items-end justify-between md:justify-center gap-2 border-t md:border-t-0 pt-4 md:pt-0">
-                  <div className="text-right">
-                    <p className="text-xs font-bold text-slate-400 uppercase mb-1">
+                <div className="flex flex-row md:flex-col items-center md:items-end justify-between md:justify-center gap-4 border-t md:border-t-0 pt-4 md:pt-0">
+                  <div className="text-right hidden md:block">
+                    <p className="text-[10px] font-bold text-slate-400 uppercase mb-1 tracking-tighter">
                       Harga Dasar
                     </p>
                     <p className="text-lg font-black text-primary">
@@ -108,9 +109,6 @@ export default async function UserRegistrationsPage() {
                     </p>
                   </div>
                   <div className="flex flex-col items-end gap-1">
-                    <p className="text-xs font-bold text-slate-400 uppercase mb-1">
-                      Status
-                    </p>
                     <StatusBadge status={reg.status!} />
                     {reg.status === "pending" && (
                       <div className="flex items-center gap-1 text-[10px] font-bold text-amber-600 mt-1 uppercase tracking-tighter">
@@ -119,6 +117,12 @@ export default async function UserRegistrationsPage() {
                       </div>
                     )}
                   </div>
+                  <Link
+                    href={`/dashboard/pengajuan/${reg.id}`}
+                    className="px-4 py-2 bg-slate-50 hover:bg-primary hover:text-white text-slate-600 text-xs font-bold rounded-xl transition-all border border-slate-100 hover:border-primary"
+                  >
+                    Lihat Detail
+                  </Link>
                 </div>
               </div>
             ))}

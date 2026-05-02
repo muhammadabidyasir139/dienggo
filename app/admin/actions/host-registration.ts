@@ -5,6 +5,18 @@ import { hostRegistrations, villas, cabins, jeeps } from "@/db/schema";
 import { eq, desc } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
+export async function getHostRegistrationById(id: string) {
+  try {
+    const registration = await db.query.hostRegistrations.findFirst({
+      where: eq(hostRegistrations.id, id),
+    });
+    return registration;
+  } catch (error: any) {
+    console.error("Get host registration by id error:", error);
+    return null;
+  }
+}
+
 export async function submitHostRegistration(formData: any) {
   try {
     const rawSize = typeof formData === "string" ? formData.length : JSON.stringify(formData).length;
