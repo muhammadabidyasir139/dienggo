@@ -196,6 +196,44 @@ export default function HostRegistrationPage() {
     fileInputRef.current?.click();
   };
 
+  const compressImage = (base64: string): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => {
+        try {
+          const canvas = document.createElement("canvas");
+          let width = img.width;
+          let height = img.height;
+
+          const MAX_SIZE = 1200;
+          if (width > height) {
+            if (width > MAX_SIZE) {
+              height *= MAX_SIZE / width;
+              width = MAX_SIZE;
+            }
+          } else {
+            if (height > MAX_SIZE) {
+              width *= MAX_SIZE / height;
+              height = MAX_SIZE;
+            }
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext("2d");
+          ctx?.drawImage(img, 0, 0, width, height);
+
+          const compressedBase64 = canvas.toDataURL("image/jpeg", 0.7);
+          resolve(compressedBase64);
+        } catch (err) {
+          reject(err);
+        }
+      };
+      img.onerror = (err) => reject(err);
+      img.src = base64;
+    });
+  };
+
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files) return;
@@ -214,7 +252,10 @@ export default function HostRegistrationPage() {
       });
       reader.readAsDataURL(file);
       const base64 = await promise;
-      newPhotos.push(base64);
+      
+      // Compress before adding
+      const compressed = await compressImage(base64);
+      newPhotos.push(compressed);
     }
 
     setFormData((prev) => ({ ...prev, fotos: [...prev.fotos, ...newPhotos] }));
