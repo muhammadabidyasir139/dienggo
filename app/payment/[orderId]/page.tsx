@@ -1,10 +1,9 @@
 import { db } from "@/db";
 import { bookings } from "@/db/schema";
 import { eq } from "drizzle-orm";
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import Link from "next/link";
-import { CheckCircle2, Wallet, ExternalLink, CalendarClock, CheckCircle } from "lucide-react";
-import { mockPayOrder } from "@/app/actions/orders";
+import { CheckCircle2, Wallet, ExternalLink, CalendarClock } from "lucide-react";
 
 export default async function PaymentPage({ params }: { params: Promise<{ orderId: string }> }) {
     const { orderId } = await params;
@@ -41,23 +40,10 @@ export default async function PaymentPage({ params }: { params: Promise<{ orderI
                         Jika Admin telah mengkonfirmasi ketersediaan kepada Anda, silakan lanjutkan proses pembayaran dengan mengklik tombol di bawah ini. Anda akan diarahkan ke halaman pembayaran DOKU untuk mendapatkan nomor Virtual Account (VA) beserta panduan cara membayarnya.
                     </p>
 
-                    {/* ORIGINAL PAYMENT LINK (Commented out for testing) */}
-                    {/* <Link href={booking.paymentUrl || "#"} className="flex w-full items-center justify-center gap-2 bg-primary text-white font-bold py-4 px-8 rounded-xl hover:bg-primary/90 hover:scale-[1.02] transition-all">
+                    <Link href={booking.paymentUrl || "#"} className="flex w-full items-center justify-center gap-2 bg-primary text-white font-bold py-4 px-8 rounded-xl hover:bg-primary/90 hover:scale-[1.02] transition-all">
                         Klik Bayar Sekarang
                         <ExternalLink size={20} />
-                    </Link> */}
-
-                    {/* MOCK PAYMENT FORM (Temporary for testing) */}
-                    <form action={async () => {
-                        "use server";
-                        await mockPayOrder(orderId);
-                        redirect(`/payment/${orderId}/success`);
-                    }}>
-                        <button type="submit" className="flex w-full items-center justify-center gap-2 bg-emerald-500 text-white font-bold py-4 px-8 rounded-xl hover:bg-emerald-600 hover:scale-[1.02] transition-all">
-                            Simulasi Bayar Berhasil (Test)
-                            <CheckCircle size={20} />
-                        </button>
-                    </form>
+                    </Link>
                 </div>
                 
                 <div className="flex flex-col sm:flex-row gap-4 justify-center mt-6">

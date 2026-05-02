@@ -169,7 +169,3 @@ export async function getOrderDetailById(id: string) {
         whatsappOwner,
     };
 }
-
-export async function mockPayOrder(kodeBooking: string) {
-    await db.update(bookings).set({ status: "paid" }).where(eq(bookings.kodeBooking, kodeBooking));
-}
