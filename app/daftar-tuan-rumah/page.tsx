@@ -196,30 +196,64 @@ export default function HostRegistrationPage() {
     fileInputRef.current?.click();
   };
 
+  const compressImage = (base64: string): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => {
+        try {
+          const canvas = document.createElement("canvas");
+          let width = img.width;
+          let height = img.height;
+          const MAX_SIZE = 1000;
+          if (width > height) {
+            if (width > MAX_SIZE) {
+              height *= MAX_SIZE / width;
+              width = MAX_SIZE;
+            }
+          } else {
+            if (height > MAX_SIZE) {
+              width *= MAX_SIZE / height;
+              height = MAX_SIZE;
+            }
+          }
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext("2d");
+          ctx?.drawImage(img, 0, 0, width, height);
+          const compressedBase64 = canvas.toDataURL("image/jpeg", 0.6);
+          resolve(compressedBase64);
+        } catch (err) {
+          reject(err);
+        }
+      };
+      img.onerror = (err) => reject(err);
+      img.src = base64;
+    });
+  };
+
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files) return;
 
     const newPhotos: string[] = [];
-
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
-
-      // Convert to Base64
       const reader = new FileReader();
       const promise = new Promise<string>((resolve) => {
-        reader.onload = (event) => {
-          resolve(event.target?.result as string);
-        };
+        reader.onload = (event) => resolve(event.target?.result as string);
       });
       reader.readAsDataURL(file);
       const base64 = await promise;
-      newPhotos.push(base64);
+      
+      try {
+        const compressed = await compressImage(base64);
+        newPhotos.push(compressed);
+      } catch (err) {
+        console.error("Compression error:", err);
+        newPhotos.push(base64); // fallback to original if compression fails
+      }
     }
-
     setFormData((prev) => ({ ...prev, fotos: [...prev.fotos, ...newPhotos] }));
-
-    // Reset input so the same file can be selected again
     e.target.value = "";
   };
 
@@ -244,12 +278,14 @@ export default function HostRegistrationPage() {
 
     setIsSubmitting(true);
     try {
-      // Stringify data to bypass Next.js serialization limits for large arrays/strings
-      const payload = JSON.stringify({
+      const payload = {
         ...formData,
         userId: (session.user as any).id || session.user.email,
-      });
-
+      };
+      
+      const sizeMB = (JSON.stringify(payload).length / 1024 / 1024).toFixed(2);
+      console.log(`Submitting payload size: ${sizeMB} MB`);
+      
       const res = await submitHostRegistration(payload);
       if (res.success) {
         setCurrentStep(6);

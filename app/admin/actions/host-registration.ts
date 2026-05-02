@@ -7,6 +7,9 @@ import { revalidatePath } from "next/cache";
 
 export async function submitHostRegistration(formData: any) {
   try {
+    const rawSize = typeof formData === "string" ? formData.length : JSON.stringify(formData).length;
+    console.log(`[HostRegistration] Received payload size: ${(rawSize / 1024 / 1024).toFixed(2)} MB`);
+
     // If data is a string (JSON), parse it
     const data = typeof formData === "string" ? JSON.parse(formData) : formData;
 
