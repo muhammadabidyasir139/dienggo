@@ -4,6 +4,7 @@ import { db } from "@/db";
 import { hostRegistrations, villas, cabins, jeeps } from "@/db/schema";
 import { eq, desc } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+import { uploadToS3 } from "@/lib/s3";
 
 export async function getHostRegistrationById(id: string) {
   try {
@@ -24,19 +25,61 @@ export async function submitHostRegistration(formData: any) {
 
     // If data is a string (JSON), parse it
     const data = typeof formData === "string" ? JSON.parse(formData) : formData;
+    
+    console.log("[HostRegistration] Payload keys:", Object.keys(data));
+
+    // Handle photos: upload base64 to S3
+    const processedFotos: string[] = [];
+    if (data.fotos && Array.isArray(data.fotos)) {
+      for (let i = 0; i < data.fotos.length; i++) {
+        const foto = data.fotos[i];
+        if (foto.startsWith("data:image")) {
+          // Extract base64 content
+          const base64Data = foto.split(",")[1];
+          const contentType = foto.split(";")[0].split(":")[1];
+          const buffer = Buffer.from(base64Data, "base64");
+          const fileName = `registration-${Date.now()}-${i}.jpg`;
+          
+          try {
+            const url = await uploadToS3(buffer, fileName, contentType, "registrations");
+            processedFotos.push(url);
+          } catch (uploadError) {
+            console.error("Failed to upload image to S3:", uploadError);
+            // Fallback or skip? For now, we fail if upload fails to ensure data integrity
+            throw new Error(`Gagal mengunggah foto ke-${i+1}`);
+          }
+        } else {
+          // Already a URL or other format
+          processedFotos.push(foto);
+        }
+      }
+    }
+
+    // Ensure numeric fields are numbers
+    const cleanData = {
+      ...data,
+      fotos: processedFotos,
+      hargaDasar: parseInt(data.hargaDasar) || 0,
+      hargaAkhirPekan: parseInt(data.hargaAkhirPekan) || 0,
+      hargaLiburan: parseInt(data.hargaLiburan) || 0,
+      status: "pending",
+    };
 
     const [newRegistration] = await db
       .insert(hostRegistrations)
-      .values({
-        ...data,
-        status: "pending",
-      })
-      .returning();
+      .values(cleanData)
+      .returning({ id: hostRegistrations.id });
+
     revalidatePath("/admin/host-registrations");
-    return { success: true, data: newRegistration };
+    return { success: true, data: { id: newRegistration.id } };
   } catch (error: any) {
-    console.error("Submit host registration error:", error);
-    return { success: false, error: error.message };
+    console.error("Submit host registration error details:", {
+      message: error.message,
+      detail: error.detail,
+      hint: error.hint,
+      code: error.code,
+    });
+    return { success: false, error: error.message || "Unknown database error" };
   }
 }
 
